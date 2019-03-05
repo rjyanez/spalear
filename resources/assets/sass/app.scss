@@ -1,0 +1,29 @@
+
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Nunito|Open+Sans:300,400,600,700');
+
+// Icons
+@import '~@fortawesome/fontawesome-free/scss/fontawesome';
+@import '~@fortawesome/fontawesome-free/scss/regular';
+@import '~@fortawesome/fontawesome-free/scss/solid';
+@import '~@fortawesome/fontawesome-free/scss/brands';
+@import 'nucleo';
+
+// Variables
+@import 'variables';
+
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
+
+// Argon
+
+@import 'argon';
+
+@import 'alerts';
+
+
+
+.navbar-laravel {
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}

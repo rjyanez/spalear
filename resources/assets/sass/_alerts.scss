@@ -1,0 +1,32 @@
+.toasted
+{
+    margin-bottom: 1rem !important;
+    padding: 1rem 1.5rem !important;
+    border: 1px solid transparent !important;
+    border-radius: .375rem !important;
+    color: #fff !important;
+    font-weight: bold !important;
+    width: 25vw !important;
+    &.info
+    {
+        border-color: #7889e8 !important; 
+        background-color: #7889e8 !important;
+    }
+    
+    &.success
+    {
+        border-color: #4fd69c !important; 
+        background-color: #4fd69c !important;
+    }
+    &.error
+    {
+        border-color: #f75676 !important; 
+        background-color: #f75676 !important;
+    }
+    
+    &.default
+    {
+        border-color: #3c4d69 !important; 
+        background-color: #3c4d69 !important;
+    }
+  }
