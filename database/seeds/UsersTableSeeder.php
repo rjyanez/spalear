@@ -16,7 +16,7 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
         DB::statement('ALTER SEQUENCE users_id_seq RESTART WITH 1'); 
-        DB::table('users')->truncate();
+        // DB::table('users')->truncate();
         DB::table('users')->insert([
             [
                 'name'=>        'Admin',

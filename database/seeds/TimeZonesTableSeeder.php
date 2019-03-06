@@ -13,7 +13,7 @@ class TimeZonesTableSeeder extends Seeder
     public function run()
     {
         DB::statement('ALTER SEQUENCE time_zones_id_seq RESTART WITH 1'); 
-        DB::table('time_zones')->truncate();
+        // DB::table('time_zones')->truncate();
         DB::table('time_zones')->insert([
             [ 'country_code' => 'AF', 'name' => 'Asia/Kabul', 'gmt_offset' => 'UTC +04:30' ],
             [ 'country_code' => 'AX', 'name' => 'Europe/Mariehamn', 'gmt_offset' => 'UTC +03:00' ],

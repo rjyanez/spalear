@@ -25,11 +25,7 @@ export default {
       localStorage.setItem("user", JSON.stringify(state.currentUser));
     },
     refresh(state) {
-      axios.get('/api/auth/user', {
-        headers: {
-          'Authorization': `Bearer ${state.currentUser.token}`
-        }
-      }).then((response) => {
+      axios.get(`/api/auth/user?token=${state.currentUser.token}`).then((response) => {
         state.currentUser = Object.assign({}, response.data, {token: state.currentUser.token});
         localStorage.setItem("user", JSON.stringify(state.currentUser));
       })
@@ -43,10 +39,10 @@ export default {
   },
   actions: {
     sendGet({ commit, state}, {url, auth = false}){
-      let headers = {}
-      if(state.isLoggedIn) headers.Authorization = `Bearer ${state.currentUser.token}`
+      let token = ''
+      if(state.isLoggedIn) token = `?token=${state.currentUser.token}`
       return new Promise((resolve, reject) => {
-        axios.get(`${window.location.origin}${url}`,{headers}).then(res => {
+        axios.get(`${window.location.origin}${url}${token}`).then(res => {
           resolve(res.data)
         })
         .catch(error => {
@@ -58,10 +54,11 @@ export default {
       let headers = {
         'content-type': 'multipart/form-data'
       }
-      if(state.isLoggedIn) headers.Authorization = `Bearer ${state.currentUser.token}`
+      let token = ''
+      if(state.isLoggedIn) token = `?token=${state.currentUser.token}`
     
       return new Promise((resolve, reject) => {
-        axios.post(`${window.location.origin}${url}`, data,{headers}).then(res => {
+        axios.post(`${window.location.origin}${url}${token}`, data,{headers}).then(res => {
         resolve(res.data)
         })
         .catch(error => {

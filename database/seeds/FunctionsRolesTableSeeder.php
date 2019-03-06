@@ -14,7 +14,7 @@ class FunctionsRolesTableSeeder extends Seeder
     public function run()
     {
         DB::statement('ALTER SEQUENCE functions_roles_id_seq RESTART WITH 1'); 
-        DB::table('functions_roles')->truncate();
+        // DB::table('functions_roles')->truncate();
 
         DB::table('functions_roles')->insert([
             [ 'function_code' => 'account' , 'rol_code' => 'AD' ],
