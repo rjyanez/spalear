@@ -33,8 +33,9 @@ Route::group(['middleware' => 'auth:api'], function ($router) {
     Route::get('user/{id}', 'UserController@show');
     Route::put('user/{id}/update', 'UserController@update');
     Route::delete('user/{id}/destroy', 'UserController@destroy');
-
-
+    
+    Route::get('teacher/list', 'TeacherController@list');
+    
     Route::get('function/primary/{rol}', 'FunctionsController@primaryMenu');
     Route::get('function/secondary/{rol}', 'FunctionsController@secondaryMenu');
 

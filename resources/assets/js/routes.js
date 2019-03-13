@@ -4,7 +4,8 @@ import Signup from './views/auth/signup.vue';
 import Dashboard from './views/dashboard';
 import UserList from './views/user/list';
 import User from './views/user/user';
-
+import TeacherList from './views/teacher/list'
+import Teacher from './views/teacher/teacher'
 
 export const routes = [
     {
@@ -78,6 +79,21 @@ export const routes = [
         component: {
             template: '<router-view/>',
         },
+        meta: {
+            requiresAuth: true,
+        },
+        children: [
+            {
+                path: '/',
+                name: 'teachers.list',
+                component: TeacherList
+            },
+            {
+                path: ':id',
+                name: 'teachers.name',
+                component: Teacher
+            }
+        ]
     },
     {
         path: '/lessons',
