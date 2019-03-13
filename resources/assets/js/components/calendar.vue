@@ -49,7 +49,7 @@ export default {
           days.push(day.toDate());
           day = day.clone().add(1, 'd');
       }
-      this.days = days
+      this.week = days
     }
   }
 }

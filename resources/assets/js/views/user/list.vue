@@ -57,7 +57,8 @@
         <div class="card-footer py-4">
           <nav class="d-flex justify-content-between" aria-label="...">
             <span>
-              {{ (sortedActivity.length*currentPage)-pageSize+1 }}<b>-</b>{{ sortedActivity.length*currentPage }} of <b class="text-primary">{{ total }}</b> 
+              {{ rangeList.from }} - {{ rangeList.to }}
+              of <b class="text-primary">{{ total }}</b> 
             </span>
             <ul class="pagination" role="navigation">
               <li class="page-item " :class="{ 'disabled' : currentPage === 1 }">
@@ -137,6 +138,13 @@ export default {
       let end = this.currentPage*this.pageSize;
       if(index >= start && index < end) return true;
     });
+  },
+  rangeList() {
+    let base = (this.pageSize * this.currentPage)
+    let list = (this.sortedActivity, this.filteredList)
+    let from = base-(this.pageSize -1)
+    let to = (list.length < this.pageSize)? from + (list.length - 1) :  base
+    return {from, to}
   }
   },
   mounted(){
