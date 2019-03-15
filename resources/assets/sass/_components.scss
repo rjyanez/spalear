@@ -1,0 +1,43 @@
+table.calendar-table {
+  @extend .table;
+  @extend .align-items-center; 
+  @extend .text-center;
+  @extend .table-sm;
+  tr {    
+    th{
+      @extend .px-0;
+      @extend .py-1;
+      &.title{
+        div{ 
+          @extend .d-flex;
+          @extend .justify-content-around;
+          button {
+            @extend .btn;
+            @extend .btn-link;
+            @extend .my-auto;
+            @extend .p-1;
+          }
+        }
+      }
+    }
+    td{
+      border: 1px solid #e9ecef;
+      @extend .p-0;
+      &:first-child[rowspan="2"]{
+        @extend .text-muted;
+  
+      }
+      &:not(.hour){
+        color: transparent;
+        cursor: pointer;
+        &.active{
+          @extend .btn-primary;
+        }
+      }
+      &:hover:not(.hour){
+        color: white;
+        background: lighten(#5e72e4, 10% );
+      }
+    }
+  }
+}

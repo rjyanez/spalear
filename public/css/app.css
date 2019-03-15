@@ -8184,30 +8184,37 @@ pre code {
   }
 }
 
-.table {
+.table,
+table.calendar-table {
   width: 100%;
   margin-bottom: 1rem;
   color: #212529;
 }
 
 .table th,
-.table td {
+table.calendar-table th,
+.table td,
+table.calendar-table td {
   padding: 0.75rem;
   vertical-align: top;
   border-top: 1px solid #dee2e6;
 }
 
-.table thead th {
+.table thead th,
+table.calendar-table thead th {
   vertical-align: bottom;
   border-bottom: 2px solid #dee2e6;
 }
 
-.table tbody + tbody {
+.table tbody + tbody,
+table.calendar-table tbody + tbody {
   border-top: 2px solid #dee2e6;
 }
 
 .table-sm th,
-.table-sm td {
+table.calendar-table th,
+.table-sm td,
+table.calendar-table td {
   padding: 0.3rem;
 }
 
@@ -8432,13 +8439,15 @@ pre code {
   background-color: rgba(0, 0, 0, 0.075);
 }
 
-.table .thead-dark th {
+.table .thead-dark th,
+table.calendar-table .thead-dark th {
   color: #fff;
   background-color: #343a40;
   border-color: #454d55;
 }
 
-.table .thead-light th {
+.table .thead-light th,
+table.calendar-table .thead-light th {
   color: #495057;
   background-color: #e9ecef;
   border-color: #dee2e6;
@@ -9124,7 +9133,8 @@ textarea.form-control.is-invalid {
   }
 }
 
-.btn {
+.btn,
+table.calendar-table tr th.title div button {
   display: inline-block;
   font-weight: 400;
   color: #212529;
@@ -9147,26 +9157,32 @@ textarea.form-control.is-invalid {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .btn {
+  .btn,
+  table.calendar-table tr th.title div button {
     -webkit-transition: none;
     transition: none;
   }
 }
 
-.btn:hover {
+.btn:hover,
+table.calendar-table tr th.title div button:hover {
   color: #212529;
   text-decoration: none;
 }
 
 .btn:focus,
-.btn.focus {
+table.calendar-table tr th.title div button:focus,
+.btn.focus,
+table.calendar-table tr th.title div button.focus {
   outline: 0;
   -webkit-box-shadow: 0 0 0 0.2rem rgba(52, 144, 220, 0.25);
           box-shadow: 0 0 0 0.2rem rgba(52, 144, 220, 0.25);
 }
 
 .btn.disabled,
-.btn:disabled {
+table.calendar-table tr th.title div button.disabled,
+.btn:disabled,
+table.calendar-table tr th.title div button:disabled {
   opacity: 0.65;
 }
 
@@ -9175,42 +9191,54 @@ fieldset:disabled a.btn {
   pointer-events: none;
 }
 
-.btn-primary {
+.btn-primary,
+table.calendar-table tr td.active:not(.hour) {
   color: #fff;
   background-color: #3490dc;
   border-color: #3490dc;
 }
 
-.btn-primary:hover {
+.btn-primary:hover,
+table.calendar-table tr td.active:hover:not(.hour) {
   color: #fff;
   background-color: #227dc7;
   border-color: #2176bd;
 }
 
 .btn-primary:focus,
-.btn-primary.focus {
+table.calendar-table tr td.active:focus:not(.hour),
+.btn-primary.focus,
+table.calendar-table tr td.focus.active:not(.hour) {
   -webkit-box-shadow: 0 0 0 0.2rem rgba(82, 161, 225, 0.5);
           box-shadow: 0 0 0 0.2rem rgba(82, 161, 225, 0.5);
 }
 
 .btn-primary.disabled,
-.btn-primary:disabled {
+table.calendar-table tr td.disabled.active:not(.hour),
+.btn-primary:disabled,
+table.calendar-table tr td.active:disabled:not(.hour) {
   color: #fff;
   background-color: #3490dc;
   border-color: #3490dc;
 }
 
 .btn-primary:not(:disabled):not(.disabled):active,
+table.calendar-table tr td.active:not(:disabled):not(.disabled):active:not(.hour),
 .btn-primary:not(:disabled):not(.disabled).active,
-.show > .btn-primary.dropdown-toggle {
+table.calendar-table tr td:not(:disabled):not(.disabled).active:not(.hour),
+.show > .btn-primary.dropdown-toggle,
+table.calendar-table tr .show > td.dropdown-toggle.active:not(.hour) {
   color: #fff;
   background-color: #2176bd;
   border-color: #1f6fb2;
 }
 
 .btn-primary:not(:disabled):not(.disabled):active:focus,
+table.calendar-table tr td.active:not(:disabled):not(.disabled):active:focus:not(.hour),
 .btn-primary:not(:disabled):not(.disabled).active:focus,
-.show > .btn-primary.dropdown-toggle:focus {
+table.calendar-table tr td:not(:disabled):not(.disabled).active:focus:not(.hour),
+.show > .btn-primary.dropdown-toggle:focus,
+table.calendar-table tr .show > td.dropdown-toggle.active:focus:not(.hour) {
   -webkit-box-shadow: 0 0 0 0.2rem rgba(82, 161, 225, 0.5);
           box-shadow: 0 0 0 0.2rem rgba(82, 161, 225, 0.5);
 }
@@ -9799,32 +9827,39 @@ fieldset:disabled a.btn {
           box-shadow: 0 0 0 0.2rem rgba(52, 58, 64, 0.5);
 }
 
-.btn-link {
+.btn-link,
+table.calendar-table tr th.title div button {
   font-weight: 400;
   color: #3490dc;
   text-decoration: none;
 }
 
-.btn-link:hover {
+.btn-link:hover,
+table.calendar-table tr th.title div button:hover {
   color: #1d68a7;
   text-decoration: underline;
 }
 
 .btn-link:focus,
-.btn-link.focus {
+table.calendar-table tr th.title div button:focus,
+.btn-link.focus,
+table.calendar-table tr th.title div button.focus {
   text-decoration: underline;
   -webkit-box-shadow: none;
           box-shadow: none;
 }
 
 .btn-link:disabled,
-.btn-link.disabled {
+table.calendar-table tr th.title div button:disabled,
+.btn-link.disabled,
+table.calendar-table tr th.title div button.disabled {
   color: #6c757d;
   pointer-events: none;
 }
 
 .btn-lg,
-.btn-group-lg > .btn {
+.btn-group-lg > .btn,
+table.calendar-table tr th.title div .btn-group-lg > button {
   padding: 0.5rem 1rem;
   font-size: 1.125rem;
   line-height: 1.5;
@@ -9832,7 +9867,8 @@ fieldset:disabled a.btn {
 }
 
 .btn-sm,
-.btn-group-sm > .btn {
+.btn-group-sm > .btn,
+table.calendar-table tr th.title div .btn-group-sm > button {
   padding: 0.25rem 0.5rem;
   font-size: 0.7875rem;
   line-height: 1.5;
@@ -10157,7 +10193,9 @@ input[type="button"].btn-block {
 }
 
 .btn-group > .btn,
-.btn-group-vertical > .btn {
+table.calendar-table tr th.title div .btn-group > button,
+.btn-group-vertical > .btn,
+table.calendar-table tr th.title div .btn-group-vertical > button {
   position: relative;
   -webkit-box-flex: 1;
       -ms-flex: 1 1 auto;
@@ -10165,16 +10203,24 @@ input[type="button"].btn-block {
 }
 
 .btn-group > .btn:hover,
-.btn-group-vertical > .btn:hover {
+table.calendar-table tr th.title div .btn-group > button:hover,
+.btn-group-vertical > .btn:hover,
+table.calendar-table tr th.title div .btn-group-vertical > button:hover {
   z-index: 1;
 }
 
 .btn-group > .btn:focus,
+table.calendar-table tr th.title div .btn-group > button:focus,
 .btn-group > .btn:active,
+table.calendar-table tr th.title div .btn-group > button:active,
 .btn-group > .btn.active,
+table.calendar-table tr th.title div .btn-group > button.active,
 .btn-group-vertical > .btn:focus,
+table.calendar-table tr th.title div .btn-group-vertical > button:focus,
 .btn-group-vertical > .btn:active,
-.btn-group-vertical > .btn.active {
+table.calendar-table tr th.title div .btn-group-vertical > button:active,
+.btn-group-vertical > .btn.active,
+table.calendar-table tr th.title div .btn-group-vertical > button.active {
   z-index: 1;
 }
 
@@ -10194,18 +10240,23 @@ input[type="button"].btn-block {
 }
 
 .btn-group > .btn:not(:first-child),
+table.calendar-table tr th.title div .btn-group > button:not(:first-child),
 .btn-group > .btn-group:not(:first-child) {
   margin-left: -1px;
 }
 
 .btn-group > .btn:not(:last-child):not(.dropdown-toggle),
-.btn-group > .btn-group:not(:last-child) > .btn {
+table.calendar-table tr th.title div .btn-group > button:not(:last-child):not(.dropdown-toggle),
+.btn-group > .btn-group:not(:last-child) > .btn,
+table.calendar-table tr th.title div .btn-group > .btn-group:not(:last-child) > button {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
 
 .btn-group > .btn:not(:first-child),
-.btn-group > .btn-group:not(:first-child) > .btn {
+table.calendar-table tr th.title div .btn-group > button:not(:first-child),
+.btn-group > .btn-group:not(:first-child) > .btn,
+table.calendar-table tr th.title div .btn-group > .btn-group:not(:first-child) > button {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 }
@@ -10226,13 +10277,15 @@ input[type="button"].btn-block {
 }
 
 .btn-sm + .dropdown-toggle-split,
-.btn-group-sm > .btn + .dropdown-toggle-split {
+.btn-group-sm > .btn + .dropdown-toggle-split,
+table.calendar-table tr th.title div .btn-group-sm > button + .dropdown-toggle-split {
   padding-right: 0.375rem;
   padding-left: 0.375rem;
 }
 
 .btn-lg + .dropdown-toggle-split,
-.btn-group-lg > .btn + .dropdown-toggle-split {
+.btn-group-lg > .btn + .dropdown-toggle-split,
+table.calendar-table tr th.title div .btn-group-lg > button + .dropdown-toggle-split {
   padding-right: 0.75rem;
   padding-left: 0.75rem;
 }
@@ -10251,36 +10304,48 @@ input[type="button"].btn-block {
 }
 
 .btn-group-vertical > .btn,
+table.calendar-table tr th.title div .btn-group-vertical > button,
 .btn-group-vertical > .btn-group {
   width: 100%;
 }
 
 .btn-group-vertical > .btn:not(:first-child),
+table.calendar-table tr th.title div .btn-group-vertical > button:not(:first-child),
 .btn-group-vertical > .btn-group:not(:first-child) {
   margin-top: -1px;
 }
 
 .btn-group-vertical > .btn:not(:last-child):not(.dropdown-toggle),
-.btn-group-vertical > .btn-group:not(:last-child) > .btn {
+table.calendar-table tr th.title div .btn-group-vertical > button:not(:last-child):not(.dropdown-toggle),
+.btn-group-vertical > .btn-group:not(:last-child) > .btn,
+table.calendar-table tr th.title div .btn-group-vertical > .btn-group:not(:last-child) > button {
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
 }
 
 .btn-group-vertical > .btn:not(:first-child),
-.btn-group-vertical > .btn-group:not(:first-child) > .btn {
+table.calendar-table tr th.title div .btn-group-vertical > button:not(:first-child),
+.btn-group-vertical > .btn-group:not(:first-child) > .btn,
+table.calendar-table tr th.title div .btn-group-vertical > .btn-group:not(:first-child) > button {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
 
 .btn-group-toggle > .btn,
-.btn-group-toggle > .btn-group > .btn {
+table.calendar-table tr th.title div .btn-group-toggle > button,
+.btn-group-toggle > .btn-group > .btn,
+table.calendar-table tr th.title div .btn-group-toggle > .btn-group > button {
   margin-bottom: 0;
 }
 
 .btn-group-toggle > .btn input[type="radio"],
+table.calendar-table tr th.title div .btn-group-toggle > button input[type="radio"],
 .btn-group-toggle > .btn input[type="checkbox"],
+table.calendar-table tr th.title div .btn-group-toggle > button input[type="checkbox"],
 .btn-group-toggle > .btn-group > .btn input[type="radio"],
-.btn-group-toggle > .btn-group > .btn input[type="checkbox"] {
+table.calendar-table tr th.title div .btn-group-toggle > .btn-group > button input[type="radio"],
+.btn-group-toggle > .btn-group > .btn input[type="checkbox"],
+table.calendar-table tr th.title div .btn-group-toggle > .btn-group > button input[type="checkbox"] {
   position: absolute;
   clip: rect(0, 0, 0, 0);
   pointer-events: none;
@@ -10376,24 +10441,52 @@ input[type="button"].btn-block {
 }
 
 .input-group-prepend .btn,
-.input-group-append .btn {
+.input-group-prepend table.calendar-table tr th.title div button,
+table.calendar-table tr th.title div .input-group-prepend button,
+.input-group-append .btn,
+.input-group-append table.calendar-table tr th.title div button,
+table.calendar-table tr th.title div .input-group-append button {
   position: relative;
   z-index: 2;
 }
 
 .input-group-prepend .btn:focus,
-.input-group-append .btn:focus {
+.input-group-prepend table.calendar-table tr th.title div button:focus,
+table.calendar-table tr th.title div .input-group-prepend button:focus,
+.input-group-append .btn:focus,
+.input-group-append table.calendar-table tr th.title div button:focus,
+table.calendar-table tr th.title div .input-group-append button:focus {
   z-index: 3;
 }
 
 .input-group-prepend .btn + .btn,
+.input-group-prepend table.calendar-table tr th.title div button + .btn,
+table.calendar-table tr th.title div .input-group-prepend button + .btn,
+.input-group-prepend table.calendar-table tr th.title div .btn + button,
+table.calendar-table tr th.title div .input-group-prepend .btn + button,
+.input-group-prepend table.calendar-table tr th.title div button + button,
+table.calendar-table tr th.title div .input-group-prepend button + button,
 .input-group-prepend .btn + .input-group-text,
+.input-group-prepend table.calendar-table tr th.title div button + .input-group-text,
+table.calendar-table tr th.title div .input-group-prepend button + .input-group-text,
 .input-group-prepend .input-group-text + .input-group-text,
 .input-group-prepend .input-group-text + .btn,
+.input-group-prepend table.calendar-table tr th.title div .input-group-text + button,
+table.calendar-table tr th.title div .input-group-prepend .input-group-text + button,
 .input-group-append .btn + .btn,
+.input-group-append table.calendar-table tr th.title div button + .btn,
+table.calendar-table tr th.title div .input-group-append button + .btn,
+.input-group-append table.calendar-table tr th.title div .btn + button,
+table.calendar-table tr th.title div .input-group-append .btn + button,
+.input-group-append table.calendar-table tr th.title div button + button,
+table.calendar-table tr th.title div .input-group-append button + button,
 .input-group-append .btn + .input-group-text,
+.input-group-append table.calendar-table tr th.title div button + .input-group-text,
+table.calendar-table tr th.title div .input-group-append button + .input-group-text,
 .input-group-append .input-group-text + .input-group-text,
-.input-group-append .input-group-text + .btn {
+.input-group-append .input-group-text + .btn,
+.input-group-append table.calendar-table tr th.title div .input-group-text + button,
+table.calendar-table tr th.title div .input-group-append .input-group-text + button {
   margin-left: -1px;
 }
 
@@ -10440,7 +10533,9 @@ input[type="button"].btn-block {
 .input-group-lg > .input-group-prepend > .input-group-text,
 .input-group-lg > .input-group-append > .input-group-text,
 .input-group-lg > .input-group-prepend > .btn,
-.input-group-lg > .input-group-append > .btn {
+table.calendar-table tr th.title div .input-group-lg > .input-group-prepend > button,
+.input-group-lg > .input-group-append > .btn,
+table.calendar-table tr th.title div .input-group-lg > .input-group-append > button {
   padding: 0.5rem 1rem;
   font-size: 1.125rem;
   line-height: 1.5;
@@ -10457,7 +10552,9 @@ input[type="button"].btn-block {
 .input-group-sm > .input-group-prepend > .input-group-text,
 .input-group-sm > .input-group-append > .input-group-text,
 .input-group-sm > .input-group-prepend > .btn,
-.input-group-sm > .input-group-append > .btn {
+table.calendar-table tr th.title div .input-group-sm > .input-group-prepend > button,
+.input-group-sm > .input-group-append > .btn,
+table.calendar-table tr th.title div .input-group-sm > .input-group-append > button {
   padding: 0.25rem 0.5rem;
   font-size: 0.7875rem;
   line-height: 1.5;
@@ -10470,20 +10567,26 @@ input[type="button"].btn-block {
 }
 
 .input-group > .input-group-prepend > .btn,
+table.calendar-table tr th.title div .input-group > .input-group-prepend > button,
 .input-group > .input-group-prepend > .input-group-text,
 .input-group > .input-group-append:not(:last-child) > .btn,
+table.calendar-table tr th.title div .input-group > .input-group-append:not(:last-child) > button,
 .input-group > .input-group-append:not(:last-child) > .input-group-text,
 .input-group > .input-group-append:last-child > .btn:not(:last-child):not(.dropdown-toggle),
+table.calendar-table tr th.title div .input-group > .input-group-append:last-child > button:not(:last-child):not(.dropdown-toggle),
 .input-group > .input-group-append:last-child > .input-group-text:not(:last-child) {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
 
 .input-group > .input-group-append > .btn,
+table.calendar-table tr th.title div .input-group > .input-group-append > button,
 .input-group > .input-group-append > .input-group-text,
 .input-group > .input-group-prepend:not(:first-child) > .btn,
+table.calendar-table tr th.title div .input-group > .input-group-prepend:not(:first-child) > button,
 .input-group > .input-group-prepend:not(:first-child) > .input-group-text,
 .input-group > .input-group-prepend:first-child > .btn:not(:first-child),
+table.calendar-table tr th.title div .input-group > .input-group-prepend:first-child > button:not(:first-child),
 .input-group > .input-group-prepend:first-child > .input-group-text:not(:first-child) {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
@@ -11980,7 +12083,8 @@ a.badge:focus {
   display: none;
 }
 
-.btn .badge {
+.btn .badge,
+table.calendar-table tr th.title div button .badge {
   position: relative;
   top: -1px;
 }
@@ -13932,7 +14036,8 @@ button.bg-dark:focus {
   display: table-cell !important;
 }
 
-.d-flex {
+.d-flex,
+table.calendar-table tr th.title div {
   display: -webkit-box !important;
   display: -ms-flexbox !important;
   display: flex !important;
@@ -14292,7 +14397,8 @@ button.bg-dark:focus {
           justify-content: space-between !important;
 }
 
-.justify-content-around {
+.justify-content-around,
+table.calendar-table tr th.title div {
   -ms-flex-pack: distribute !important;
       justify-content: space-around !important;
 }
@@ -14309,7 +14415,8 @@ button.bg-dark:focus {
           align-items: flex-end !important;
 }
 
-.align-items-center {
+.align-items-center,
+table.calendar-table {
   -webkit-box-align: center !important;
       -ms-flex-align: center !important;
           align-items: center !important;
@@ -15538,7 +15645,8 @@ button.bg-dark:focus {
   margin-left: 3rem !important;
 }
 
-.p-0 {
+.p-0,
+table.calendar-table tr td {
   padding: 0 !important;
 }
 
@@ -15548,7 +15656,8 @@ button.bg-dark:focus {
 }
 
 .pr-0,
-.px-0 {
+.px-0,
+table.calendar-table tr th {
   padding-right: 0 !important;
 }
 
@@ -15558,16 +15667,19 @@ button.bg-dark:focus {
 }
 
 .pl-0,
-.px-0 {
+.px-0,
+table.calendar-table tr th {
   padding-left: 0 !important;
 }
 
-.p-1 {
+.p-1,
+table.calendar-table tr th.title div button {
   padding: 0.25rem !important;
 }
 
 .pt-1,
-.py-1 {
+.py-1,
+table.calendar-table tr th {
   padding-top: 0.25rem !important;
 }
 
@@ -15577,7 +15689,8 @@ button.bg-dark:focus {
 }
 
 .pb-1,
-.py-1 {
+.py-1,
+table.calendar-table tr th {
   padding-bottom: 0.25rem !important;
 }
 
@@ -15807,7 +15920,8 @@ button.bg-dark:focus {
 }
 
 .mt-auto,
-.my-auto {
+.my-auto,
+table.calendar-table tr th.title div button {
   margin-top: auto !important;
 }
 
@@ -15817,7 +15931,8 @@ button.bg-dark:focus {
 }
 
 .mb-auto,
-.my-auto {
+.my-auto,
+table.calendar-table tr th.title div button {
   margin-bottom: auto !important;
 }
 
@@ -17592,7 +17707,8 @@ button.bg-dark:focus {
   text-align: right !important;
 }
 
-.text-center {
+.text-center,
+table.calendar-table {
   text-align: center !important;
 }
 
@@ -17768,7 +17884,8 @@ a.text-dark:focus {
   color: #212529 !important;
 }
 
-.text-muted {
+.text-muted,
+table.calendar-table tr td:first-child[rowspan="2"] {
   color: #6c757d !important;
 }
 
@@ -17877,12 +17994,15 @@ a.text-dark:focus {
     border: 1px solid #000;
   }
 
-  .table {
+  .table,
+  table.calendar-table {
     border-collapse: collapse !important;
   }
 
   .table td,
-  .table th {
+  table.calendar-table td,
+  .table th,
+  table.calendar-table th {
     background-color: #fff !important;
   }
 
@@ -17902,7 +18022,8 @@ a.text-dark:focus {
     border-color: #dee2e6;
   }
 
-  .table .thead-dark th {
+  .table .thead-dark th,
+  table.calendar-table .thead-dark th {
     color: inherit;
     border-color: #dee2e6;
   }
@@ -19852,34 +19973,44 @@ pre code {
   }
 }
 
-.table {
+.table,
+table.calendar-table {
   width: 100%;
   margin-bottom: 1rem;
   background-color: transparent;
 }
 
 .table th,
-.table td {
+table.calendar-table th,
+.table td,
+table.calendar-table td {
   padding: 1rem;
   vertical-align: top;
   border-top: 1px solid #e9ecef;
 }
 
-.table thead th {
+.table thead th,
+table.calendar-table thead th {
   vertical-align: bottom;
   border-bottom: 2px solid #e9ecef;
 }
 
-.table tbody + tbody {
+.table tbody + tbody,
+table.calendar-table tbody + tbody {
   border-top: 2px solid #e9ecef;
 }
 
-.table .table {
+.table .table,
+table.calendar-table .table,
+.table table.calendar-table,
+table.calendar-table table.calendar-table {
   background-color: #f8f9fe;
 }
 
 .table-sm th,
-.table-sm td {
+table.calendar-table th,
+.table-sm td,
+table.calendar-table td {
   padding: .5rem;
 }
 
@@ -20107,13 +20238,15 @@ pre code {
   background-color: #e3ecf6;
 }
 
-.table .thead-dark th {
+.table .thead-dark th,
+table.calendar-table .thead-dark th {
   color: #f8f9fe;
   border-color: #1f3a68;
   background-color: #172b4d;
 }
 
-.table .thead-light th {
+.table .thead-light th,
+table.calendar-table .thead-light th {
   color: #8898aa;
   border-color: #e9ecef;
   background-color: #f6f9fc;
@@ -20739,7 +20872,8 @@ textarea.form-control {
   }
 }
 
-.btn {
+.btn,
+table.calendar-table tr th.title div button {
   font-size: 1rem;
   font-weight: 600;
   line-height: 1.5;
@@ -20761,43 +20895,55 @@ textarea.form-control {
 }
 
 @media screen and (prefers-reduced-motion: reduce) {
-  .btn {
+  .btn,
+  table.calendar-table tr th.title div button {
     -webkit-transition: none;
     transition: none;
   }
 }
 
 .btn:hover,
-.btn:focus {
+table.calendar-table tr th.title div button:hover,
+.btn:focus,
+table.calendar-table tr th.title div button:focus {
   text-decoration: none;
 }
 
 .btn:focus,
-.btn.focus {
+table.calendar-table tr th.title div button:focus,
+.btn.focus,
+table.calendar-table tr th.title div button.focus {
   outline: 0;
   -webkit-box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
           box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
 }
 
 .btn.disabled,
-.btn:disabled {
+table.calendar-table tr th.title div button.disabled,
+.btn:disabled,
+table.calendar-table tr th.title div button:disabled {
   opacity: .65;
   -webkit-box-shadow: none;
           box-shadow: none;
 }
 
-.btn:not(:disabled):not(.disabled) {
+.btn:not(:disabled):not(.disabled),
+table.calendar-table tr th.title div button:not(:disabled):not(.disabled) {
   cursor: pointer;
 }
 
 .btn:not(:disabled):not(.disabled):active,
-.btn:not(:disabled):not(.disabled).active {
+table.calendar-table tr th.title div button:not(:disabled):not(.disabled):active,
+.btn:not(:disabled):not(.disabled).active,
+table.calendar-table tr th.title div button:not(:disabled):not(.disabled).active {
   -webkit-box-shadow: none;
           box-shadow: none;
 }
 
 .btn:not(:disabled):not(.disabled):active:focus,
-.btn:not(:disabled):not(.disabled).active:focus {
+table.calendar-table tr th.title div button:not(:disabled):not(.disabled):active:focus,
+.btn:not(:disabled):not(.disabled).active:focus,
+table.calendar-table tr th.title div button:not(:disabled):not(.disabled).active:focus {
   -webkit-box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08), none;
           box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08), none;
 }
@@ -20807,7 +20953,8 @@ fieldset:disabled a.btn {
   pointer-events: none;
 }
 
-.btn-primary {
+.btn-primary,
+table.calendar-table tr td.active:not(.hour) {
   color: #fff;
   border-color: #5e72e4;
   background-color: #5e72e4;
@@ -20815,36 +20962,47 @@ fieldset:disabled a.btn {
           box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
-.btn-primary:hover {
+.btn-primary:hover,
+table.calendar-table tr td.active:hover:not(.hour) {
   color: #fff;
   border-color: #5e72e4;
   background-color: #5e72e4;
 }
 
 .btn-primary:focus,
-.btn-primary.focus {
+table.calendar-table tr td.active:focus:not(.hour),
+.btn-primary.focus,
+table.calendar-table tr td.focus.active:not(.hour) {
   -webkit-box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08), 0 0 0 0 rgba(94, 114, 228, 0.5);
           box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08), 0 0 0 0 rgba(94, 114, 228, 0.5);
 }
 
 .btn-primary.disabled,
-.btn-primary:disabled {
+table.calendar-table tr td.disabled.active:not(.hour),
+.btn-primary:disabled,
+table.calendar-table tr td.active:disabled:not(.hour) {
   color: #fff;
   border-color: #5e72e4;
   background-color: #5e72e4;
 }
 
 .btn-primary:not(:disabled):not(.disabled):active,
+table.calendar-table tr td.active:not(:disabled):not(.disabled):active:not(.hour),
 .btn-primary:not(:disabled):not(.disabled).active,
-.show > .btn-primary.dropdown-toggle {
+table.calendar-table tr td:not(:disabled):not(.disabled).active:not(.hour),
+.show > .btn-primary.dropdown-toggle,
+table.calendar-table tr .show > td.dropdown-toggle.active:not(.hour) {
   color: #fff;
   border-color: #5e72e4;
   background-color: #324cdd;
 }
 
 .btn-primary:not(:disabled):not(.disabled):active:focus,
+table.calendar-table tr td.active:not(:disabled):not(.disabled):active:focus:not(.hour),
 .btn-primary:not(:disabled):not(.disabled).active:focus,
-.show > .btn-primary.dropdown-toggle:focus {
+table.calendar-table tr td:not(:disabled):not(.disabled).active:focus:not(.hour),
+.show > .btn-primary.dropdown-toggle:focus,
+table.calendar-table tr .show > td.dropdown-toggle.active:focus:not(.hour) {
   -webkit-box-shadow: none, 0 0 0 0 rgba(94, 114, 228, 0.5);
           box-shadow: none, 0 0 0 0 rgba(94, 114, 228, 0.5);
 }
@@ -21791,13 +21949,15 @@ fieldset:disabled a.btn {
           box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.5);
 }
 
-.btn-link {
+.btn-link,
+table.calendar-table tr th.title div button {
   font-weight: 400;
   color: #5e72e4;
   background-color: transparent;
 }
 
-.btn-link:hover {
+.btn-link:hover,
+table.calendar-table tr th.title div button:hover {
   text-decoration: none;
   color: #233dd2;
   border-color: transparent;
@@ -21805,7 +21965,9 @@ fieldset:disabled a.btn {
 }
 
 .btn-link:focus,
-.btn-link.focus {
+table.calendar-table tr th.title div button:focus,
+.btn-link.focus,
+table.calendar-table tr th.title div button.focus {
   text-decoration: none;
   border-color: transparent;
   -webkit-box-shadow: none;
@@ -21813,14 +21975,18 @@ fieldset:disabled a.btn {
 }
 
 .btn-link:disabled,
-.btn-link.disabled {
+table.calendar-table tr th.title div button:disabled,
+.btn-link.disabled,
+table.calendar-table tr th.title div button.disabled {
   pointer-events: none;
   color: #8898aa;
 }
 
 .btn-lg,
 .btn-group-lg > .btn,
-.btn-group-lg > .btn {
+table.calendar-table tr th.title div .btn-group-lg > button,
+.btn-group-lg > .btn,
+table.calendar-table tr th.title div .btn-group-lg > button {
   font-size: 1.25rem;
   line-height: 1.5;
   padding: .875rem 1rem;
@@ -21829,7 +21995,9 @@ fieldset:disabled a.btn {
 
 .btn-sm,
 .btn-group-sm > .btn,
-.btn-group-sm > .btn {
+table.calendar-table tr th.title div .btn-group-sm > button,
+.btn-group-sm > .btn,
+table.calendar-table tr th.title div .btn-group-sm > button {
   font-size: .875rem;
   line-height: 1.5;
   padding: .25rem .5rem;
@@ -22108,7 +22276,9 @@ input[type="button"].btn-block {
 }
 
 .btn-group > .btn,
-.btn-group-vertical > .btn {
+table.calendar-table tr th.title div .btn-group > button,
+.btn-group-vertical > .btn,
+table.calendar-table tr th.title div .btn-group-vertical > button {
   position: relative;
   -webkit-box-flex: 0;
       -ms-flex: 0 1 auto;
@@ -22116,26 +22286,54 @@ input[type="button"].btn-block {
 }
 
 .btn-group > .btn:hover,
-.btn-group-vertical > .btn:hover {
+table.calendar-table tr th.title div .btn-group > button:hover,
+.btn-group-vertical > .btn:hover,
+table.calendar-table tr th.title div .btn-group-vertical > button:hover {
   z-index: 1;
 }
 
 .btn-group > .btn:focus,
+table.calendar-table tr th.title div .btn-group > button:focus,
 .btn-group > .btn:active,
+table.calendar-table tr th.title div .btn-group > button:active,
 .btn-group > .btn.active,
+table.calendar-table tr th.title div .btn-group > button.active,
 .btn-group-vertical > .btn:focus,
+table.calendar-table tr th.title div .btn-group-vertical > button:focus,
 .btn-group-vertical > .btn:active,
-.btn-group-vertical > .btn.active {
+table.calendar-table tr th.title div .btn-group-vertical > button:active,
+.btn-group-vertical > .btn.active,
+table.calendar-table tr th.title div .btn-group-vertical > button.active {
   z-index: 1;
 }
 
 .btn-group .btn + .btn,
+.btn-group table.calendar-table tr th.title div button + .btn,
+table.calendar-table tr th.title div .btn-group button + .btn,
+.btn-group table.calendar-table tr th.title div .btn + button,
+table.calendar-table tr th.title div .btn-group .btn + button,
+.btn-group table.calendar-table tr th.title div button + button,
+table.calendar-table tr th.title div .btn-group button + button,
 .btn-group .btn + .btn-group,
+.btn-group table.calendar-table tr th.title div button + .btn-group,
+table.calendar-table tr th.title div .btn-group button + .btn-group,
 .btn-group .btn-group + .btn,
+.btn-group table.calendar-table tr th.title div .btn-group + button,
+table.calendar-table tr th.title div .btn-group .btn-group + button,
 .btn-group .btn-group + .btn-group,
 .btn-group-vertical .btn + .btn,
+.btn-group-vertical table.calendar-table tr th.title div button + .btn,
+table.calendar-table tr th.title div .btn-group-vertical button + .btn,
+.btn-group-vertical table.calendar-table tr th.title div .btn + button,
+table.calendar-table tr th.title div .btn-group-vertical .btn + button,
+.btn-group-vertical table.calendar-table tr th.title div button + button,
+table.calendar-table tr th.title div .btn-group-vertical button + button,
 .btn-group-vertical .btn + .btn-group,
+.btn-group-vertical table.calendar-table tr th.title div button + .btn-group,
+table.calendar-table tr th.title div .btn-group-vertical button + .btn-group,
 .btn-group-vertical .btn-group + .btn,
+.btn-group-vertical table.calendar-table tr th.title div .btn-group + button,
+table.calendar-table tr th.title div .btn-group-vertical .btn-group + button,
 .btn-group-vertical .btn-group + .btn-group {
   margin-left: -1px;
 }
@@ -22155,18 +22353,23 @@ input[type="button"].btn-block {
   width: auto;
 }
 
-.btn-group > .btn:first-child {
+.btn-group > .btn:first-child,
+table.calendar-table tr th.title div .btn-group > button:first-child {
   margin-left: 0;
 }
 
 .btn-group > .btn:not(:last-child):not(.dropdown-toggle),
-.btn-group > .btn-group:not(:last-child) > .btn {
+table.calendar-table tr th.title div .btn-group > button:not(:last-child):not(.dropdown-toggle),
+.btn-group > .btn-group:not(:last-child) > .btn,
+table.calendar-table tr th.title div .btn-group > .btn-group:not(:last-child) > button {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
 
 .btn-group > .btn:not(:first-child),
-.btn-group > .btn-group:not(:first-child) > .btn {
+table.calendar-table tr th.title div .btn-group > button:not(:first-child),
+.btn-group > .btn-group:not(:first-child) > .btn,
+table.calendar-table tr th.title div .btn-group > .btn-group:not(:first-child) > button {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 }
@@ -22188,14 +22391,18 @@ input[type="button"].btn-block {
 
 .btn-sm + .dropdown-toggle-split,
 .btn-group-sm > .btn + .dropdown-toggle-split,
-.btn-group-sm > .btn + .dropdown-toggle-split {
+table.calendar-table tr th.title div .btn-group-sm > button + .dropdown-toggle-split,
+.btn-group-sm > .btn + .dropdown-toggle-split,
+table.calendar-table tr th.title div .btn-group-sm > button + .dropdown-toggle-split {
   padding-right: .375rem;
   padding-left: .375rem;
 }
 
 .btn-lg + .dropdown-toggle-split,
 .btn-group-lg > .btn + .dropdown-toggle-split,
-.btn-group-lg > .btn + .dropdown-toggle-split {
+table.calendar-table tr th.title div .btn-group-lg > button + .dropdown-toggle-split,
+.btn-group-lg > .btn + .dropdown-toggle-split,
+table.calendar-table tr th.title div .btn-group-lg > button + .dropdown-toggle-split {
   padding-right: .75rem;
   padding-left: .75rem;
 }
@@ -22205,7 +22412,9 @@ input[type="button"].btn-block {
           box-shadow: none;
 }
 
-.btn-group.show .dropdown-toggle.btn-link {
+.btn-group.show .dropdown-toggle.btn-link,
+.btn-group.show table.calendar-table tr th.title div button.dropdown-toggle,
+table.calendar-table tr th.title div .btn-group.show button.dropdown-toggle {
   -webkit-box-shadow: none;
           box-shadow: none;
 }
@@ -22224,39 +22433,56 @@ input[type="button"].btn-block {
 }
 
 .btn-group-vertical .btn,
+.btn-group-vertical table.calendar-table tr th.title div button,
+table.calendar-table tr th.title div .btn-group-vertical button,
 .btn-group-vertical .btn-group {
   width: 100%;
 }
 
 .btn-group-vertical > .btn + .btn,
+table.calendar-table tr th.title div .btn-group-vertical > button + .btn,
+table.calendar-table tr th.title div .btn-group-vertical > .btn + button,
+table.calendar-table tr th.title div .btn-group-vertical > button + button,
 .btn-group-vertical > .btn + .btn-group,
+table.calendar-table tr th.title div .btn-group-vertical > button + .btn-group,
 .btn-group-vertical > .btn-group + .btn,
+table.calendar-table tr th.title div .btn-group-vertical > .btn-group + button,
 .btn-group-vertical > .btn-group + .btn-group {
   margin-top: -1px;
   margin-left: 0;
 }
 
 .btn-group-vertical > .btn:not(:last-child):not(.dropdown-toggle),
-.btn-group-vertical > .btn-group:not(:last-child) > .btn {
+table.calendar-table tr th.title div .btn-group-vertical > button:not(:last-child):not(.dropdown-toggle),
+.btn-group-vertical > .btn-group:not(:last-child) > .btn,
+table.calendar-table tr th.title div .btn-group-vertical > .btn-group:not(:last-child) > button {
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
 }
 
 .btn-group-vertical > .btn:not(:first-child),
-.btn-group-vertical > .btn-group:not(:first-child) > .btn {
+table.calendar-table tr th.title div .btn-group-vertical > button:not(:first-child),
+.btn-group-vertical > .btn-group:not(:first-child) > .btn,
+table.calendar-table tr th.title div .btn-group-vertical > .btn-group:not(:first-child) > button {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
 
 .btn-group-toggle > .btn,
-.btn-group-toggle > .btn-group > .btn {
+table.calendar-table tr th.title div .btn-group-toggle > button,
+.btn-group-toggle > .btn-group > .btn,
+table.calendar-table tr th.title div .btn-group-toggle > .btn-group > button {
   margin-bottom: 0;
 }
 
 .btn-group-toggle > .btn input[type="radio"],
+table.calendar-table tr th.title div .btn-group-toggle > button input[type="radio"],
 .btn-group-toggle > .btn input[type="checkbox"],
+table.calendar-table tr th.title div .btn-group-toggle > button input[type="checkbox"],
 .btn-group-toggle > .btn-group > .btn input[type="radio"],
-.btn-group-toggle > .btn-group > .btn input[type="checkbox"] {
+table.calendar-table tr th.title div .btn-group-toggle > .btn-group > button input[type="radio"],
+.btn-group-toggle > .btn-group > .btn input[type="checkbox"],
+table.calendar-table tr th.title div .btn-group-toggle > .btn-group > button input[type="checkbox"] {
   position: absolute;
   clip: rect(0, 0, 0, 0);
   pointer-events: none;
@@ -22348,19 +22574,43 @@ input[type="button"].btn-block {
 }
 
 .input-group-prepend .btn,
-.input-group-append .btn {
+.input-group-prepend table.calendar-table tr th.title div button,
+table.calendar-table tr th.title div .input-group-prepend button,
+.input-group-append .btn,
+.input-group-append table.calendar-table tr th.title div button,
+table.calendar-table tr th.title div .input-group-append button {
   position: relative;
   z-index: 2;
 }
 
 .input-group-prepend .btn + .btn,
+.input-group-prepend table.calendar-table tr th.title div button + .btn,
+table.calendar-table tr th.title div .input-group-prepend button + .btn,
+.input-group-prepend table.calendar-table tr th.title div .btn + button,
+table.calendar-table tr th.title div .input-group-prepend .btn + button,
+.input-group-prepend table.calendar-table tr th.title div button + button,
+table.calendar-table tr th.title div .input-group-prepend button + button,
 .input-group-prepend .btn + .input-group-text,
+.input-group-prepend table.calendar-table tr th.title div button + .input-group-text,
+table.calendar-table tr th.title div .input-group-prepend button + .input-group-text,
 .input-group-prepend .input-group-text + .input-group-text,
 .input-group-prepend .input-group-text + .btn,
+.input-group-prepend table.calendar-table tr th.title div .input-group-text + button,
+table.calendar-table tr th.title div .input-group-prepend .input-group-text + button,
 .input-group-append .btn + .btn,
+.input-group-append table.calendar-table tr th.title div button + .btn,
+table.calendar-table tr th.title div .input-group-append button + .btn,
+.input-group-append table.calendar-table tr th.title div .btn + button,
+table.calendar-table tr th.title div .input-group-append .btn + button,
+.input-group-append table.calendar-table tr th.title div button + button,
+table.calendar-table tr th.title div .input-group-append button + button,
 .input-group-append .btn + .input-group-text,
+.input-group-append table.calendar-table tr th.title div button + .input-group-text,
+table.calendar-table tr th.title div .input-group-append button + .input-group-text,
 .input-group-append .input-group-text + .input-group-text,
-.input-group-append .input-group-text + .btn {
+.input-group-append .input-group-text + .btn,
+.input-group-append table.calendar-table tr th.title div .input-group-text + button,
+table.calendar-table tr th.title div .input-group-append .input-group-text + button {
   margin-left: -1px;
 }
 
@@ -22401,7 +22651,9 @@ input[type="button"].btn-block {
 .input-group-lg > .input-group-prepend > .input-group-text,
 .input-group-lg > .input-group-append > .input-group-text,
 .input-group-lg > .input-group-prepend > .btn,
-.input-group-lg > .input-group-append > .btn {
+table.calendar-table tr th.title div .input-group-lg > .input-group-prepend > button,
+.input-group-lg > .input-group-append > .btn,
+table.calendar-table tr th.title div .input-group-lg > .input-group-append > button {
   font-size: 1.25rem;
   line-height: 1.5;
   height: calc(3.625rem + 2px);
@@ -22413,7 +22665,9 @@ input[type="button"].btn-block {
 .input-group-sm > .input-group-prepend > .input-group-text,
 .input-group-sm > .input-group-append > .input-group-text,
 .input-group-sm > .input-group-prepend > .btn,
-.input-group-sm > .input-group-append > .btn {
+table.calendar-table tr th.title div .input-group-sm > .input-group-prepend > button,
+.input-group-sm > .input-group-append > .btn,
+table.calendar-table tr th.title div .input-group-sm > .input-group-append > button {
   font-size: .875rem;
   line-height: 1.5;
   height: calc(1.8125rem + 2px);
@@ -22422,20 +22676,26 @@ input[type="button"].btn-block {
 }
 
 .input-group > .input-group-prepend > .btn,
+table.calendar-table tr th.title div .input-group > .input-group-prepend > button,
 .input-group > .input-group-prepend > .input-group-text,
 .input-group > .input-group-append:not(:last-child) > .btn,
+table.calendar-table tr th.title div .input-group > .input-group-append:not(:last-child) > button,
 .input-group > .input-group-append:not(:last-child) > .input-group-text,
 .input-group > .input-group-append:last-child > .btn:not(:last-child):not(.dropdown-toggle),
+table.calendar-table tr th.title div .input-group > .input-group-append:last-child > button:not(:last-child):not(.dropdown-toggle),
 .input-group > .input-group-append:last-child > .input-group-text:not(:last-child) {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
 
 .input-group > .input-group-append > .btn,
+table.calendar-table tr th.title div .input-group > .input-group-append > button,
 .input-group > .input-group-append > .input-group-text,
 .input-group > .input-group-prepend:not(:first-child) > .btn,
+table.calendar-table tr th.title div .input-group > .input-group-prepend:not(:first-child) > button,
 .input-group > .input-group-prepend:not(:first-child) > .input-group-text,
 .input-group > .input-group-prepend:first-child > .btn:not(:first-child),
+table.calendar-table tr th.title div .input-group > .input-group-prepend:first-child > button:not(:first-child),
 .input-group > .input-group-prepend:first-child > .input-group-text:not(:first-child) {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
@@ -23899,7 +24159,8 @@ input[type="button"].btn-block {
   display: none;
 }
 
-.btn .badge {
+.btn .badge,
+table.calendar-table tr th.title div button .badge {
   position: relative;
   top: -1px;
 }
@@ -25791,7 +26052,8 @@ button.bg-darker:focus {
   display: table-cell !important;
 }
 
-.d-flex {
+.d-flex,
+table.calendar-table tr th.title div {
   display: -webkit-box !important;
   display: -ms-flexbox !important;
   display: flex !important;
@@ -26151,7 +26413,8 @@ button.bg-darker:focus {
           justify-content: space-between !important;
 }
 
-.justify-content-around {
+.justify-content-around,
+table.calendar-table tr th.title div {
   -ms-flex-pack: distribute !important;
       justify-content: space-around !important;
 }
@@ -26168,7 +26431,8 @@ button.bg-darker:focus {
           align-items: flex-end !important;
 }
 
-.align-items-center {
+.align-items-center,
+table.calendar-table {
   -webkit-box-align: center !important;
       -ms-flex-align: center !important;
           align-items: center !important;
@@ -27674,7 +27938,8 @@ button.bg-darker:focus {
   margin-left: 10rem !important;
 }
 
-.p-0 {
+.p-0,
+table.calendar-table tr td {
   padding: 0 !important;
 }
 
@@ -27684,7 +27949,8 @@ button.bg-darker:focus {
 }
 
 .pr-0,
-.px-0 {
+.px-0,
+table.calendar-table tr th {
   padding-right: 0 !important;
 }
 
@@ -27694,16 +27960,19 @@ button.bg-darker:focus {
 }
 
 .pl-0,
-.px-0 {
+.px-0,
+table.calendar-table tr th {
   padding-left: 0 !important;
 }
 
-.p-1 {
+.p-1,
+table.calendar-table tr th.title div button {
   padding: .25rem !important;
 }
 
 .pt-1,
-.py-1 {
+.py-1,
+table.calendar-table tr th {
   padding-top: .25rem !important;
 }
 
@@ -27713,7 +27982,8 @@ button.bg-darker:focus {
 }
 
 .pb-1,
-.py-1 {
+.py-1,
+table.calendar-table tr th {
   padding-bottom: .25rem !important;
 }
 
@@ -28135,7 +28405,8 @@ button.bg-darker:focus {
 }
 
 .mt-auto,
-.my-auto {
+.my-auto,
+table.calendar-table tr th.title div button {
   margin-top: auto !important;
 }
 
@@ -28145,7 +28416,8 @@ button.bg-darker:focus {
 }
 
 .mb-auto,
-.my-auto {
+.my-auto,
+table.calendar-table tr th.title div button {
   margin-bottom: auto !important;
 }
 
@@ -31932,7 +32204,8 @@ button.bg-darker:focus {
   text-align: right !important;
 }
 
-.text-center {
+.text-center,
+table.calendar-table {
   text-align: center !important;
 }
 
@@ -32136,7 +32409,8 @@ a.text-darker:focus {
   color: #525f7f !important;
 }
 
-.text-muted {
+.text-muted,
+table.calendar-table tr td:first-child[rowspan="2"] {
   color: #8898aa !important;
 }
 
@@ -32232,12 +32506,15 @@ a.text-darker:focus {
     border: 1px solid #000;
   }
 
-  .table {
+  .table,
+  table.calendar-table {
     border-collapse: collapse !important;
   }
 
   .table td,
-  .table th {
+  table.calendar-table td,
+  .table th,
+  table.calendar-table th {
     background-color: #fff !important;
   }
 
@@ -32257,7 +32534,8 @@ a.text-darker:focus {
     border-color: #e9ecef;
   }
 
-  .table .thead-dark th {
+  .table .thead-dark th,
+  table.calendar-table .thead-dark th {
     color: inherit;
     border-color: #e9ecef;
   }
@@ -33916,11 +34194,13 @@ a.text-lighter:focus {
   text-decoration: underline;
 }
 
-.btn .badge:not(:first-child) {
+.btn .badge:not(:first-child),
+table.calendar-table tr th.title div button .badge:not(:first-child) {
   margin-left: .5rem;
 }
 
-.btn .badge:not(:last-child) {
+.btn .badge:not(:last-child),
+table.calendar-table tr th.title div button .badge:not(:last-child) {
   margin-right: .5rem;
 }
 
@@ -33973,7 +34253,8 @@ a.text-lighter:focus {
   height: .625rem;
 }
 
-.btn {
+.btn,
+table.calendar-table tr th.title div button {
   font-size: .875rem;
   position: relative;
   -webkit-transition: all .15s ease;
@@ -33983,29 +34264,39 @@ a.text-lighter:focus {
   will-change: transform;
 }
 
-.btn:hover {
+.btn:hover,
+table.calendar-table tr th.title div button:hover {
   -webkit-transform: translateY(-1px);
           transform: translateY(-1px);
   -webkit-box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
           box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
 }
 
-.btn:not(:last-child) {
+.btn:not(:last-child),
+table.calendar-table tr th.title div button:not(:last-child) {
   margin-right: .5rem;
 }
 
 .btn i:not(:first-child),
-.btn svg:not(:first-child) {
+table.calendar-table tr th.title div button i:not(:first-child),
+.btn svg:not(:first-child),
+table.calendar-table tr th.title div button svg:not(:first-child) {
   margin-left: .5rem;
 }
 
 .btn i:not(:last-child),
-.btn svg:not(:last-child) {
+table.calendar-table tr th.title div button i:not(:last-child),
+.btn svg:not(:last-child),
+table.calendar-table tr th.title div button svg:not(:last-child) {
   margin-right: .5rem;
 }
 
 .btn-group .btn,
-.input-group .btn {
+.btn-group table.calendar-table tr th.title div button,
+table.calendar-table tr th.title div .btn-group button,
+.input-group .btn,
+.input-group table.calendar-table tr th.title div button,
+table.calendar-table tr th.title div .input-group button {
   margin-right: 0;
   -webkit-transform: translateY(0);
           transform: translateY(0);
@@ -34013,13 +34304,17 @@ a.text-lighter:focus {
 
 .btn-sm,
 .btn-group-sm > .btn,
-.btn-group-sm > .btn {
+table.calendar-table tr th.title div .btn-group-sm > button,
+.btn-group-sm > .btn,
+table.calendar-table tr th.title div .btn-group-sm > button {
   font-size: .75rem;
 }
 
 .btn-lg,
 .btn-group-lg > .btn,
-.btn-group-lg > .btn {
+table.calendar-table tr th.title div .btn-group-lg > button,
+.btn-group-lg > .btn,
+table.calendar-table tr th.title div .btn-group-lg > button {
   font-size: .875rem;
 }
 
@@ -34036,13 +34331,15 @@ a.text-lighter:focus {
   top: 2px;
 }
 
-.btn-link {
+.btn-link,
+table.calendar-table tr th.title div button {
   font-weight: 600;
   -webkit-box-shadow: none;
           box-shadow: none;
 }
 
-.btn-link:hover {
+.btn-link:hover,
+table.calendar-table tr th.title div button:hover {
   -webkit-transform: none;
           transform: none;
   -webkit-box-shadow: none;
@@ -34077,7 +34374,9 @@ a.btn-icon-only {
 
 .btn-icon-only.btn-sm,
 .btn-group-sm > .btn-icon-only.btn,
-.btn-group-sm > .btn-icon-only.btn {
+table.calendar-table tr th.title div .btn-group-sm > button.btn-icon-only,
+.btn-group-sm > .btn-icon-only.btn,
+table.calendar-table tr th.title div .btn-group-sm > button.btn-icon-only {
   width: 2rem;
   height: 2rem;
 }
@@ -37845,7 +38144,8 @@ textarea[resize='horizontal'] {
   }
 }
 
-.table thead th {
+.table thead th,
+table.calendar-table thead th {
   font-size: .65rem;
   padding-top: .75rem;
   padding-bottom: .75rem;
@@ -37854,33 +38154,41 @@ textarea[resize='horizontal'] {
   border-bottom: 1px solid #e9ecef;
 }
 
-.table th {
+.table th,
+table.calendar-table th {
   font-weight: 600;
 }
 
-.table td .progress {
+.table td .progress,
+table.calendar-table td .progress {
   width: 120px;
   height: 3px;
   margin: 0;
 }
 
 .table td,
-.table th {
+table.calendar-table td,
+.table th,
+table.calendar-table th {
   font-size: .8125rem;
   white-space: nowrap;
 }
 
 .table.align-items-center td,
-.table.align-items-center th {
+table.calendar-table td,
+.table.align-items-center th,
+table.calendar-table th {
   vertical-align: middle;
 }
 
-.table .thead-dark th {
+.table .thead-dark th,
+table.calendar-table .thead-dark th {
   color: #4d7bca;
   background-color: #1c345d;
 }
 
-.table .thead-light th {
+.table .thead-light th,
+table.calendar-table .thead-light th {
   color: #8898aa;
   background-color: #f6f9fc;
 }
@@ -37913,12 +38221,15 @@ textarea[resize='horizontal'] {
   border-bottom: 0;
 }
 
-.card .table {
+.card .table,
+.card table.calendar-table {
   margin-bottom: 0;
 }
 
 .card .table td,
-.card .table th {
+.card table.calendar-table td,
+.card .table th,
+.card table.calendar-table th {
   padding-right: 1.5rem;
   padding-left: 1.5rem;
 }
@@ -37980,7 +38291,8 @@ p {
   margin-bottom: 1.5rem;
 }
 
-.heading-section.text-center img {
+.heading-section.text-center img,
+table.heading-section.calendar-table img {
   margin-right: auto;
   margin-left: auto;
 }
@@ -38758,9 +39070,17 @@ html:not([dir='rtl']) .noUi-horizontal .noUi-handle {
   background-color: #3c4d69 !important;
 }
 
-.navbar-laravel {
-  background-color: #fff;
-  -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+table.calendar-table tr td {
+  border: 1px solid #e9ecef;
+}
+
+table.calendar-table tr td:not(.hour) {
+  color: transparent;
+  cursor: pointer;
+}
+
+table.calendar-table tr td:hover:not(.hour) {
+  color: white;
+  background: #8a98eb;
 }
 
