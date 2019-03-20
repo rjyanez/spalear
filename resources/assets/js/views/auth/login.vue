@@ -82,8 +82,8 @@ export default {
           .then((res) => {
 		        this.$toasted.success(res.message)		    
                 this.$store.commit("loginSuccess", res.data);
-                this.$router.push({path: '/dashboard'});
                 this.loading = false;
+                window.location.href = `${window.location.origin}/dashboard`
           })
           .catch((error) => {
 		        this.$toasted.error('An error has occurred with these credentials, please check them.')

@@ -18,7 +18,8 @@ class DatabaseSeeder extends Seeder
             FunctionsRolesTableSeeder::class,
             CountriesTableSeeder::class,
             TimeZonesTableSeeder::class,
-            UsersTableSeeder::class
+            UsersTableSeeder::class,
+            TimeSchedulesSeeder::class
         ]);
     }
 }

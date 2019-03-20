@@ -6,7 +6,7 @@ use App\User;
 use App\Country;
 use App\TimeZone;
 use App\Rol;
-use Illuminate\Support\Facades\Auth;
+use App\TimeSchedule;
 use App\Transformers\Json;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -48,6 +48,7 @@ class UserController extends Controller
         $user->avatar = $this->saveAvatar($request->file('avatar'), $user->id);
         $user->save();
       }
+
       return response()->json(Json::response(compact('user'), 'Successfully created user!'), 200);         
     } else {
       return response()->json(null, 401);  
@@ -56,6 +57,7 @@ class UserController extends Controller
 
   public function show($id)
   {
+    $user = User::whereId($id)->first();
     $roles = Rol::where('code', '!=', 'ST')->pluck('name', 'code');
     $countries = Country::with(['timeZones'])->pluck('name', 'code');
     $timeZones = TimeZone::select('id', DB::raw("name ||' '||gmt_offset as name"), 'country_code')
@@ -64,8 +66,20 @@ class UserController extends Controller
           ->map(function ($item, $key) {
             return $item->pluck('name', 'id');
           });
+
+    $user->setAttribute('time_schedule', ($user->rol_code == 'TE')?
+      TimeSchedule::select('day','hour')
+          ->where('user_id', $id)
+          ->get()
+          ->groupBy('day')
+          ->map(function ($item, $key) {
+            return $item->pluck('hour');
+          }) 
+      : []
+    );
           
-    $user = User::whereId($id)->first();
+    // $user = (object) array_merge( (array)$user, compact('time_chedule'));
+
     return response()->json(Json::response(compact('user','countries', 'timeZones','roles')), 200);
   }
   
@@ -105,6 +119,10 @@ class UserController extends Controller
     if(Storage::disk('uploads')->exists('avatar/'.$filename)) Storage::disk('uploads')->delete('avatar/'.$filename);
     Storage::disk('uploads')->put('avatar/'.$filename, file_get_contents($file));
     return $filename;
+  }
+
+  public function saveTimeSchedule($times,$id){
+    
   }
   
 

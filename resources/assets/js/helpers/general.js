@@ -9,9 +9,17 @@ export function  formDataToJson(el){
   return jsonObject			
 }
 
+export function addJsonToFormData(Obj, formData = null){
+  if(!formData) formData = new FormData()
+  for(let key in Obj){
+    formData.append(key, Obj[key])
+  }
+  return formData
+}
+
 export function  formData(el){
   return new FormData(el)		
-  }
+}
 
 export function initialize(store, router) {
   router.beforeEach((to, from, next) => {

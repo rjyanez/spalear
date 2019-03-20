@@ -33,6 +33,11 @@ class User extends Authenticatable implements JWTSubject
         return $this->belongsTo(TimeZone::class, 'time_zone_id');
     }
 
+    public function timeSchedule()
+    {
+        return $this->hasMany('App\TimeSchedule', 'user_id', 'id');
+    }
+
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      * @return mixed

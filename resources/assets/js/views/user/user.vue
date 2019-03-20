@@ -196,31 +196,32 @@
                     </template>
                   </div>
 
-                  <div class="text-center">
-                    <button v-if="loading" class="float-left btn btn-outline-primary border-0 mt-4" type="button" disabled>
-                      <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
-                      Loading...
-                    </button>
-                    <button
-                      v-if="action !== 'show' && $router.currentRoute.name !== 'user.new'"
-                      class="ml-2 float-right btn btn-default mt-4 "
-                      @click="setAction('show')"
-                      type="button"
-                      :class="{ disabled: loading }"
-                    >
-                      Cancel
-                    </button>
-                    <button v-if="isEdit" type="submit" :disabled="!isFormValid || loading" :class="{ 'float-right btn btn-success mt-4': true, disabled: !isFormValid || loading }">
-                      Save
-                    </button>
-                    <button-confirmation
-                      v-on:confirmation-success="submit"
-                      :messages="['destroy User', 'Are you sure?', 'Ok!']"
-                      v-if="action === 'destroy'"
-                      :disabled="loading"
-                      :class="{ 'float-right btn  btn-danger mt-4': true, disabled: loading }"
-                    />
-                  </div>
+                </div>
+                <userTeacher v-if="rol_code === 'TE'" :isEdit="isEdit" :time_schedule="time_schedule" @callback="setTimeChedule($event)"/>
+                <div class="text-center">
+                  <button v-if="loading" class="float-left btn btn-outline-primary border-0 mt-4" type="button" disabled>
+                    <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                    Loading...
+                  </button>
+                  <button
+                    v-if="action !== 'show' && $router.currentRoute.name !== 'user.new'"
+                    class="ml-2 float-right btn btn-default mt-4 "
+                    @click="setAction('show')"
+                    type="button"
+                    :class="{ disabled: loading }"
+                  >
+                    Cancel
+                  </button>
+                  <button v-if="isEdit" type="submit" :disabled="!isFormValid || loading" :class="{ 'float-right btn btn-success mt-4': true, disabled: !isFormValid || loading }">
+                    Save
+                  </button>
+                  <button-confirmation
+                    v-on:confirmation-success="submit"
+                    :messages="['destroy User', 'Are you sure?', 'Ok!']"
+                    v-if="action === 'destroy'"
+                    :disabled="loading"
+                    :class="{ 'float-right btn  btn-danger mt-4': true, disabled: loading }"
+                  />
                 </div>
               </div>
             </div>
@@ -231,15 +232,17 @@
   </div>
 </template>
 <script>
-import { formData } from "../../helpers/general";
+import { formData, addJsonToFormData } from "../../helpers/general";
 import headerUser from "./header";
 import buttonConfirmation from "../../components/buttonConfirmation";
+import userTeacher from "./user-teacher"
 
 export default {
   name: "user",
   components: {
     headerUser,
-    buttonConfirmation
+    buttonConfirmation,
+    userTeacher
   },
   computed: {
     currentUser() {
@@ -279,6 +282,7 @@ export default {
       avatar: `no-img.png`,
       description: null,
       rol_code: "AD",
+      time_schedule: {},
       lists: { countries: [], timeZones: [], roles: [] },
       routes: {
         create: {
@@ -338,6 +342,9 @@ export default {
         fr.readAsDataURL(files[0]);
       }
     },
+    setTimeChedule(event){
+      this.time_schedule = event.list
+    },
     setInfo(obj) {
       for (const val in obj) {
         if (this.hasOwnProperty(val)) this[val] = obj[val];
@@ -351,6 +358,8 @@ export default {
       this.avatar = `no-img.png`;
       this.description = null;
       this.rol_code = "AD";
+      this.time_schedule = {};
+
     },
     setAction(val) {
       if (val === "show" && this.action === "create") this.setInfo(this.old);
@@ -360,7 +369,11 @@ export default {
     },
     submit() {
       this.loading = true;
-      this.$store.dispatch("sendPost", { url: this.getAction, data: formData(this.$refs.form), auth: true }).then(res => {
+      this.$store.dispatch("sendPost", { 
+        url: this.getAction, 
+        data: addJsonToFormData({ time_schedule: this.time_schedule },formData(this.$refs.form)), 
+        auth: true 
+      }).then(res => {
         if (res) {
           if (parseInt(this.id) === this.currentUser.id) this.$store.commit("refresh");
           if (this.action === "destroy") {

@@ -1,6 +1,6 @@
 <template lang="html">
   <div>
-    <calendar-piker />
+    <!-- <calendar-piker /> -->
     <table class="calendar-table">
         <tr>
           <th class="title" :colspan="min+1">
@@ -31,27 +31,17 @@
             <small class="d-block">{{day.label.week}}</small>
           </th>
         </tr>
-        <template v-for="(hour, keyHour) in dateRange.filter((obj, i)=>(i>4))">
-          <tr v-for="(range, keyHourRange) in hour.range" :key="`${keyHour}-${keyHourRange}-am`">
-            <td rowspan="2" v-if="keyHourRange==0" class="hour">{{ hour.label }} AM </td>
+        <template v-for="hour in hourRange">
+          <tr v-for="(min, i) in [00,30]" :key="`${hour}-${i}`">
+            <td rowspan="2" v-if="i==0" class="hour">{{ hour | hourFormat }} : 00 </td>
             <td 
               v-for="(day, keyHourRangeDay) in dayIndex" 
-              :key="`${keyHour}-${keyHourRange}-${keyHourRangeDay}-am`"
-              @click="slot($event, range, 'pm', day)"
+              :key="`${hour}-${i}-${keyHourRangeDay}`"
+              @click="slot($event, day, hour, min)"
+              :class="{'active': isActive(day, hour, min)}"
+              :title="(isActive(day, hour, min))"
             >              
-                {{ range.start_time }}
-            </td>
-          </tr>
-        </template>
-        <template v-for="(hour, keyHour) in dateRange.filter((obj, i)=>(i<6))">
-          <tr v-for="(range, keyHourRange) in hour.range" :key="`${keyHour}-${keyHourRange}-pm`">
-            <td rowspan="2" v-if="keyHourRange==0" class="hour">{{ hour.label }} PM </td>
-            <td 
-              v-for="(day, keyHourRangeDay) in dayIndex" 
-              :key="`${keyHour}-${keyHourRange}-${keyHourRangeDay}-pm`"
-              @click="slot($event, range, 'pm', day)"
-            >              
-                {{ range.start_time }}
+              {{ hour | hourFormat }} : {{ min | hourFormat}}
             </td>
           </tr>
         </template>
@@ -60,114 +50,54 @@
 </template>
 
 <script>
-import calendarPiker from './calendarPiker'
+// import calendarPiker from './calendarPiker'
 
 export default {
   components: {
-    calendarPiker
+    // calendarPiker
   },
   name: 'calendar',
   props: {
+    hours : {
+      type: Array,
+      default : ()=> [[6,13]]
+    },
     min: {
       type: Number,
       default: 7
+    },
+    dates : {
+      type: Array,
+      default : ()=> [
+        {
+          event : 'evento de hoy',
+          date: new Date('2019','04','18','11','30')
+        }
+      ]
     }
   },
-  watch: {},
+  filters: {
+    hourFormat(val){
+      return (String(val).length === 1)? `0${val}` : String(val)
+    }
+  },
   data() {
     return {
-      dateRange: [
-        {
-          label: "01:00",
-          range: [
-            { start_time: "01:00:00", end_time: "01:30:00"},
-            { start_time: "01:30:00", end_time: "02:00:00"}
-          ]
-        },
-        {
-          label: "02:00",
-          range: [
-            { start_time: "02:00:00", end_time: "02:30:00"},
-            { start_time: "02:30:00", end_time: "03:00:00"}
-          ]
-          
-        },
-        {
-          label: "03:00",
-          range: [
-            { start_time: "03:00:00", end_time: "03:30:00"},
-            { start_time: "03:30:00", end_time: "04:00:00"}
-          ]         
-        },      
-        {
-          label: "04:00",
-          range: [
-            { start_time: "04:00:00", end_time: "04:30:00"},
-            { start_time: "04:30:00", end_time: "05:00:00"}
-          ]
-        },
-        {
-          label: "05:00",
-          range: [
-            { start_time: "05:00:00", end_time: "05:30:00"},
-            { start_time: "05:30:00", end_time: "06:00:00"}
-          ] 
-        },
-        {
-          label: "06:00",
-          range: [
-            { start_time: "06:00:00", end_time: "06:30:00"},
-            { start_time: "06:30:00", end_time: "07:00:00"}
-          ] 
-        },
-        {
-          label: "07:00",
-          range: [
-            { start_time: "07:00:00", end_time: "07:30:00"},
-            { start_time: "07:30:00", end_time: "08:00:00"}
-          ]
-        },
-        {
-          label: "08:00",
-          range: [
-            { start_time: "08:00:00", end_time: "08:30:00"},
-            { start_time: "08:30:00", end_time: "09:00:00"}
-          ]
-        },
-        {
-          label: "09:00",
-          range: [
-            { start_time: "09:00:00", end_time: "09:30:00"},
-            { start_time: "09:30:00", end_time: "10:00:00"}
-          ]
-        },
-        {
-          label: "10:00",
-          range: [
-            { start_time: "10:00:00", end_time: "10:30:00"},
-            { start_time: "10:30:00", end_time: "11:00:00"}
-          ]
-        },
-        {
-          label: "11:00",
-          range: [
-            { start_time: "11:00:00", end_time: "11:30:00"},
-            { start_time: "11:30:00", end_time: "12:00:00"}
-          ]
-        },
-        {
-          label: "12:00",
-          range: [
-            { start_time: "12:00:00", end_time: "12:30:00"},
-            { start_time: "12:30:00", end_time: "01:00:00"}
-          ]
-        }
-      ],
       dayIndex: [],      
-      current: new Date(),
+      current: new Date('2019','04','18','12','30'),
     };
   },
   computed: {
+    hourRange() {
+      let values = []
+      for( let key in this.hours){
+        let start = this.hours[key][0], end = this.hours[key][1]
+        for(let i = start; i < end; i++){
+          values.push(i)
+        }
+      }
+      return values
+    },
     todaysDate(){
       return this.formatDate(new Date(this.current), "short")
     }, 
@@ -185,6 +115,17 @@ export default {
     this.setDays()
   },
   methods: {
+    isActive(day, hour, min = 0){
+      let date = new Date(day)
+      let val = {}
+      let d1  = new Date(date.getFullYear(), date.getMonth(), date.getDate(), hour, min, 0)
+      for(let i in this.dates){
+        let d2 = new Date(this.dates[i]['date']) 
+        console.log(d1.getTime() === d2.getTime())
+        if (d1.getTime() === d2.getTime()) val = this.dates[i]          
+      }
+      (val === {})? null: val        
+    },
     setDays(){
       this.dayIndex = []
       let dateIndex= 0
@@ -239,12 +180,12 @@ export default {
     prevWeek(){
       this.current = this.nextDate(this.week.from.value,-this.min)
     },
-    slot(event, value, type, day) {
+    slot(event, day, hour, min = 0) {
       event.target.classList.toggle("active");
+      let date = new Date(day)
+      value = new Date(date.getFullYear(), date.getMonth(), date.getDate(), hour, min, 0)
       
-      value.mode = type;
-      value.date = day.value;
-      this.$emit("callback", value);
+      this.$emit("callback", {event: '', date: value});
     }
   },
   watch:{
