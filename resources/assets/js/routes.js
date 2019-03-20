@@ -76,6 +76,7 @@ export const routes = [
     {
         path: '/teachers',
         name: 'teachers',
+        redirect: '/teachers/all',
         component: {
             template: '<router-view/>',
         },
@@ -84,8 +85,8 @@ export const routes = [
         },
         children: [
             {
-                path: '/',
-                name: 'teachers.list',
+                path: 'all',
+                name: 'teachers.all',
                 component: TeacherList
             },
             {

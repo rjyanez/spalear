@@ -27,10 +27,20 @@ class FunctionsRolesTableSeeder extends Seeder
             [ 'function_code' => 'porfile' , 'rol_code' => 'TE' ],
             [ 'function_code' => 'porfile' , 'rol_code' => 'ST' ],
 
-            [ 'function_code' => 'user'    , 'rol_code' => 'AD' ],
-            [ 'function_code' => 'user'    , 'rol_code' => 'SC' ],
+            [ 'function_code' => 'user', 'rol_code' => 'AD' ],
+            [ 'function_code' => 'user', 'rol_code' => 'SC' ],
 
             [ 'function_code' => 'teachers', 'rol_code' => 'AD' ],
+            [ 'function_code' => 'teachers', 'rol_code' => 'SC' ],
+            [ 'function_code' => 'teachers', 'rol_code' => 'TE' ],
+            [ 'function_code' => 'teachers', 'rol_code' => 'ST' ],
+
+            [ 'function_code' => 'teachers.all', 'rol_code' => 'AD' ],
+            [ 'function_code' => 'teachers.all', 'rol_code' => 'SC' ],
+            [ 'function_code' => 'teachers.all', 'rol_code' => 'TE' ],
+            [ 'function_code' => 'teachers.all', 'rol_code' => 'ST' ],
+
+
             // [ 'function_code' => 'lessons' , 'rol_code' => 'AD' ],
             // [ 'function_code' => 'basic'   , 'rol_code' => 'AD' ],
         ]);

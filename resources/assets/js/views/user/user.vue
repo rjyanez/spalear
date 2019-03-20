@@ -69,7 +69,7 @@
                           Create
                         </button>
                         <button
-                          v-if="id === currentUser.id"
+                          v-if="id === currentUser.id || isRole('AD')"
                           title="User Update"
                           class="btn btn-sm btn-primary"
                           :disabled="action === 'create' || action === 'update' ? true : false"
@@ -208,6 +208,7 @@
                     class="ml-2 float-right btn btn-default mt-4 "
                     @click="setAction('show')"
                     type="button"
+                    :disabled="loading"
                     :class="{ disabled: loading }"
                   >
                     Cancel
@@ -347,7 +348,9 @@ export default {
     },
     setInfo(obj) {
       for (const val in obj) {
-        if (this.hasOwnProperty(val)) this[val] = obj[val];
+        if (this.hasOwnProperty(val)){
+          this[val] = obj[val]
+        } 
       }
     },
     setInfoEmpty() {
@@ -362,7 +365,7 @@ export default {
 
     },
     setAction(val) {
-      if (val === "show" && this.action === "create") this.setInfo(this.old);
+      if (val === "show" && this.isEdit) this.setInfo(this.old);
       if (val === "create") this.setInfoEmpty();
       if (this.isEdit && this.email !== null) this.$validator.validateAll();
       this.action = val;
@@ -371,7 +374,7 @@ export default {
       this.loading = true;
       this.$store.dispatch("sendPost", { 
         url: this.getAction, 
-        data: addJsonToFormData({ time_schedule: this.time_schedule },formData(this.$refs.form)), 
+        data: addJsonToFormData({ time_schedule: JSON.stringify(this.time_schedule) },formData(this.$refs.form)), 
         auth: true 
       }).then(res => {
         if (res) {

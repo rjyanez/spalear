@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\Country;
+use App\TimeSchedule;
 use App\TimeZone;
 use App\Rol;
-use App\TimeSchedule;
 use App\Transformers\Json;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -48,7 +48,7 @@ class UserController extends Controller
         $user->avatar = $this->saveAvatar($request->file('avatar'), $user->id);
         $user->save();
       }
-
+      if($user->rol_code == 'TE') $this->saveTimeSchedule(json_decode($request->input('time_schedule')),  $user->id); 
       return response()->json(Json::response(compact('user'), 'Successfully created user!'), 200);         
     } else {
       return response()->json(null, 401);  
@@ -97,7 +97,20 @@ class UserController extends Controller
         $user->avatar = $this->saveAvatar($request->file('avatar'), $user->id); ;
         $user->save();
       }
-      return response()->json(Json::response(compact('user'),'Successfully updated user!'), 200);         
+      if($user->rol_code == 'TE') $this->saveTimeSchedule(json_decode($request->input('time_schedule')),  $user->id);
+
+      $user->setAttribute('time_schedule', ($user->rol_code == 'TE')?
+        TimeSchedule::select('day','hour')
+            ->where('user_id', $id)
+            ->get()
+            ->groupBy('day')
+            ->map(function ($item, $key) {
+              return $item->pluck('hour');
+            }) 
+        : []
+      );
+
+      return response()->json(Json::response(compact('user'),'Successfully updated user!'), 200);        
     } else {
       return response()->json(null, 401);  
     }
@@ -122,7 +135,22 @@ class UserController extends Controller
   }
 
   public function saveTimeSchedule($times,$id){
-    
+    if(!empty($times)):
+      TimeSchedule::where('user_id', $id)->delete();
+      $data= [];
+      foreach ($times as $day => $hours):
+        if(!empty($hours)){
+          foreach ($hours as $hour):
+            array_push($data, [
+              'user_id' => $id,
+              'day'     => $day ,
+              'hour'    => $hour
+            ]);
+          endforeach;
+        }
+      endforeach;
+      TimeSchedule::insert($data);
+    endif;    
   }
   
 

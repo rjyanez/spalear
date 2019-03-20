@@ -491,8 +491,11 @@ module.exports = {
 /* harmony export (immutable) */ __webpack_exports__["a"] = addJsonToFormData;
 /* harmony export (immutable) */ __webpack_exports__["b"] = formData;
 /* harmony export (immutable) */ __webpack_exports__["d"] = initialize;
-/* harmony export (immutable) */ __webpack_exports__["e"] = setAuthorization;
+/* harmony export (immutable) */ __webpack_exports__["f"] = setAuthorization;
+/* harmony export (immutable) */ __webpack_exports__["e"] = removeEmpty;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__auth__ = __webpack_require__(4);
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
 
@@ -585,6 +588,13 @@ function setAuthorization(token) {
   axios.defaults.headers.common["Authorization"] = 'Bearer ' + token;
 }
 
+function removeEmpty(obj) {
+  Object.keys(obj).forEach(function (key) {
+    if (obj[key] && _typeof(obj[key]) === 'object') removeEmpty(obj[key]);else if (obj[key] === undefined) delete obj[key];
+  });
+  return obj;
+}
+
 /***/ }),
 /* 3 */
 /***/ (function(module, exports) {
@@ -625,7 +635,7 @@ module.exports = g;
 function login(credentials) {
   return new Promise(function (res, rej) {
     axios.post('/api/auth/login', credentials).then(function (response) {
-      Object(__WEBPACK_IMPORTED_MODULE_0__general__["e" /* setAuthorization */])(response.data.access_token);
+      Object(__WEBPACK_IMPORTED_MODULE_0__general__["f" /* setAuthorization */])(response.data.access_token);
       res(response.data);
     }).catch(function (err) {
       rej(err);
@@ -62741,6 +62751,7 @@ var routes = [{
 }, {
     path: '/teachers',
     name: 'teachers',
+    redirect: '/teachers/all',
     component: {
         template: '<router-view/>'
     },
@@ -62748,8 +62759,8 @@ var routes = [{
         requiresAuth: true
     },
     children: [{
-        path: '/',
-        name: 'teachers.list',
+        path: 'all',
+        name: 'teachers.all',
         component: __WEBPACK_IMPORTED_MODULE_6__views_teacher_list___default.a
     }, {
         path: ':id',
@@ -65195,7 +65206,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       var d1 = new Date(date.getFullYear(), date.getMonth(), date.getDate(), hour, min, 0);
       for (var i in this.dates) {
         var d2 = new Date(this.dates[i]['date']);
-        console.log(d1.getTime() === d2.getTime());
         if (d1.getTime() === d2.getTime()) val = this.dates[i];
       }
       val === {} ? null : val;
@@ -66274,6 +66284,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 
@@ -66397,7 +66408,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     setInfo: function setInfo(obj) {
       for (var val in obj) {
-        if (this.hasOwnProperty(val)) this[val] = obj[val];
+        if (this.hasOwnProperty(val)) {
+          this[val] = obj[val];
+        }
       }
     },
     setInfoEmpty: function setInfoEmpty() {
@@ -66411,7 +66424,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.time_schedule = {};
     },
     setAction: function setAction(val) {
-      if (val === "show" && this.action === "create") this.setInfo(this.old);
+      if (val === "show" && this.isEdit) this.setInfo(this.old);
       if (val === "create") this.setInfoEmpty();
       if (this.isEdit && this.email !== null) this.$validator.validateAll();
       this.action = val;
@@ -66422,7 +66435,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.loading = true;
       this.$store.dispatch("sendPost", {
         url: this.getAction,
-        data: Object(__WEBPACK_IMPORTED_MODULE_0__helpers_general__["a" /* addJsonToFormData */])({ time_schedule: this.time_schedule }, Object(__WEBPACK_IMPORTED_MODULE_0__helpers_general__["b" /* formData */])(this.$refs.form)),
+        data: Object(__WEBPACK_IMPORTED_MODULE_0__helpers_general__["a" /* addJsonToFormData */])({ time_schedule: JSON.stringify(this.time_schedule) }, Object(__WEBPACK_IMPORTED_MODULE_0__helpers_general__["b" /* formData */])(this.$refs.form)),
         auth: true
       }).then(function (res) {
         if (res) {
@@ -66694,7 +66707,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   },
   watch: {
     time_schedule: function time_schedule(val) {
-      this.dates = [];
+      this.dates = {};
       this.dates = val;
     }
   }
@@ -66753,6 +66766,7 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__helpers_general__ = __webpack_require__(2);
 //
 //
 //
@@ -66784,6 +66798,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -66809,7 +66824,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   },
   filters: {
     hourFormat: function hourFormat(val) {
-      return String(val).length === 1 ? "0" + val : String(val);
+      return String(val).length === 1 ? '0' + val : String(val);
     }
   },
   data: function data() {
@@ -66851,13 +66866,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
   methods: {
     isActive: function isActive(day, hour) {
-      var ele = document.getElementById(day + "-" + hour);
-      if (ele && ele.classList.contains("active")) ele.classList.remove("active");
-      return this.dates.hasOwnProperty(day) && this.dates[day].includes(hour) ? true : false;
+      var ele = document.getElementById(day + '-' + hour);
+      if (this.dates.hasOwnProperty(day) && this.dates[day].includes(hour)) {
+        return true;
+      } else {
+        if (ele && ele.classList.contains("active")) ele.classList.remove("active");
+        return false;
+      }
     },
     allDay: function allDay(day) {
       for (var i in this.hourRange) {
-        document.getElementById(day + "-" + this.hourRange[i]).classList.toggle("active");
+        document.getElementById(day + '-' + this.hourRange[i]).classList.toggle("active");
         this.setDates({ day: day, hour: this.hourRange[i] });
       }
       this.$emit("callback", {
@@ -66866,7 +66885,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     allWeek: function allWeek(hour) {
       for (var i in this.dayIndex) {
-        document.getElementById(i + "-" + hour).classList.toggle("active");
+        document.getElementById(i + '-' + hour).classList.toggle("active");
         this.setDates({ day: i, hour: hour });
       }
       this.$emit("callback", {
@@ -66903,6 +66922,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       }
       if (day.length === 0) {
         delete this.dates[select.day];
+        this.dates = Object(__WEBPACK_IMPORTED_MODULE_0__helpers_general__["e" /* removeEmpty */])(this.dates);
       } else {
         this.dates[select.day] = day;
       }
@@ -66920,7 +66940,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.setDays();
     },
     time_schedule: function time_schedule(val) {
-      this.dates = [];
+      this.dates = {};
       this.dates = val;
     }
   }
@@ -67329,7 +67349,8 @@ var render = function() {
                                           )
                                         : _vm._e(),
                                       _vm._v(" "),
-                                      _vm.id === _vm.currentUser.id
+                                      _vm.id === _vm.currentUser.id ||
+                                      _vm.isRole("AD")
                                         ? _c(
                                             "button",
                                             {
@@ -68030,7 +68051,10 @@ var render = function() {
                                   staticClass:
                                     "ml-2 float-right btn btn-default mt-4 ",
                                   class: { disabled: _vm.loading },
-                                  attrs: { type: "button" },
+                                  attrs: {
+                                    type: "button",
+                                    disabled: _vm.loading
+                                  },
                                   on: {
                                     click: function($event) {
                                       return _vm.setAction("show")

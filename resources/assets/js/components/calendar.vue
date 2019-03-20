@@ -121,7 +121,6 @@ export default {
       let d1  = new Date(date.getFullYear(), date.getMonth(), date.getDate(), hour, min, 0)
       for(let i in this.dates){
         let d2 = new Date(this.dates[i]['date']) 
-        console.log(d1.getTime() === d2.getTime())
         if (d1.getTime() === d2.getTime()) val = this.dates[i]          
       }
       (val === {})? null: val        

@@ -40,7 +40,7 @@ export default {
   },
   watch: {
     time_schedule(val){
-      this.dates = []
+      this.dates = {}
       this.dates = val
     }
   }

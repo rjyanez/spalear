@@ -30,6 +30,7 @@
 </template>
 
 <script>
+import {removeEmpty} from '../helpers/general'
 
 export default {
   name: 'calendar-piker',
@@ -90,8 +91,12 @@ export default {
   methods: {
     isActive(day,hour){
       let ele = document.getElementById(`${day}-${hour}`)
-      if(ele && ele.classList.contains("active")) ele.classList.remove("active")
-      return (this.dates.hasOwnProperty(day) &&  this.dates[day].includes(hour))?  true : false
+      if(this.dates.hasOwnProperty(day) &&  this.dates[day].includes(hour)){
+        return true
+      } else {
+        if(ele && ele.classList.contains("active")) ele.classList.remove("active")
+        return false
+      }
     },
     allDay(day){
       for(let i in this.hourRange){ 
@@ -151,6 +156,7 @@ export default {
       }
       if(day.length === 0) {
         delete this.dates[select.day]
+        this.dates = removeEmpty(this.dates)
       } else {
         this.dates[select.day] = day
       }
@@ -169,7 +175,7 @@ export default {
       this.setDays()
     },
     time_schedule(val){
-      this.dates = []
+      this.dates = {}
       this.dates = val
     }
   }
