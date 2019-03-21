@@ -30,7 +30,6 @@
 </template>
 
 <script>
-import {removeEmpty} from '../helpers/general'
 
 export default {
   name: 'calendar-piker',
@@ -45,8 +44,8 @@ export default {
       default: 7
     },
     time_schedule : {
-      type: Object,
-      default : ()=> ({})        
+      type: Array,
+      default : ()=> ([])        
     }    
   },
   filters: {
@@ -101,20 +100,14 @@ export default {
     allDay(day){
       for(let i in this.hourRange){ 
         document.getElementById(`${day}-${this.hourRange[i]}`).classList.toggle("active")
-        this.setDates({day, hour: this.hourRange[i]})
+        this.$emit("callback", {day, hour: this.hourRange[i]})        
       }
-      this.$emit("callback", {
-        list: this.dates
-      });
     },
     allWeek(hour){
       for(let i in this.dayIndex){ 
         document.getElementById(`${i}-${hour}`).classList.toggle("active")
-        this.setDates({day: i , hour})
+        this.$emit("callback", {day: i , hour})
       }
-      this.$emit("callback", {
-        list: this.dates
-      });
     },
     setDays(){
       this.dayIndex = []
@@ -146,27 +139,9 @@ export default {
     nextDate(date,index) {
       return new Date(new Date(date).getTime() + index * 24 * 60 * 60 * 1000);
     },
-    setDates(select){
-      if(!this.dates.hasOwnProperty(select.day)) this.dates[select.day] = [];
-      let day = this.dates[select.day]
-      if(day.includes(select.hour)){ 
-        day.splice(day.indexOf(select.hour),1)
-      } else {
-        day.push(select.hour)
-      }
-      if(day.length === 0) {
-        delete this.dates[select.day]
-        this.dates = removeEmpty(this.dates)
-      } else {
-        this.dates[select.day] = day
-      }
-    },
     slot(event, select) {
-      event.target.classList.toggle("active");
-      this.setDates(select)     
-      this.$emit("callback", {
-        list: this.dates
-      });
+      event.target.classList.toggle("active");  
+      this.$emit("callback", select);
     },
     
   },

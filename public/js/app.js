@@ -65127,6 +65127,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 // import calendarPiker from './calendarPiker'
 
@@ -65139,32 +65144,30 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     hours: {
       type: Array,
       default: function _default() {
-        return [[6, 13]];
+        return [[6, 19]];
       }
     },
     min: {
       type: Number,
       default: 7
     },
-    dates: {
+    time_schedule: {
       type: Array,
       default: function _default() {
-        return [{
-          event: 'evento de hoy',
-          date: new Date('2019', '04', '18', '11', '30')
-        }];
+        return [];
       }
     }
   },
   filters: {
     hourFormat: function hourFormat(val) {
-      return String(val).length === 1 ? '0' + val : String(val);
+      return String(val).length === 1 ? "0" + val : String(val);
     }
   },
   data: function data() {
     return {
       dayIndex: [],
-      current: new Date('2019', '04', '18', '12', '30')
+      current: new Date(),
+      dates: this.time_schedule
     };
   },
 
@@ -65198,17 +65201,33 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   },
 
   methods: {
-    isActive: function isActive(day, hour) {
-      var min = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
+    isActive: function isActive(day, week, hour) {
+      var min = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
+
 
       var date = new Date(day);
-      var val = {};
-      var d1 = new Date(date.getFullYear(), date.getMonth(), date.getDate(), hour, min, 0);
-      for (var i in this.dates) {
-        var d2 = new Date(this.dates[i]['date']);
-        if (d1.getTime() === d2.getTime()) val = this.dates[i];
+      date = new Date(date.getFullYear(), date.getMonth(), date.getDate(), hour, min, 0);
+
+      for (var event in this.dates) {
+        var dateEvent = new Date(this.dates[event]);
+        if (dateEvent.getTime() === date.getTime()) return true;
       }
-      val === {} ? null : val;
+
+      var ele = document.getElementById(week + "-" + hour + "-" + min);
+      if (ele && ele.classList.contains("active")) ele.classList.remove("active");
+      return false;
+    },
+    allDay: function allDay(day) {
+      for (var i in this.hourRange) {
+        this.callback(document.getElementById(day + "-" + this.hourRange[i] + "-0"), this.dayIndex[day]['value'], this.hourRange[i], 0);
+        this.callback(document.getElementById(day + "-" + this.hourRange[i] + "-3"), this.dayIndex[day]['value'], this.hourRange[i], 30);
+      }
+    },
+    allWeek: function allWeek(hour) {
+      for (var i in this.dayIndex) {
+        this.callback(document.getElementById(i + "-" + hour + "-0"), this.dayIndex[i]['value'], hour, 0);
+        this.callback(document.getElementById(i + "-" + hour + "-30"), this.dayIndex[i]['value'], hour, 30);
+      }
     },
     setDays: function setDays() {
       this.dayIndex = [];
@@ -65241,19 +65260,25 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     prevWeek: function prevWeek() {
       this.current = this.nextDate(this.week.from.value, -this.min);
     },
-    slot: function slot(event, day, hour) {
+    thisDay: function thisDay(event, day, hour) {
       var min = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
 
-      event.target.classList.toggle("active");
+      this.callback(event.target, day.value, hour, min);
+    },
+    callback: function callback(el, day, hour, min) {
+      el.classList.toggle("active");
       var date = new Date(day);
-      value = new Date(date.getFullYear(), date.getMonth(), date.getDate(), hour, min, 0);
-
-      this.$emit("callback", { event: '', date: value });
+      var value = new Date(date.getFullYear(), date.getMonth(), date.getDate(), hour, min, 0);
+      this.$emit("callback", value);
     }
   },
   watch: {
     week: function week() {
       this.setDays();
+    },
+    time_schedule: function time_schedule(val) {
+      this.dates = {};
+      this.dates = val;
     }
   }
 });
@@ -65323,15 +65348,33 @@ var render = function() {
           [
             _c("th"),
             _vm._v(" "),
-            _vm._l(_vm.dayIndex, function(day) {
+            _vm._l(_vm.dayIndex, function(day, key) {
               return _c("th", [
-                _c("small", { staticClass: "d-block" }, [
-                  _vm._v(_vm._s(day.label.month))
-                ]),
-                _vm._v("\n          " + _vm._s(day.label.day) + "\n          "),
-                _c("small", { staticClass: "d-block" }, [
-                  _vm._v(_vm._s(day.label.week))
-                ])
+                _c(
+                  "a",
+                  {
+                    staticClass: "btn btn-link",
+                    attrs: { role: "buttom" },
+                    on: {
+                      click: function($event) {
+                        return _vm.allDay(key)
+                      }
+                    }
+                  },
+                  [
+                    _c("small", { staticClass: "d-block" }, [
+                      _vm._v(_vm._s(day.label.month))
+                    ]),
+                    _vm._v(
+                      "\n            " +
+                        _vm._s(day.label.day) +
+                        "\n            "
+                    ),
+                    _c("small", { staticClass: "d-block" }, [
+                      _vm._v(_vm._s(day.label.week))
+                    ])
+                  ]
+                )
               ])
             })
           ],
@@ -65346,20 +65389,40 @@ var render = function() {
               [
                 i == 0
                   ? _c("td", { staticClass: "hour", attrs: { rowspan: "2" } }, [
-                      _vm._v(_vm._s(_vm._f("hourFormat")(hour)) + " : 00 ")
+                      _c(
+                        "a",
+                        {
+                          staticStyle: { cursor: "pointer" },
+                          attrs: { role: "buttom" },
+                          on: {
+                            click: function($event) {
+                              return _vm.allWeek(hour)
+                            }
+                          }
+                        },
+                        [
+                          _vm._v(
+                            "\n              " +
+                              _vm._s(_vm._f("hourFormat")(hour)) +
+                              " : 00 \n            "
+                          )
+                        ]
+                      )
                     ])
                   : _vm._e(),
                 _vm._v(" "),
-                _vm._l(_vm.dayIndex, function(day, keyHourRangeDay) {
+                _vm._l(_vm.dayIndex, function(day, key) {
                   return _c(
                     "td",
                     {
-                      key: hour + "-" + i + "-" + keyHourRangeDay,
-                      class: { active: _vm.isActive(day, hour, min) },
-                      attrs: { title: _vm.isActive(day, hour, min) },
+                      key: key + "-" + hour + "-" + min,
+                      class: {
+                        active: _vm.isActive(day.value, key, hour, min)
+                      },
+                      attrs: { id: key + "-" + hour + "-" + min },
                       on: {
                         click: function($event) {
-                          return _vm.slot($event, day, hour, min)
+                          return _vm.thisDay($event, day, hour, min)
                         }
                       }
                     },
@@ -66047,10 +66110,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__helpers_general__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__header__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__header___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__header__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_buttonConfirmation__ = __webpack_require__(86);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_buttonConfirmation___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_buttonConfirmation__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__user_teacher__ = __webpack_require__(89);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__user_teacher___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__user_teacher__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__user_teacher__ = __webpack_require__(89);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__user_teacher___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__user_teacher__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__user_actions__ = __webpack_require__(138);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__user_actions___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__user_actions__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__user_submit__ = __webpack_require__(141);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__user_submit___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__user_submit__);
 //
 //
 //
@@ -66249,42 +66314,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+
 
 
 
@@ -66295,8 +66325,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   name: "user",
   components: {
     headerUser: __WEBPACK_IMPORTED_MODULE_1__header___default.a,
-    buttonConfirmation: __WEBPACK_IMPORTED_MODULE_2__components_buttonConfirmation___default.a,
-    userTeacher: __WEBPACK_IMPORTED_MODULE_3__user_teacher___default.a
+    userTeacher: __WEBPACK_IMPORTED_MODULE_2__user_teacher___default.a,
+    userActions: __WEBPACK_IMPORTED_MODULE_3__user_actions___default.a,
+    userSubmit: __WEBPACK_IMPORTED_MODULE_4__user_submit___default.a
   },
   computed: {
     currentUser: function currentUser() {
@@ -66365,6 +66396,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       action: "show"
     };
   },
+
+  filters: {
+    lableCode: function lableCode(val, list) {
+      var child = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+
+      if (child) {
+        for (var parent in list) {
+          if (list[parent].hasOwnProperty(val)) {
+            return list[parent][val];
+          }
+        }
+      } else {
+        return list[val];
+      }
+    }
+  },
   mounted: function mounted() {
     var _this2 = this;
 
@@ -66403,8 +66450,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         fr.readAsDataURL(files[0]);
       }
     },
-    setTimeChedule: function setTimeChedule(event) {
-      this.time_schedule = event.list;
+    setTimeSchedule: function setTimeSchedule(event) {
+      if (!this.time_schedule.hasOwnProperty(event.day)) this.time_schedule[event.day] = [];
+      var day = this.time_schedule[event.day];
+      if (day.includes(event.hour)) {
+        day.splice(day.indexOf(event.hour), 1);
+      } else {
+        day.push(event.hour);
+      }
+      if (day.length === 0) {
+        delete this.time_schedule[event.day];
+        this.time_schedule = Object(__WEBPACK_IMPORTED_MODULE_0__helpers_general__["e" /* removeEmpty */])(this.time_schedule);
+      } else {
+        this.time_schedule[event.day] = day;
+      }
     },
     setInfo: function setInfo(obj) {
       for (var val in obj) {
@@ -66685,7 +66744,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   props: {
     isEdit: false,
     time_schedule: {
-      type: Object,
+      type: Array,
       default: function _default() {
         return {};
       }
@@ -66699,16 +66758,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
   methods: {
     selectTime: function selectTime(event) {
-      this.dates = event.list;
-      this.$emit("callback", {
-        list: event.list
-      });
-    }
-  },
-  watch: {
-    time_schedule: function time_schedule(val) {
-      this.dates = {};
-      this.dates = val;
+      this.$emit("callback", event);
     }
   }
 });
@@ -66766,7 +66816,6 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__helpers_general__ = __webpack_require__(2);
 //
 //
 //
@@ -66798,7 +66847,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -66816,15 +66864,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       default: 7
     },
     time_schedule: {
-      type: Object,
+      type: Array,
       default: function _default() {
-        return {};
+        return [];
       }
     }
   },
   filters: {
     hourFormat: function hourFormat(val) {
-      return String(val).length === 1 ? '0' + val : String(val);
+      return String(val).length === 1 ? "0" + val : String(val);
     }
   },
   data: function data() {
@@ -66866,7 +66914,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
   methods: {
     isActive: function isActive(day, hour) {
-      var ele = document.getElementById(day + '-' + hour);
+      var ele = document.getElementById(day + "-" + hour);
       if (this.dates.hasOwnProperty(day) && this.dates[day].includes(hour)) {
         return true;
       } else {
@@ -66876,21 +66924,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     allDay: function allDay(day) {
       for (var i in this.hourRange) {
-        document.getElementById(day + '-' + this.hourRange[i]).classList.toggle("active");
-        this.setDates({ day: day, hour: this.hourRange[i] });
+        document.getElementById(day + "-" + this.hourRange[i]).classList.toggle("active");
+        this.$emit("callback", { day: day, hour: this.hourRange[i] });
       }
-      this.$emit("callback", {
-        list: this.dates
-      });
     },
     allWeek: function allWeek(hour) {
       for (var i in this.dayIndex) {
-        document.getElementById(i + '-' + hour).classList.toggle("active");
-        this.setDates({ day: i, hour: hour });
+        document.getElementById(i + "-" + hour).classList.toggle("active");
+        this.$emit("callback", { day: i, hour: hour });
       }
-      this.$emit("callback", {
-        list: this.dates
-      });
     },
     setDays: function setDays() {
       this.dayIndex = [];
@@ -66912,27 +66954,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     nextDate: function nextDate(date, index) {
       return new Date(new Date(date).getTime() + index * 24 * 60 * 60 * 1000);
     },
-    setDates: function setDates(select) {
-      if (!this.dates.hasOwnProperty(select.day)) this.dates[select.day] = [];
-      var day = this.dates[select.day];
-      if (day.includes(select.hour)) {
-        day.splice(day.indexOf(select.hour), 1);
-      } else {
-        day.push(select.hour);
-      }
-      if (day.length === 0) {
-        delete this.dates[select.day];
-        this.dates = Object(__WEBPACK_IMPORTED_MODULE_0__helpers_general__["e" /* removeEmpty */])(this.dates);
-      } else {
-        this.dates[select.day] = day;
-      }
-    },
     slot: function slot(event, select) {
       event.target.classList.toggle("active");
-      this.setDates(select);
-      this.$emit("callback", {
-        list: this.dates
-      });
+      this.$emit("callback", select);
     }
   },
   watch: {
@@ -67268,29 +67292,44 @@ var render = function() {
                         class: { "mt-5": !_vm.isEdit, "mt-4": _vm.isEdit }
                       },
                       [
-                        _c("h3", [
-                          _vm._v(
-                            "\n                  " +
-                              _vm._s(_vm.name) +
-                              "\n                "
-                          )
-                        ]),
-                        _vm._v(" "),
+                        _c("h2", [_vm._v(_vm._s(_vm.name))]),
+                        _vm._v(
+                          "\n                " +
+                            _vm._s(_vm.email) +
+                            "\n                "
+                        ),
                         _c("div", { staticClass: "h5 font-weight-300" }, [
-                          _c("i", { staticClass: "ni location_pin mr-2" }),
-                          _vm._v(_vm._s(_vm.email))
+                          _c("i", { staticClass: "ni location_pin mr-2" }, [
+                            _vm._v(
+                              " \n                    " +
+                                _vm._s(
+                                  _vm._f("lableCode")(
+                                    _vm.time_zone_id,
+                                    _vm.lists.timeZones,
+                                    true
+                                  )
+                                ) +
+                                " - " +
+                                _vm._s(
+                                  _vm._f("lableCode")(
+                                    _vm.country_code,
+                                    _vm.lists.countries
+                                  )
+                                ) +
+                                "\n                  "
+                            )
+                          ])
                         ]),
                         _vm._v(" "),
-                        _c("div", { staticClass: "h5 mt-4" }, [
-                          _c("i", {
-                            staticClass: "ni business_briefcase-24 mr-2"
-                          }),
-                          _vm._v(_vm._s(_vm.lists.countries[_vm.country_code]))
-                        ]),
-                        _vm._v(" "),
-                        _c("hr", { staticClass: "my-4" }),
-                        _vm._v(" "),
-                        _c("p", [_vm._v(_vm._s(_vm.description))])
+                        _c("div", [
+                          _c("i", { staticClass: "ni education_hat mr-2" }, [
+                            _vm._v(
+                              "\n                    " +
+                                _vm._s(_vm.description) +
+                                "\n                  "
+                            )
+                          ])
+                        ])
                       ]
                     )
                   ])
@@ -67312,111 +67351,21 @@ var render = function() {
                           _vm._m(1),
                           _vm._v(" "),
                           _vm.$router.currentRoute.name !== "user.new"
-                            ? [
-                                _c("div", { staticClass: "col text-right" }, [
-                                  _c(
-                                    "div",
-                                    {
-                                      staticClass: "btn-group ",
-                                      attrs: { role: "group" }
-                                    },
-                                    [
-                                      _vm.isRole("AD")
-                                        ? _c(
-                                            "button",
-                                            {
-                                              staticClass:
-                                                "btn btn-sm btn-primary",
-                                              attrs: {
-                                                title: "User Create",
-                                                disabled:
-                                                  _vm.action === "create"
-                                                    ? true
-                                                    : false,
-                                                type: "button"
-                                              },
-                                              on: {
-                                                click: function($event) {
-                                                  return _vm.setAction("create")
-                                                }
-                                              }
-                                            },
-                                            [
-                                              _vm._v(
-                                                "\n                        Create\n                      "
-                                              )
-                                            ]
-                                          )
-                                        : _vm._e(),
-                                      _vm._v(" "),
-                                      _vm.id === _vm.currentUser.id ||
-                                      _vm.isRole("AD")
-                                        ? _c(
-                                            "button",
-                                            {
-                                              staticClass:
-                                                "btn btn-sm btn-primary",
-                                              attrs: {
-                                                title: "User Update",
-                                                disabled:
-                                                  _vm.action === "create" ||
-                                                  _vm.action === "update"
-                                                    ? true
-                                                    : false,
-                                                type: "button"
-                                              },
-                                              on: {
-                                                click: function($event) {
-                                                  return _vm.setAction("update")
-                                                }
-                                              }
-                                            },
-                                            [
-                                              _vm._v(
-                                                "\n                        Edit\n                      "
-                                              )
-                                            ]
-                                          )
-                                        : _vm._e(),
-                                      _vm._v(" "),
-                                      _vm.isRole("AD")
-                                        ? _c(
-                                            "button",
-                                            {
-                                              staticClass:
-                                                "btn btn-sm btn-primary",
-                                              attrs: {
-                                                title: "User Delete",
-                                                disabled:
-                                                  _vm.action === "create" ||
-                                                  _vm.action === "destroy" ||
-                                                  _vm.id === _vm.currentUser.id
-                                                    ? true
-                                                    : false,
-                                                type: "button"
-                                              },
-                                              on: {
-                                                click: function($event) {
-                                                  return _vm.setAction(
-                                                    "destroy"
-                                                  )
-                                                }
-                                              }
-                                            },
-                                            [
-                                              _vm._v(
-                                                "\n                        Delete\n                      "
-                                              )
-                                            ]
-                                          )
-                                        : _vm._e()
-                                    ]
-                                  )
-                                ])
-                              ]
+                            ? _c("userActions", {
+                                attrs: {
+                                  action: _vm.action,
+                                  current: _vm.id === _vm.currentUser.id,
+                                  admin: _vm.isRole("AD")
+                                },
+                                on: {
+                                  setAction: function($event) {
+                                    return _vm.setAction($event)
+                                  }
+                                }
+                              })
                             : _vm._e()
                         ],
-                        2
+                        1
                       ),
                       _vm._v(" "),
                       _c(
@@ -67652,7 +67601,10 @@ var render = function() {
                                   staticClass: "form-control",
                                   attrs: { type: "text", readonly: "" },
                                   domProps: {
-                                    value: _vm.lists.countries[_vm.country_code]
+                                    value: _vm._f("lableCode")(
+                                      _vm.country_code,
+                                      _vm.lists.countries
+                                    )
                                   }
                                 })
                               : _vm._e(),
@@ -67766,11 +67718,11 @@ var render = function() {
                                         staticClass: "form-control",
                                         attrs: { type: "text", readonly: "" },
                                         domProps: {
-                                          value: _vm.country_code
-                                            ? _vm.lists.timeZones[
-                                                _vm.country_code
-                                              ][_vm.time_zone_id]
-                                            : ""
+                                          value: _vm._f("lableCode")(
+                                            _vm.time_zone_id,
+                                            _vm.lists.timeZones,
+                                            true
+                                          )
                                         }
                                       })
                                     : _vm._e(),
@@ -68010,106 +67962,27 @@ var render = function() {
                             },
                             on: {
                               callback: function($event) {
-                                return _vm.setTimeChedule($event)
+                                return _vm.setTimeSchedule($event)
                               }
                             }
                           })
                         : _vm._e(),
                       _vm._v(" "),
-                      _c(
-                        "div",
-                        { staticClass: "text-center" },
-                        [
-                          _vm.loading
-                            ? _c(
-                                "button",
-                                {
-                                  staticClass:
-                                    "float-left btn btn-outline-primary border-0 mt-4",
-                                  attrs: { type: "button", disabled: "" }
-                                },
-                                [
-                                  _c("span", {
-                                    staticClass: "spinner-grow spinner-grow-sm",
-                                    attrs: {
-                                      role: "status",
-                                      "aria-hidden": "true"
-                                    }
-                                  }),
-                                  _vm._v(
-                                    "\n                  Loading...\n                "
-                                  )
-                                ]
-                              )
-                            : _vm._e(),
-                          _vm._v(" "),
-                          _vm.action !== "show" &&
-                          _vm.$router.currentRoute.name !== "user.new"
-                            ? _c(
-                                "button",
-                                {
-                                  staticClass:
-                                    "ml-2 float-right btn btn-default mt-4 ",
-                                  class: { disabled: _vm.loading },
-                                  attrs: {
-                                    type: "button",
-                                    disabled: _vm.loading
-                                  },
-                                  on: {
-                                    click: function($event) {
-                                      return _vm.setAction("show")
-                                    }
-                                  }
-                                },
-                                [
-                                  _vm._v(
-                                    "\n                  Cancel\n                "
-                                  )
-                                ]
-                              )
-                            : _vm._e(),
-                          _vm._v(" "),
-                          _vm.isEdit
-                            ? _c(
-                                "button",
-                                {
-                                  class: {
-                                    "float-right btn btn-success mt-4": true,
-                                    disabled: !_vm.isFormValid || _vm.loading
-                                  },
-                                  attrs: {
-                                    type: "submit",
-                                    disabled: !_vm.isFormValid || _vm.loading
-                                  }
-                                },
-                                [
-                                  _vm._v(
-                                    "\n                  Save\n                "
-                                  )
-                                ]
-                              )
-                            : _vm._e(),
-                          _vm._v(" "),
-                          _vm.action === "destroy"
-                            ? _c("button-confirmation", {
-                                class: {
-                                  "float-right btn  btn-danger mt-4": true,
-                                  disabled: _vm.loading
-                                },
-                                attrs: {
-                                  messages: [
-                                    "destroy User",
-                                    "Are you sure?",
-                                    "Ok!"
-                                  ],
-                                  disabled: _vm.loading
-                                },
-                                on: { "confirmation-success": _vm.submit }
-                              })
-                            : _vm._e()
-                        ],
-                        1
-                      )
+                      _c("userSubmit", {
+                        attrs: {
+                          loading: _vm.loading,
+                          action: _vm.action,
+                          cancel: _vm.$router.currentRoute.name !== "user.new",
+                          isEdit: _vm.isEdit,
+                          submit: _vm.isFormValid
+                        },
+                        on: {
+                          submitFrom: _vm.submit,
+                          setAction: function($event) {
+                            return _vm.setAction($event)
+                          }
+                        }
+                      })
                     ],
                     1
                   )
@@ -68631,17 +68504,26 @@ var render = function() {
               ) {
                 return _c("div", { key: index, staticClass: "col-xl-4" }, [
                   _c("div", { staticClass: "card border-0 my-4" }, [
-                    _c("div", { staticClass: "card-profile-image" }, [
-                      _c("a", { attrs: { href: "#" } }, [
-                        _c("img", {
-                          ref: "img",
-                          refInFor: true,
-                          staticClass: "card-img-top rounded-circle",
-                          staticStyle: { width: "7rem", height: "7rem" },
-                          attrs: { src: "/uploads/avatar/" + item.avatar }
-                        })
-                      ])
-                    ]),
+                    _c(
+                      "div",
+                      { staticClass: "card-profile-image" },
+                      [
+                        _c(
+                          "router-link",
+                          { attrs: { to: "/teachers/" + item.id } },
+                          [
+                            _c("img", {
+                              ref: "img",
+                              refInFor: true,
+                              staticClass: "card-img-top rounded-circle",
+                              staticStyle: { width: "7rem", height: "7rem" },
+                              attrs: { src: "/uploads/avatar/" + item.avatar }
+                            })
+                          ]
+                        )
+                      ],
+                      1
+                    ),
                     _vm._v(" "),
                     _c("div", { staticClass: "card-body text-center mt-6" }, [
                       _c("h3", [
@@ -68777,11 +68659,12 @@ if (false) {
 /* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
+var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = null
+var __vue_script__ = __webpack_require__(144)
 /* template */
-var __vue_template__ = null
+var __vue_template__ = __webpack_require__(145)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -68799,6 +68682,22 @@ var Component = normalizeComponent(
   __vue_module_identifier__
 )
 Component.options.__file = "resources/assets/js/views/teacher/teacher.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-8903975c", Component.options)
+  } else {
+    hotAPI.reload("data-v-8903975c", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
 
 module.exports = Component.exports
 
@@ -69676,6 +69575,587 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 114 */,
+/* 115 */,
+/* 116 */,
+/* 117 */,
+/* 118 */,
+/* 119 */,
+/* 120 */,
+/* 121 */,
+/* 122 */,
+/* 123 */,
+/* 124 */,
+/* 125 */,
+/* 126 */,
+/* 127 */,
+/* 128 */,
+/* 129 */,
+/* 130 */,
+/* 131 */,
+/* 132 */,
+/* 133 */,
+/* 134 */,
+/* 135 */,
+/* 136 */,
+/* 137 */,
+/* 138 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(139)
+/* template */
+var __vue_template__ = __webpack_require__(140)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/views/user/user-actions.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-3e6b241c", Component.options)
+  } else {
+    hotAPI.reload("data-v-3e6b241c", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 139 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: 'user-actions',
+  props: ['action', 'current', 'admin'],
+  methods: {
+    setAction: function setAction(action) {
+      this.$emit("setAction", action);
+    }
+  }
+});
+
+/***/ }),
+/* 140 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "col text-right" }, [
+    _c("div", { staticClass: "btn-group ", attrs: { role: "group" } }, [
+      _vm.admin
+        ? _c(
+            "button",
+            {
+              staticClass: "btn btn-sm btn-primary",
+              attrs: {
+                title: "User Create",
+                disabled: _vm.action === "create" ? true : false,
+                type: "button"
+              },
+              on: {
+                click: function($event) {
+                  return _vm.setAction("create")
+                }
+              }
+            },
+            [_vm._v("\n      Create\n    ")]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.current || _vm.admin
+        ? _c(
+            "button",
+            {
+              staticClass: "btn btn-sm btn-primary",
+              attrs: {
+                title: "User Update",
+                disabled:
+                  _vm.action === "create" || _vm.action === "update"
+                    ? true
+                    : false,
+                type: "button"
+              },
+              on: {
+                click: function($event) {
+                  return _vm.setAction("update")
+                }
+              }
+            },
+            [_vm._v("\n      Edit\n    ")]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.admin
+        ? _c(
+            "button",
+            {
+              staticClass: "btn btn-sm btn-primary",
+              attrs: {
+                title: "User Delete",
+                disabled:
+                  _vm.action === "create" ||
+                  _vm.action === "destroy" ||
+                  _vm.current
+                    ? true
+                    : false,
+                type: "button"
+              },
+              on: {
+                click: function($event) {
+                  return _vm.setAction("destroy")
+                }
+              }
+            },
+            [_vm._v("\n      Delete\n    ")]
+          )
+        : _vm._e()
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-3e6b241c", module.exports)
+  }
+}
+
+/***/ }),
+/* 141 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(142)
+/* template */
+var __vue_template__ = __webpack_require__(143)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/views/user/user-submit.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-620cbac9", Component.options)
+  } else {
+    hotAPI.reload("data-v-620cbac9", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 142 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_buttonConfirmation__ = __webpack_require__(86);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_buttonConfirmation___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_buttonConfirmation__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: 'user-submit',
+  components: {
+    buttonConfirmation: __WEBPACK_IMPORTED_MODULE_0__components_buttonConfirmation___default.a
+  },
+  props: ['loading', 'action', 'cancel', 'isEdit', 'submit'],
+  methods: {
+    setAction: function setAction(action) {
+      this.$emit("setAction", action);
+    },
+    submitFrom: function submitFrom() {
+      this.$emit("submitFrom");
+    }
+  }
+});
+
+/***/ }),
+/* 143 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "text-center" },
+    [
+      _vm.loading
+        ? _c(
+            "button",
+            {
+              staticClass: "float-left btn btn-outline-primary border-0 mt-4",
+              attrs: { type: "button", disabled: "" }
+            },
+            [
+              _c("span", {
+                staticClass: "spinner-grow spinner-grow-sm",
+                attrs: { role: "status", "aria-hidden": "true" }
+              }),
+              _vm._v("\n    Loading...\n  ")
+            ]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.action !== "show" && _vm.cancel
+        ? _c(
+            "button",
+            {
+              staticClass: "ml-2 float-right btn btn-default mt-4 ",
+              class: { disabled: _vm.loading },
+              attrs: { type: "button", disabled: _vm.loading },
+              on: {
+                click: function($event) {
+                  return _vm.setAction("show")
+                }
+              }
+            },
+            [_vm._v("\n    Cancel\n  ")]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.isEdit
+        ? _c(
+            "button",
+            {
+              class: {
+                "float-right btn btn-success mt-4": true,
+                disabled: !_vm.submit || _vm.loading
+              },
+              attrs: { type: "submit", disabled: !_vm.submit || _vm.loading }
+            },
+            [_vm._v("\n    Save\n  ")]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.action === "destroy"
+        ? _c("buttonConfirmation", {
+            class: {
+              "float-right btn  btn-danger mt-4": true,
+              disabled: _vm.loading
+            },
+            attrs: {
+              messages: ["destroy User", "Are you sure?", "Ok!"],
+              disabled: _vm.loading
+            },
+            on: { "confirmation-success": _vm.submitFrom }
+          })
+        : _vm._e()
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-620cbac9", module.exports)
+  }
+}
+
+/***/ }),
+/* 144 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__header__ = __webpack_require__(98);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__header___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__header__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_calendar__ = __webpack_require__(75);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_calendar___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_calendar__);
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    headerTeacher: __WEBPACK_IMPORTED_MODULE_0__header___default.a,
+    calendar: __WEBPACK_IMPORTED_MODULE_1__components_calendar___default.a
+  },
+  data: function data() {
+    return {
+      teacher: {
+        id: this.$router.currentRoute.params.id
+      }
+    };
+  },
+
+  computed: {
+    hours: function hours() {
+      var hoursByDay = [];
+      for (var day in this.teacher.timeSchedule) {
+        hoursByDay = hoursByDay.concat(this.teacher.timeSchedule[day]);
+      }
+      return [[Math.min.apply(Math, _toConsumableArray(hoursByDay)), Math.max.apply(Math, _toConsumableArray(hoursByDay))]];
+    }
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    this.$store.dispatch('sendGet', { url: '/api/teacher/' + this.teacher.id, auth: true }).then(function (res) {
+      if (res.data.teacher) _this.teacher = res.data.teacher;
+    });
+  }
+});
+
+/***/ }),
+/* 145 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c("header-teacher", { attrs: { name: "" } }),
+      _vm._v(" "),
+      _c("div", { staticClass: "container-fluid mt--7" }, [
+        _c("div", { staticClass: "card card-profile shadow" }, [
+          _c("div", { staticClass: "px-4" }, [
+            _c("div", { staticClass: "row justify-content-center" }, [
+              _c("div", { staticClass: "col-lg-3 order-lg-2" }, [
+                _c("div", { staticClass: "card-profile-image" }, [
+                  _c("a", { attrs: { href: "#" } }, [
+                    _c("img", {
+                      ref: "img",
+                      staticClass: "rounded-circle",
+                      staticStyle: { width: "10rem", height: "10rem" },
+                      attrs: { src: "/uploads/avatar/" + _vm.teacher.avatar }
+                    })
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", {
+                staticClass:
+                  "col-lg-4 order-lg-3 text-lg-right align-self-lg-center"
+              }),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-lg-4 order-lg-1" })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "text-center mt-8" }, [
+              _c("h2", [_vm._v(_vm._s(_vm.teacher.name))]),
+              _vm._v(" "),
+              _c("div", { staticClass: "h4 font-weight-300" }, [
+                _c("i", { staticClass: "ni location_pin mr-2" }, [
+                  _vm._v(
+                    " \n              " +
+                      _vm._s(_vm.teacher.timeZone) +
+                      " - " +
+                      _vm._s(_vm.teacher.country) +
+                      "\n            "
+                  )
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", [
+                _c("i", { staticClass: "ni education_hat mr-2" }, [
+                  _vm._v(
+                    "\n              " +
+                      _vm._s(_vm.teacher.description) +
+                      "\n            "
+                  )
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "mt-5 py-5 border-top text-center" },
+              [_c("calendar", { attrs: { hours: _vm.hours } })],
+              1
+            )
+          ])
+        ])
+      ])
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-8903975c", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

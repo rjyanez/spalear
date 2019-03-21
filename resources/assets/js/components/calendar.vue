@@ -1,6 +1,5 @@
 <template lang="html">
   <div>
-    <!-- <calendar-piker /> -->
     <table class="calendar-table">
         <tr>
           <th class="title" :colspan="min+1">
@@ -25,21 +24,27 @@
         </tr>
         <tr>
           <th></th>
-          <th v-for="day in dayIndex" >
-            <small class="d-block">{{day.label.month}}</small>
-            {{day.label.day}}
-            <small class="d-block">{{day.label.week}}</small>
+          <th v-for="(day, key) in dayIndex" >
+            <a class="btn btn-link" @click="allDay(key)" role="buttom">
+              <small class="d-block">{{day.label.month}}</small>
+              {{day.label.day}}
+              <small class="d-block">{{day.label.week}}</small>
+            </a>
           </th>
         </tr>
         <template v-for="hour in hourRange">
           <tr v-for="(min, i) in [00,30]" :key="`${hour}-${i}`">
-            <td rowspan="2" v-if="i==0" class="hour">{{ hour | hourFormat }} : 00 </td>
+            <td rowspan="2" v-if="i==0" class="hour">
+              <a style="cursor: pointer" @click="allWeek(hour)" role="buttom">
+                {{ hour | hourFormat }} : 00 
+              </a>
+            </td>
             <td 
-              v-for="(day, keyHourRangeDay) in dayIndex" 
-              :key="`${hour}-${i}-${keyHourRangeDay}`"
-              @click="slot($event, day, hour, min)"
-              :class="{'active': isActive(day, hour, min)}"
-              :title="(isActive(day, hour, min))"
+              v-for="(day, key) in dayIndex" 
+              :key="`${key}-${hour}-${min}`"
+              @click="thisDay($event, day, hour, min)"
+              :class="{'active': isActive(day.value, key, hour, min)}"
+              :id="`${key}-${hour}-${min}`"
             >              
               {{ hour | hourFormat }} : {{ min | hourFormat}}
             </td>
@@ -60,21 +65,16 @@ export default {
   props: {
     hours : {
       type: Array,
-      default : ()=> [[6,13]]
+      default : ()=> [[6,19]]
     },
     min: {
       type: Number,
       default: 7
     },
-    dates : {
+    time_schedule : {
       type: Array,
-      default : ()=> [
-        {
-          event : 'evento de hoy',
-          date: new Date('2019','04','18','11','30')
-        }
-      ]
-    }
+      default : ()=> ([])        
+    }  
   },
   filters: {
     hourFormat(val){
@@ -84,7 +84,8 @@ export default {
   data() {
     return {
       dayIndex: [],      
-      current: new Date('2019','04','18','12','30'),
+      current: new Date(),
+      dates: this.time_schedule
     };
   },
   computed: {
@@ -115,15 +116,32 @@ export default {
     this.setDays()
   },
   methods: {
-    isActive(day, hour, min = 0){
+    isActive(day, week, hour, min = 0){
+
       let date = new Date(day)
-      let val = {}
-      let d1  = new Date(date.getFullYear(), date.getMonth(), date.getDate(), hour, min, 0)
-      for(let i in this.dates){
-        let d2 = new Date(this.dates[i]['date']) 
-        if (d1.getTime() === d2.getTime()) val = this.dates[i]          
+      date = new Date(date.getFullYear(), date.getMonth(), date.getDate(), hour, min, 0)
+     
+      for (const event in this.dates) {
+        const dateEvent = new Date(this.dates[event])
+        if(dateEvent.getTime() === date.getTime()) return true
       }
-      (val === {})? null: val        
+
+      let ele = document.getElementById(`${week}-${hour}-${min}`)
+      if(ele && ele.classList.contains("active")) ele.classList.remove("active")
+      return false
+           
+    },
+    allDay(day){
+      for(let i in this.hourRange){ 
+        this.callback(document.getElementById(`${day}-${this.hourRange[i]}-0`), this.dayIndex[day]['value'], this.hourRange[i], 0)
+        this.callback(document.getElementById(`${day}-${this.hourRange[i]}-3`), this.dayIndex[day]['value'], this.hourRange[i], 30)
+      }
+    },
+    allWeek(hour){
+      for(let i in this.dayIndex){ 
+        this.callback(document.getElementById(`${i}-${hour}-0`), this.dayIndex[i]['value'], hour, 0)
+        this.callback(document.getElementById(`${i}-${hour}-30`), this.dayIndex[i]['value'], hour, 30)
+      }
     },
     setDays(){
       this.dayIndex = []
@@ -179,17 +197,24 @@ export default {
     prevWeek(){
       this.current = this.nextDate(this.week.from.value,-this.min)
     },
-    slot(event, day, hour, min = 0) {
-      event.target.classList.toggle("active");
-      let date = new Date(day)
-      value = new Date(date.getFullYear(), date.getMonth(), date.getDate(), hour, min, 0)
-      
-      this.$emit("callback", {event: '', date: value});
+    thisDay(event, day, hour, min = 0) {
+      this.callback(event.target, day.value, hour, min)
+    },
+    callback(el, day, hour, min){
+      el.classList.toggle("active");
+      const date = new Date(day)
+      let value = new Date(date.getFullYear(), date.getMonth(), date.getDate(), hour, min, 0)
+      this.$emit("callback", value);
     }
+
   },
   watch:{
     week(){
       this.setDays()
+    },
+    time_schedule(val){
+      this.dates = {}
+      this.dates = val
     }
   }
 };

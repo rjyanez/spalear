@@ -78,8 +78,6 @@ class UserController extends Controller
       : []
     );
           
-    // $user = (object) array_merge( (array)$user, compact('time_chedule'));
-
     return response()->json(Json::response(compact('user','countries', 'timeZones','roles')), 200);
   }
   

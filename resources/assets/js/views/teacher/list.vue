@@ -41,9 +41,9 @@
             <div class="col-xl-4" v-for="(item, index) in (sortedActivity, filteredList)" :key="index">
               <div class="card border-0 my-4">
                 <div class="card-profile-image">
-                  <a href="#">
+                  <router-link :to="`/teachers/${item.id}`">
                     <img class="card-img-top rounded-circle" :src="`/uploads/avatar/${item.avatar}`" ref="img" style="width: 7rem; height: 7rem">
-                  </a>
+                  </router-link>
                 </div>
                 <div class="card-body text-center mt-6">               
                   <h3>

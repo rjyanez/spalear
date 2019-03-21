@@ -21,7 +21,7 @@ export default {
   props: {
     isEdit : false,
     time_schedule: {
-      type: Object,
+      type: Array,
       default : ()=> ({})        
     } 
   },
@@ -31,19 +31,10 @@ export default {
     }
   },
   methods: {
-    selectTime(event){
-      this.dates = event.list     
-      this.$emit("callback", {
-        list: event.list
-      });
+    selectTime(event){    
+      this.$emit("callback",event);
     }
   },
-  watch: {
-    time_schedule(val){
-      this.dates = {}
-      this.dates = val
-    }
-  }
 }
 </script>
 

@@ -17,12 +17,13 @@ use Illuminate\Support\Facades\Hash;
 $factory->define(App\User::class, function (Faker $faker) {
 	$roles = ['AD','SC','TE','ST'];
     return [
-        'name' => $faker->name,
-        'email' => $faker->unique()->safeEmail,
-        'password' => Hash::make('123456'),
+        'name'           => $faker->name,
+        'email'          => $faker->unique()->safeEmail,
+        'password'       => Hash::make('123456'),
         'remember_token' => str_random(10),
-        'country_code' => 'VE',
-      	'time_zone_id' => 418,
-      	'rol_code' =>  $roles[rand(0,3)]
+        'country_code'   => 'VE',
+        'time_zone_id'   => 418,
+        'description'    => $faker->paragraph,
+        'rol_code'       => $roles[rand(0,3)]
     ];
 });

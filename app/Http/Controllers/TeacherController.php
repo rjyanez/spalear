@@ -8,7 +8,8 @@ use App\User;
 
 class TeacherController extends Controller
 {
-    public function list(){
+    public function list()
+    {
         $teachers = User::where('rol_code', 'TE')
                       ->with(['rol','timeZone','country'])
                       ->get()
@@ -24,5 +25,34 @@ class TeacherController extends Controller
                         ];
                       })->toJson();  
         return response()->json(Json::response(compact('teachers')), 200);
+    }
+
+    public function show($id)
+    {
+      $teacher = User::whereId($id)
+                  ->where('rol_code','TE')
+                  ->with(['rol','timeZone','country','timeSchedule'])
+                  ->get()
+                  ->map(
+                    function ($item) {
+                      return [
+                        'id' => $item->id,
+                        'name' => $item->name, 
+                        'avatar' => $item->avatar,
+                        'description' => $item->description,
+                        'country' => $item->country->name, 
+                        'timeZone' => $item->timeZone->name,
+                        'timeSchedule' => $item->timeSchedule
+                                              ->groupBy('day')
+                                              ->map(function ($item, $key) {
+                                                return $item->pluck('hour');
+                                              }) 
+                      ];
+                    })
+                    ->first();
+      return response()->json(
+        Json::response(compact('teacher')), 
+        200
+      );
     }
 }

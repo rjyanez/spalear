@@ -32,13 +32,18 @@
                   <strong>{{ errors.first("avatar") }}</strong>
                 </span>
                 <div class="text-center" :class="{ 'mt-5': !isEdit, 'mt-4': isEdit }">
-                  <h3>
-                    {{ name }}
-                  </h3>
-                  <div class="h5 font-weight-300"><i class="ni location_pin mr-2"></i>{{ email }}</div>
-                  <div class="h5 mt-4"><i class="ni business_briefcase-24 mr-2"></i>{{ lists.countries[country_code] }}</div>
-                  <hr class="my-4" />
-                  <p>{{ description }}</p>
+                  <h2>{{ name }}</h2>
+                  {{ email }}
+                  <div class="h5 font-weight-300">
+                    <i class="ni location_pin mr-2"> 
+                      {{ time_zone_id | lableCode(lists.timeZones, true)}} - {{ country_code | lableCode(lists.countries) }}
+                    </i>              
+                  </div>
+                  <div>
+                    <i class="ni education_hat mr-2">
+                      {{ description }}
+                    </i>
+                  </div>
                 </div>
               </div>
             </div>
@@ -55,42 +60,13 @@
                   <div class="col">
                     <h6 class="heading-small text-muted mb-4">User information</h6>
                   </div>
-                  <template v-if="$router.currentRoute.name !== 'user.new'">
-                    <div class="col text-right">
-                      <div class="btn-group " role="group">
-                        <button
-                          v-if="isRole('AD')"
-                          title="User Create"
-                          class="btn btn-sm btn-primary"
-                          :disabled="action === 'create' ? true : false"
-                          @click="setAction('create')"
-                          type="button"
-                        >
-                          Create
-                        </button>
-                        <button
-                          v-if="id === currentUser.id || isRole('AD')"
-                          title="User Update"
-                          class="btn btn-sm btn-primary"
-                          :disabled="action === 'create' || action === 'update' ? true : false"
-                          @click="setAction('update')"
-                          type="button"
-                        >
-                          Edit
-                        </button>
-                        <button
-                          v-if="isRole('AD')"
-                          title="User Delete"
-                          class="btn btn-sm btn-primary"
-                          :disabled="action === 'create' || action === 'destroy' || id === currentUser.id ? true : false"
-                          @click="setAction('destroy')"
-                          type="button"
-                        >
-                          Delete
-                        </button>
-                      </div>
-                    </div>
-                  </template>
+                  <userActions 
+                    v-if="$router.currentRoute.name !== 'user.new'"
+                    :action="action"
+                    :current="id === currentUser.id"
+                    :admin="isRole('AD')"
+                    @setAction="setAction($event)" 
+                  />
                 </div>
                 <div class="pl-lg-4">
                   <div class="form-group">
@@ -141,7 +117,7 @@
                     >
                       <option v-for="(name, value) in lists.countries" :value="value" :key="value">{{ name }}</option>
                     </select>
-                    <input v-if="!isEdit" type="text" readonly class="form-control" :value="lists.countries[country_code]" />
+                    <input v-if="!isEdit" type="text" readonly class="form-control" :value="country_code | lableCode(lists.countries) " />
                     <span v-show="errors.has('country_code')" class="invalid-feedback d-block" role="alert">
                       <strong>{{ errors.first("country_code") }}</strong>
                     </span>
@@ -159,7 +135,7 @@
                       >
                         <option v-for="(name, value) in lists.timeZones[country_code]" :value="value" :key="value">{{ name }}</option>
                       </select>
-                      <input v-if="!isEdit" type="text" readonly class="form-control" :value="country_code ? lists.timeZones[country_code][time_zone_id] : ''" />
+                      <input v-if="!isEdit" type="text" readonly class="form-control" :value="time_zone_id | lableCode(lists.timeZones, true)" />
                       <span v-show="errors.has('time_zone_id')" class="invalid-feedback d-block" role="alert">
                         <strong>{{ errors.first("time_zone_id") }}</strong>
                       </span>
@@ -197,33 +173,21 @@
                   </div>
 
                 </div>
-                <userTeacher v-if="rol_code === 'TE'" :isEdit="isEdit" :time_schedule="time_schedule" @callback="setTimeChedule($event)"/>
-                <div class="text-center">
-                  <button v-if="loading" class="float-left btn btn-outline-primary border-0 mt-4" type="button" disabled>
-                    <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
-                    Loading...
-                  </button>
-                  <button
-                    v-if="action !== 'show' && $router.currentRoute.name !== 'user.new'"
-                    class="ml-2 float-right btn btn-default mt-4 "
-                    @click="setAction('show')"
-                    type="button"
-                    :disabled="loading"
-                    :class="{ disabled: loading }"
-                  >
-                    Cancel
-                  </button>
-                  <button v-if="isEdit" type="submit" :disabled="!isFormValid || loading" :class="{ 'float-right btn btn-success mt-4': true, disabled: !isFormValid || loading }">
-                    Save
-                  </button>
-                  <button-confirmation
-                    v-on:confirmation-success="submit"
-                    :messages="['destroy User', 'Are you sure?', 'Ok!']"
-                    v-if="action === 'destroy'"
-                    :disabled="loading"
-                    :class="{ 'float-right btn  btn-danger mt-4': true, disabled: loading }"
-                  />
-                </div>
+                <userTeacher 
+                  v-if="rol_code === 'TE'" 
+                  :isEdit="isEdit" 
+                  :time_schedule="time_schedule" 
+                  @callback="setTimeSchedule($event)
+                "/>
+                <userSubmit 
+                  :loading="loading"
+                  :action="action"
+                  :cancel="$router.currentRoute.name !== 'user.new'"
+                  :isEdit="isEdit"
+                  :submit="isFormValid"
+                  @submitFrom="submit"
+                  @setAction="setAction($event)"
+                />
               </div>
             </div>
           </div>
@@ -233,17 +197,19 @@
   </div>
 </template>
 <script>
-import { formData, addJsonToFormData } from "../../helpers/general";
-import headerUser from "./header";
-import buttonConfirmation from "../../components/buttonConfirmation";
+import { formData, addJsonToFormData, removeEmpty } from "../../helpers/general";
+import headerUser  from "./header"      ;
 import userTeacher from "./user-teacher"
+import userActions from "./user-actions"
+import userSubmit  from "./user-submit"
 
 export default {
   name: "user",
   components: {
     headerUser,
-    buttonConfirmation,
-    userTeacher
+    userTeacher,
+    userActions,
+    userSubmit
   },
   computed: {
     currentUser() {
@@ -308,6 +274,19 @@ export default {
       action: "show"
     };
   }, 
+  filters: {
+    lableCode(val, list, child = null){
+      if(child){
+        for (const parent in list) {
+          if (list[parent].hasOwnProperty(val)) {
+            return list[parent][val]
+          }
+        }
+      } else {
+        return list[val]
+      }
+    }
+  },
   mounted() {
     if (this.$router.currentRoute.name === "user.new") {
       this.setAction("create");
@@ -343,8 +322,20 @@ export default {
         fr.readAsDataURL(files[0]);
       }
     },
-    setTimeChedule(event){
-      this.time_schedule = event.list
+    setTimeSchedule(event){
+      if(!this.time_schedule.hasOwnProperty(event.day)) this.time_schedule[event.day] = [];
+      let day = this.time_schedule[event.day]
+      if(day.includes(event.hour)){ 
+        day.splice(day.indexOf(event.hour),1)
+      } else {
+        day.push(event.hour)
+      }
+      if(day.length === 0) {
+        delete this.time_schedule[event.day]
+        this.time_schedule = removeEmpty(this.time_schedule)
+      } else {
+        this.time_schedule[event.day] = day
+      }
     },
     setInfo(obj) {
       for (const val in obj) {
