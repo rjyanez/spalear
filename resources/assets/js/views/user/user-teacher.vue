@@ -21,7 +21,7 @@ export default {
   props: {
     isEdit : false,
     time_schedule: {
-      type: Array,
+      type: Object,
       default : ()=> ({})        
     } 
   },

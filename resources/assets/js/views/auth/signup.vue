@@ -10,7 +10,7 @@
                             <div class="form-group mb-3">
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="ni ni-badge"></i></span>
+                                        <span class="input-group-text"><i class="fas fa-address-card"></i></span>
                                     </div>
                                     <input v-validate="'required|alpha_spaces'" v-model="name" class="form-control" :class="{'is-invalid' : errors.has('name')}" placeholder="Fullname" type="text" name="name" value="" required autofocus>
                                 </div>
@@ -21,7 +21,7 @@
                             <div class="form-group mb-3">
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="ni ni-email-83"></i></span>
+                                        <span class="input-group-text"><i class="fas fa-envelope"></i></span>
                                     </div>
                                     <input v-validate="'required|email'" v-model="email" class="form-control" :class="{'is-invalid' : errors.has('email')}" placeholder="Email" type="email" name="email" value="" required>
                                 </div>
@@ -32,7 +32,7 @@
                             <div class="form-group">
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
+                                        <span class="input-group-text"><i class="fas fa-unlock-alt"></i></span>
                                     </div>
                                     <input v-validate="'required|min:6'" v-model="password" placeholder="Password" type="password" :class="{'form-control': true, 'is-invalid' : errors.has('password')}"  name="password" value="" required ref="password">           
                                 </div>
@@ -43,7 +43,7 @@
                             <div class="form-group">
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
+                                        <span class="input-group-text"><i class="fas fa-unlock-alt"></i></span>
                                     </div>
                                     <input v-validate="'required|min:6|confirmed:password'" v-model="password_confirmation" placeholder="Confirm Password" type="password" :class="{'form-control': true, 'is-invalid' : errors.has('password_confirmation')}"  name="password_confirmation" value="" required >           
                                 </div>
@@ -54,7 +54,7 @@
                             <div class="form-group">
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="ni ni-square-pin"></i></span>
+                                        <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
                                     </div>
                                     <select name="country_code" v-validate="'required'" v-model="country_code" :class="{'custom-select form-control': true, 'is-invalid' : errors.has('country_code')}" @change="time_zone_id = null" required>
                                         <option v-for="(name, value) in lists.countries" :value="value" :key="value" >{{ name }}</option>
@@ -67,7 +67,7 @@
                             <div class="form-group">
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="ni ni-watch-time"></i></span>
+                                        <span class="input-group-text"><i class="fas fa-clock"></i></span>
                                     </div>
                                     <select name="time_zone_id" v-validate="'required'" v-model="time_zone_id" :class="{'custom-select form-control': true, 'is-invalid' : errors.has('time_zone_id')}" required>
                                         <option v-for="(name, value) in lists.timeZones[country_code]" :value="value" :key="value" >{{ name }}</option>

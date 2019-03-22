@@ -10,7 +10,7 @@
                             <div class="form-group mb-3">
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="ni ni-email-83"></i></span>
+                                        <span class="input-group-text"><i class="fas fa-envelope"></i></span>
                                     </div>
                                     <input v-validate="'required|email'" v-model="email" class="form-control" :class="{'is-invalid' : errors.has('email')}" placeholder="Email" type="email" name="email" value="" required autofocus>
                                 </div>
@@ -21,7 +21,7 @@
                             <div class="form-group">
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
+                                        <span class="input-group-text"><i class="fas fa-unlock-alt"></i></span>
                                     </div>
                                     <input v-validate="'required|min:6'" v-model="password" placeholder="Password" type="password" :class="{'form-control': true, 'is-invalid' : errors.has('password')}"  name="password" value="" required >            
                                 </div>

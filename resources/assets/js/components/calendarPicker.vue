@@ -2,6 +2,18 @@
   <div>
     <table class="calendar-table">
         <tr>
+          <th class="title" :colspan="min+1">
+            <div>
+              <button type="button" @click="shift = 'AM'" :disabled="shift == 'AM'">
+                <i class="far fa-sun"></i> AM                
+              </button>
+              <button type="button" @click="shift = 'PM'" :disabled="shift == 'PM'">
+                <i class="far fa-moon"></i> PM                 
+              </button>
+            </div>
+          </th>
+        </tr>
+        <tr>
           <th></th>
           <th v-for="(day , value) in dayIndex">
             <a class="btn btn-link" @click="(isEdit)? allDay(value) : ''" role="buttom">
@@ -9,20 +21,20 @@
             </a>
           </th>
         </tr>
-        <tr v-for="(hour, i) in hourRange" :key="`${hour}-${i}`">
+        <tr v-for="(hour, i) in shiftHourRange" :key="`${hour}-${i}`">
           <td class="hour">
             <a style="cursor: pointer" @click="(isEdit)? allWeek(hour) : ''" role="buttom">
-              {{ hour | hourFormat }} : 00
+              {{ hour+':00' | hourFormat | timeConvert }}
             </a> 
           </td>
           <td 
-            v-for="(day, keyHourRangeDay) in dayIndex" 
-            :key="`${hour}-${i}-${keyHourRangeDay}`"
-            @click="(isEdit)? slot($event, {day: keyHourRangeDay, hour}) : ''"
-            :id="`${keyHourRangeDay}-${hour}`"
-            :class="isActive(keyHourRangeDay, hour) ? 'active' : ''"
+            v-for="(day, key) in dayIndex" 
+            :key="`${key}-${hour}`"
+            @click="(isEdit)? slot($event, {day: key, hour}) : ''"
+            :id="`${key}-${hour}`"
+            :class="isActive(key, hour) ? 'active' : ''"
           >         
-            {{ hour | hourFormat }} : 00
+            {{ hour+':00' | hourFormat | timeConvert }}
           </td>
         </tr>
     </table>
@@ -37,26 +49,43 @@ export default {
     isEdit: false,
     hours : {
       type: Array,
-      default : ()=> [[6,19]]
+      default : ()=> [[0,24]]
     },
     min: {
       type: Number,
       default: 7
     },
     time_schedule : {
-      type: Array,
-      default : ()=> ([])        
+      type: Object,
+      default : ()=> ({})        
     }    
   },
   filters: {
     hourFormat(val){
-      return (String(val).length === 1)? `0${val}` : String(val)
+      let time = val.toString()
+      if(time.length > 1){
+        time = time.split(':')
+        for(const i in time){
+          time[i] = time[i].length > 1 ? time[i] : `0${time[i]}`
+        }
+      }
+      return time.join(':')
+    },
+    timeConvert(val){
+      let time = val.toString()
+      if(time.length > 1){
+        time = time.split(':')
+        time[time.length - 1] += (time[0] < 12 ) ? ' AM' : ' PM'
+        time[0] = +time[0] % 12 || 12
+      }
+      return time.join(':')
     }
   },
   data() {
     return {
       dayIndex: [],      
       current: new Date(),
+      shift: 'AM',
       dates: this.time_schedule
     };
   },
@@ -64,12 +93,24 @@ export default {
     hourRange() {
       let values = []
       for( let key in this.hours){
-        let start = this.hours[key][0], end = this.hours[key][1]
-        for(let i = start; i < end; i++){
-          values.push(i)
+        if(typeof this.hours[key] === 'array' || typeof this.hours[key] === 'object'){
+          let start = parseInt(this.hours[key][0]), end = parseInt(this.hours[key][1])
+          if( Number.isInteger(start) &&  Number.isInteger(end)){
+            for(let i = start; i < end; i++){
+              values.push(i)
+            }
+          }
+        } else {
+          values.push(this.hours[key])
         }
       }
+      values.sort((a, b)=> a-b)
       return values
+    },
+    shiftHourRange(){
+      return (this.shift === 'AM')? 
+              this.hourRange.filter((hour)=> hour < 12) :
+              this.hourRange.filter((hour)=> hour >= 12)
     },
     todaysDate(){
       return this.formatDate(new Date(this.current), "short")

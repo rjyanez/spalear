@@ -33,8 +33,11 @@
             </div>
           </div>
           <div class="mt-5 py-5 border-top text-center">
-            <calendar 
-              :hours="hours"           
+            <calendar
+              class="mx-7" 
+              :hours="hours"
+              :time_schedule="teacher.timeSchedule"
+              :booked="booked"           
             />
           </div>
         </div>
@@ -55,7 +58,15 @@ export default {
     return {
       teacher: {
         id: this.$router.currentRoute.params.id
-      }
+      },
+      booked:[
+        {
+          date: '2019-04-10 15:30:00',
+        },
+        {
+          date:'2019-04-07 18:00:00',
+        }
+      ]
     }
   },
   computed: {
@@ -64,9 +75,7 @@ export default {
       for (const day in this.teacher.timeSchedule) {
         hoursByDay = hoursByDay.concat(this.teacher.timeSchedule[day])          
       }
-      return [
-        [Math.min(...hoursByDay),Math.max(...hoursByDay)]
-      ]
+      return [...hoursByDay]
     }
   },
   mounted(){

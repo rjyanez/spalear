@@ -1,7 +1,6 @@
 <template>
   <div>
     <header-empty/>
-    <calendar/>
   </div>
 </template>
 <script>
@@ -11,8 +10,7 @@ import calendar from '../components/calendar.vue'
 export default {
   name: 'dashboard',
   components: {
-    headerEmpty,
-    calendar
+    headerEmpty
   }
 }
 </script>

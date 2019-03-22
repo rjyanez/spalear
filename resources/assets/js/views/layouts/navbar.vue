@@ -30,7 +30,7 @@
 	            <ul :class="{'navbar-nav ml-auto': true, 'align-items-center d-none d-md-flex': isLoggedIn}">
 	                <li class="nav-item" v-for="link in links[(isLoggedIn)? 'auth' : 'guest' ]" :key="link.code">
 	                    <router-link class="nav-link nav-link-icon" :to="link.url">
-	                        <i class="ni" :class="link.icon" ></i>
+	                        <i :class="link.icon" ></i>
 	                        <span class="nav-link-inner--text">{{ link.title }}</span>
 	                    </router-link>
 	                </li>
@@ -48,8 +48,8 @@ export default {
 			links:{
 				auth :[],
 				guest : [
-					{code:'register', title:'Register', url:'/signup',icon:'ni-circle-08'},
-					{code:'login', title:'Login', url:'/login',icon:'ni-key-25'}
+					{code:'register', title:'Register', url:'/signup',icon:'fas fa-user-circle'},
+					{code:'login', title:'Login', url:'/login',icon:'fas fa-key'}
 				]
 			}
 		}

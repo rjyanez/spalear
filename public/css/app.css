@@ -9192,14 +9192,18 @@ fieldset:disabled a.btn {
 }
 
 .btn-primary,
-table.calendar-table tr td.active:not(.hour) {
+table.calendar-table tr td.active:not(.hour),
+table.calendar-table tr td.disabled.active,
+table.calendar-table tr td.booked.active {
   color: #fff;
   background-color: #3490dc;
   border-color: #3490dc;
 }
 
 .btn-primary:hover,
-table.calendar-table tr td.active:hover:not(.hour) {
+table.calendar-table tr td.active:hover:not(.hour),
+table.calendar-table tr td.disabled.active:hover,
+table.calendar-table tr td.booked.active:hover {
   color: #fff;
   background-color: #227dc7;
   border-color: #2176bd;
@@ -9207,16 +9211,22 @@ table.calendar-table tr td.active:hover:not(.hour) {
 
 .btn-primary:focus,
 table.calendar-table tr td.active:focus:not(.hour),
+table.calendar-table tr td.disabled.active:focus,
+table.calendar-table tr td.booked.active:focus,
 .btn-primary.focus,
-table.calendar-table tr td.focus.active:not(.hour) {
+table.calendar-table tr td.focus.active:not(.hour),
+table.calendar-table tr td.focus.disabled.active,
+table.calendar-table tr td.focus.booked.active {
   -webkit-box-shadow: 0 0 0 0.2rem rgba(82, 161, 225, 0.5);
           box-shadow: 0 0 0 0.2rem rgba(82, 161, 225, 0.5);
 }
 
 .btn-primary.disabled,
-table.calendar-table tr td.disabled.active:not(.hour),
+table.calendar-table tr td.disabled.active,
 .btn-primary:disabled,
-table.calendar-table tr td.active:disabled:not(.hour) {
+table.calendar-table tr td.active:disabled:not(.hour),
+table.calendar-table tr td.disabled.active:disabled,
+table.calendar-table tr td.booked.active:disabled {
   color: #fff;
   background-color: #3490dc;
   border-color: #3490dc;
@@ -9224,10 +9234,16 @@ table.calendar-table tr td.active:disabled:not(.hour) {
 
 .btn-primary:not(:disabled):not(.disabled):active,
 table.calendar-table tr td.active:not(:disabled):not(.disabled):active:not(.hour),
+table.calendar-table tr td.disabled.active:not(:disabled):not(.disabled):active,
+table.calendar-table tr td.booked.active:not(:disabled):not(.disabled):active,
 .btn-primary:not(:disabled):not(.disabled).active,
 table.calendar-table tr td:not(:disabled):not(.disabled).active:not(.hour),
+table.calendar-table tr td.disabled:not(:disabled):not(.disabled).active,
+table.calendar-table tr td.booked:not(:disabled):not(.disabled).active,
 .show > .btn-primary.dropdown-toggle,
-table.calendar-table tr .show > td.dropdown-toggle.active:not(.hour) {
+table.calendar-table tr .show > td.dropdown-toggle.active:not(.hour),
+table.calendar-table tr .show > td.dropdown-toggle.disabled.active,
+table.calendar-table tr .show > td.dropdown-toggle.booked.active {
   color: #fff;
   background-color: #2176bd;
   border-color: #1f6fb2;
@@ -9235,10 +9251,16 @@ table.calendar-table tr .show > td.dropdown-toggle.active:not(.hour) {
 
 .btn-primary:not(:disabled):not(.disabled):active:focus,
 table.calendar-table tr td.active:not(:disabled):not(.disabled):active:focus:not(.hour),
+table.calendar-table tr td.disabled.active:not(:disabled):not(.disabled):active:focus,
+table.calendar-table tr td.booked.active:not(:disabled):not(.disabled):active:focus,
 .btn-primary:not(:disabled):not(.disabled).active:focus,
 table.calendar-table tr td:not(:disabled):not(.disabled).active:focus:not(.hour),
+table.calendar-table tr td.disabled:not(:disabled):not(.disabled).active:focus,
+table.calendar-table tr td.booked:not(:disabled):not(.disabled).active:focus,
 .show > .btn-primary.dropdown-toggle:focus,
-table.calendar-table tr .show > td.dropdown-toggle.active:focus:not(.hour) {
+table.calendar-table tr .show > td.dropdown-toggle.active:focus:not(.hour),
+table.calendar-table tr .show > td.dropdown-toggle.disabled.active:focus,
+table.calendar-table tr .show > td.dropdown-toggle.booked.active:focus {
   -webkit-box-shadow: 0 0 0 0.2rem rgba(82, 161, 225, 0.5);
           box-shadow: 0 0 0 0.2rem rgba(82, 161, 225, 0.5);
 }
@@ -20954,7 +20976,9 @@ fieldset:disabled a.btn {
 }
 
 .btn-primary,
-table.calendar-table tr td.active:not(.hour) {
+table.calendar-table tr td.active:not(.hour),
+table.calendar-table tr td.disabled.active,
+table.calendar-table tr td.booked.active {
   color: #fff;
   border-color: #5e72e4;
   background-color: #5e72e4;
@@ -20963,7 +20987,9 @@ table.calendar-table tr td.active:not(.hour) {
 }
 
 .btn-primary:hover,
-table.calendar-table tr td.active:hover:not(.hour) {
+table.calendar-table tr td.active:hover:not(.hour),
+table.calendar-table tr td.disabled.active:hover,
+table.calendar-table tr td.booked.active:hover {
   color: #fff;
   border-color: #5e72e4;
   background-color: #5e72e4;
@@ -20971,16 +20997,22 @@ table.calendar-table tr td.active:hover:not(.hour) {
 
 .btn-primary:focus,
 table.calendar-table tr td.active:focus:not(.hour),
+table.calendar-table tr td.disabled.active:focus,
+table.calendar-table tr td.booked.active:focus,
 .btn-primary.focus,
-table.calendar-table tr td.focus.active:not(.hour) {
+table.calendar-table tr td.focus.active:not(.hour),
+table.calendar-table tr td.focus.disabled.active,
+table.calendar-table tr td.focus.booked.active {
   -webkit-box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08), 0 0 0 0 rgba(94, 114, 228, 0.5);
           box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08), 0 0 0 0 rgba(94, 114, 228, 0.5);
 }
 
 .btn-primary.disabled,
-table.calendar-table tr td.disabled.active:not(.hour),
+table.calendar-table tr td.disabled.active,
 .btn-primary:disabled,
-table.calendar-table tr td.active:disabled:not(.hour) {
+table.calendar-table tr td.active:disabled:not(.hour),
+table.calendar-table tr td.disabled.active:disabled,
+table.calendar-table tr td.booked.active:disabled {
   color: #fff;
   border-color: #5e72e4;
   background-color: #5e72e4;
@@ -20988,10 +21020,16 @@ table.calendar-table tr td.active:disabled:not(.hour) {
 
 .btn-primary:not(:disabled):not(.disabled):active,
 table.calendar-table tr td.active:not(:disabled):not(.disabled):active:not(.hour),
+table.calendar-table tr td.disabled.active:not(:disabled):not(.disabled):active,
+table.calendar-table tr td.booked.active:not(:disabled):not(.disabled):active,
 .btn-primary:not(:disabled):not(.disabled).active,
 table.calendar-table tr td:not(:disabled):not(.disabled).active:not(.hour),
+table.calendar-table tr td.disabled:not(:disabled):not(.disabled).active,
+table.calendar-table tr td.booked:not(:disabled):not(.disabled).active,
 .show > .btn-primary.dropdown-toggle,
-table.calendar-table tr .show > td.dropdown-toggle.active:not(.hour) {
+table.calendar-table tr .show > td.dropdown-toggle.active:not(.hour),
+table.calendar-table tr .show > td.dropdown-toggle.disabled.active,
+table.calendar-table tr .show > td.dropdown-toggle.booked.active {
   color: #fff;
   border-color: #5e72e4;
   background-color: #324cdd;
@@ -20999,10 +21037,16 @@ table.calendar-table tr .show > td.dropdown-toggle.active:not(.hour) {
 
 .btn-primary:not(:disabled):not(.disabled):active:focus,
 table.calendar-table tr td.active:not(:disabled):not(.disabled):active:focus:not(.hour),
+table.calendar-table tr td.disabled.active:not(:disabled):not(.disabled):active:focus,
+table.calendar-table tr td.booked.active:not(:disabled):not(.disabled):active:focus,
 .btn-primary:not(:disabled):not(.disabled).active:focus,
 table.calendar-table tr td:not(:disabled):not(.disabled).active:focus:not(.hour),
+table.calendar-table tr td.disabled:not(:disabled):not(.disabled).active:focus,
+table.calendar-table tr td.booked:not(:disabled):not(.disabled).active:focus,
 .show > .btn-primary.dropdown-toggle:focus,
-table.calendar-table tr .show > td.dropdown-toggle.active:focus:not(.hour) {
+table.calendar-table tr .show > td.dropdown-toggle.active:focus:not(.hour),
+table.calendar-table tr .show > td.dropdown-toggle.disabled.active:focus,
+table.calendar-table tr .show > td.dropdown-toggle.booked.active:focus {
   -webkit-box-shadow: none, 0 0 0 0 rgba(94, 114, 228, 0.5);
           box-shadow: none, 0 0 0 0 rgba(94, 114, 228, 0.5);
 }
@@ -39070,17 +39114,41 @@ html:not([dir='rtl']) .noUi-horizontal .noUi-handle {
   background-color: #3c4d69 !important;
 }
 
-table.calendar-table tr td {
-  border: 1px solid #e9ecef;
+table.calendar-table tr th.title {
+  border: none;
 }
 
-table.calendar-table tr td:not(.hour) {
+table.calendar-table tr td {
+  border: 1px solid #b7d7f3;
+}
+
+table.calendar-table tr td:not(.hour),
+table.calendar-table tr td.disabled,
+table.calendar-table tr td.booked {
   color: transparent;
+}
+
+table.calendar-table tr td:hover:not(.hour):not(.disabled):not(.booked) {
+  color: white;
+  background: #60a8e4;
+}
+
+table.calendar-table tr td.disabled,
+table.calendar-table tr td.booked {
+  background: #e9ecef;
+}
+
+table.calendar-table tr td:not(.hour),
+table.calendar-table tr td.booked {
   cursor: pointer;
 }
 
-table.calendar-table tr td:hover:not(.hour) {
+table.calendar-table tr td.booked {
+  background: #fbcda0;
+}
+
+table.calendar-table tr td.booked:hover {
   color: white;
-  background: #8a98eb;
+  background: #f6993f;
 }
 

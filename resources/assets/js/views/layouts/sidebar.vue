@@ -93,7 +93,7 @@
             <ul v-if="show" ul class="navbar-nav">
                 <li class="nav-item" v-for="link in links[show]" :key="link.name">
                     <router-link class="nav-link" :to="link.url">
-                        <i class="ni" :class="link.icon"></i> {{ link.title }}
+                        <i :class="link.icon"></i> {{ link.title }}
                     </router-link>
                 </li>
             </ul>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <header-user :name="name" :description="description" />
+    <header-user :name="name" />
     <form enctype="multipart/form-data" @submit.prevent="submit" autocomplete="off" ref="form">
       <input name="_method" type="hidden" :value="getMethod" />
       <div class="container-fluid mt--7">

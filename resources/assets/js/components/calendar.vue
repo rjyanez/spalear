@@ -4,8 +4,20 @@
         <tr>
           <th class="title" :colspan="min+1">
             <div>
+              <button type="button" @click="shift = 'AM'" :disabled="shift == 'AM'">
+                <i class="far fa-sun"></i> AM                
+              </button>
+              <button type="button" @click="shift = 'PM'" :disabled="shift == 'PM'">
+                <i class="far fa-moon"></i> PM                 
+              </button>
+            </div>
+          </th>
+        </tr>
+        <tr>
+          <th class="title" :colspan="min+1">
+            <div>
               <button type="button" @click="prevWeek">
-                <i class="ni ni-bold-left"></i>                 
+                <i class="fas fa-chevron-left"></i>                 
               </button>
               <a>
                 <small class="d-block">
@@ -17,37 +29,57 @@
                 </small>               
               </a>
               <button type="button" role="button" @click="nextWeek">
-                <i class="ni ni-bold-right"></i>                 
+                <i class="fas fa-chevron-right"></i>               
               </button>
             </div>
           </th>
         </tr>
         <tr>
-          <th></th>
-          <th v-for="(day, key) in dayIndex" >
-            <a class="btn btn-link" @click="allDay(key)" role="buttom">
-              <small class="d-block">{{day.label.month}}</small>
-              {{day.label.day}}
-              <small class="d-block">{{day.label.week}}</small>
-            </a>
+          <th v-if="shiftHourRange.length ===0" :colspan="dayIndex.length + 1">
+            the tutor does not have available hours on this shift
           </th>
+          <template v-else>
+            <th>
+              <button type="button" @click="current = new Date()" class="btn btn-link my-auto p-1">
+                  <i class="fas fa-calendar-week"></i> TODAY                 
+              </button>
+            </th>
+            <th v-for="(day, key) in dayIndex" >
+              <a
+              class="btn btn-link" 
+              @click="allDay(key)" 
+              role="buttom"
+              :class="{'text-orange': (String(new Date()).substring(0, 10) === String(day.value).substring(0, 10))}"
+              >
+                <small class="d-block">{{day.label.month}}</small>
+                {{day.label.day}}
+                <small class="d-block">{{day.label.week}}</small>
+              </a>
+            </th>
+          </template>
         </tr>
-        <template v-for="hour in hourRange">
-          <tr v-for="(min, i) in [00,30]" :key="`${hour}-${i}`">
+        <template v-for="hour in shiftHourRange">
+          <tr v-for="(min, i) in [00,30]" :key="`${hour}-${i}`" >
             <td rowspan="2" v-if="i==0" class="hour">
               <a style="cursor: pointer" @click="allWeek(hour)" role="buttom">
-                {{ hour | hourFormat }} : 00 
+                {{ hour+':00' | hourFormat | timeConvert }}
               </a>
-            </td>
-            <td 
-              v-for="(day, key) in dayIndex" 
+            </td> 
+            <calendarEventPicker 
+              v-for="(day, key) in dayIndex"
               :key="`${key}-${hour}-${min}`"
-              @click="thisDay($event, day, hour, min)"
-              :class="{'active': isActive(day.value, key, hour, min)}"
               :id="`${key}-${hour}-${min}`"
-            >              
-              {{ hour | hourFormat }} : {{ min | hourFormat}}
-            </td>
+              :date="day.value"
+              :hour="hour"
+              :min="min"
+              :isActive="isActive(day.value, key, hour, min)"
+              :isTimeSchedule="isTimeSchedule(key, hour)"
+              :isBooked="isBooked(day.value, key, hour, min)"
+              @clickBooked="thisBookedDay($event)"
+              @clickAddDay="thisDay(...$event)"
+            >
+              {{ hour+':'+min | hourFormat | timeConvert }}                                         
+            </calendarEventPicker>
           </tr>
         </template>
     </table>
@@ -55,49 +87,86 @@
 </template>
 
 <script>
-// import calendarPiker from './calendarPiker'
+import calendarEventPicker from './calendarEventPicker'
 
 export default {
   components: {
-    // calendarPiker
+    calendarEventPicker
   },
   name: 'calendar',
   props: {
     hours : {
       type: Array,
-      default : ()=> [[6,19]]
+      default : ()=> [[0,24]]
     },
     min: {
       type: Number,
       default: 7
     },
-    time_schedule : {
+    time_schedule:{
+      type: Object,
+      default : ()=> ({}) 
+    },
+    booked : {
       type: Array,
       default : ()=> ([])        
-    }  
+    },
+    booking : {
+      type: Object,
+      default : ()=> ({})        
+    }   
   },
   filters: {
     hourFormat(val){
-      return (String(val).length === 1)? `0${val}` : String(val)
+      let time = val.toString()
+      if(time.length > 1){
+        time = time.split(':')
+        for(const i in time){
+          time[i] = time[i].length > 1 ? time[i] : `0${time[i]}`
+        }
+      }
+      return time.join(':')
+    },
+    timeConvert(val){
+      let time = val.toString()
+      if(time.length > 1){
+        time = time.split(':')
+        time[time.length - 1] += (time[0] < 12 ) ? ' AM' : ' PM'
+        time[0] = +time[0] % 12 || 12
+      }
+      return time.join(':')
     }
   },
   data() {
     return {
-      dayIndex: [],      
+      dayIndex: [],
+      shift: 'AM',      
       current: new Date(),
-      dates: this.time_schedule
+      dates: this.booking
     };
   },
   computed: {
     hourRange() {
       let values = []
       for( let key in this.hours){
-        let start = this.hours[key][0], end = this.hours[key][1]
-        for(let i = start; i < end; i++){
-          values.push(i)
+        if(typeof this.hours[key] === 'array' || typeof this.hours[key] === 'object'){
+          let start = parseInt(this.hours[key][0]), end = parseInt(this.hours[key][1])
+          if( Number.isInteger(start) &&  Number.isInteger(end)){
+            for(let i = start; i < end; i++){
+              values.push(i)
+            }
+          }
+        } else {
+          values.push(this.hours[key])
         }
       }
+      values.sort((a, b)=> a-b)
       return values
+    },
+    shiftHourRange(){
+      return (this.shift === 'AM')? 
+              this.hourRange.filter((hour)=> hour < 12) :
+              this.hourRange.filter((hour)=> hour >= 12)
     },
     todaysDate(){
       return this.formatDate(new Date(this.current), "short")
@@ -116,6 +185,12 @@ export default {
     this.setDays()
   },
   methods: {
+    isTimeSchedule(week, hour){
+      if(this.time_schedule.hasOwnProperty(week)){
+        if(this.time_schedule[week].includes(hour)) return true
+      }
+      return false
+    },
     isActive(day, week, hour, min = 0){
 
       let date = new Date(day)
@@ -131,10 +206,21 @@ export default {
       return false
            
     },
+    isBooked(day, week, hour, min = 0){
+
+      let date = new Date(day)
+      date = new Date(date.getFullYear(), date.getMonth(), date.getDate(), hour, min, 0)
+     
+      for (const event in this.booked) {
+        const dateEvent = new Date(this.booked[event]['date'])
+        if(dateEvent.getTime() === date.getTime()) return this.booked[event]
+      }
+      return false           
+    },
     allDay(day){
       for(let i in this.hourRange){ 
         this.callback(document.getElementById(`${day}-${this.hourRange[i]}-0`), this.dayIndex[day]['value'], this.hourRange[i], 0)
-        this.callback(document.getElementById(`${day}-${this.hourRange[i]}-3`), this.dayIndex[day]['value'], this.hourRange[i], 30)
+        this.callback(document.getElementById(`${day}-${this.hourRange[i]}-30`), this.dayIndex[day]['value'], this.hourRange[i], 30)
       }
     },
     allWeek(hour){
@@ -198,13 +284,19 @@ export default {
       this.current = this.nextDate(this.week.from.value,-this.min)
     },
     thisDay(event, day, hour, min = 0) {
-      this.callback(event.target, day.value, hour, min)
+      this.callback(event.target, day, hour, min)
+    },
+    thisBookedDay(event){
+      console.log('thisBookedDay')
+
     },
     callback(el, day, hour, min){
-      el.classList.toggle("active");
-      const date = new Date(day)
-      let value = new Date(date.getFullYear(), date.getMonth(), date.getDate(), hour, min, 0)
-      this.$emit("callback", value);
+      if(el && !el.classList.contains("disabled") && !el.classList.contains("booked")){
+        el.classList.toggle("active");
+        const date = new Date(day)
+        let value = new Date(date.getFullYear(), date.getMonth(), date.getDate(), hour, min, 0)
+        this.$emit("callback", value);
+      }
     }
 
   },
@@ -212,7 +304,7 @@ export default {
     week(){
       this.setDays()
     },
-    time_schedule(val){
+    booked(val){
       this.dates = {}
       this.dates = val
     }
