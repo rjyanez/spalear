@@ -19,7 +19,7 @@
               <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
                 <div class="d-flex justify-content-between">
                   <label class="btn btn-sm btn-success float-right" :class="{ disabled: isEdit }">
-                    {{ lists.roles[rol_code] }}
+                    {{ rol }}
                   </label>
                   <label v-show="isEdit" class="btn btn-sm btn-default float-left" for="avatar">
                     Change
@@ -36,7 +36,7 @@
                   {{ email }}
                   <div class="h5 font-weight-300">
                     <i class="ni location_pin mr-2"> 
-                      {{ time_zone_id | lableCode(lists.timeZones, true)}} - {{ country_code | lableCode(lists.countries) }}
+                      {{ timeZone }} - {{ country }}
                     </i>              
                   </div>
                   <div>
@@ -117,7 +117,7 @@
                     >
                       <option v-for="(name, value) in lists.countries" :value="value" :key="value">{{ name }}</option>
                     </select>
-                    <input v-if="!isEdit" type="text" readonly class="form-control" :value="country_code | lableCode(lists.countries) " />
+                    <input v-if="!isEdit" type="text" readonly class="form-control" :value="country" />
                     <span v-show="errors.has('country_code')" class="invalid-feedback d-block" role="alert">
                       <strong>{{ errors.first("country_code") }}</strong>
                     </span>
@@ -135,7 +135,7 @@
                       >
                         <option v-for="(name, value) in lists.timeZones[country_code]" :value="value" :key="value">{{ name }}</option>
                       </select>
-                      <input v-if="!isEdit" type="text" readonly class="form-control" :value="time_zone_id | lableCode(lists.timeZones, true)" />
+                      <input v-if="!isEdit" type="text" readonly class="form-control" :value="timeZone" />
                       <span v-show="errors.has('time_zone_id')" class="invalid-feedback d-block" role="alert">
                         <strong>{{ errors.first("time_zone_id") }}</strong>
                       </span>
@@ -158,7 +158,7 @@
                   </div>
                   <div class="form-group" v-if="isRole('AD') && (id !== currentUser.id || action !== 'update')">
                     <label class="form-control-label" for="rol_code">Role</label>
-                    <input v-if="!isEdit" type="text" readonly class="form-control" :value="lists.roles[rol_code]" />
+                    <input v-if="!isEdit" type="text" readonly class="form-control" :value="rol" />
                     <template v-if="(id !== currentUser.id || action === 'create') && isEdit">
                       <div class="d-flex  justify-content-between mt-2">
                         <div class="custom-control custom-switch" v-for="(name, value) in lists.roles" :key="value">
@@ -176,8 +176,8 @@
                 <userTeacher 
                   v-if="rol_code === 'TE'" 
                   :isEdit="isEdit" 
-                  :time_schedule="time_schedule" 
-                  @callback="setTimeSchedule($event)
+                  :timeSchedule="timeSchedule" 
+                  @timeSelectedDate="setTimeSchedule($event)
                 "/>
                 <userSubmit 
                   :loading="loading"
@@ -197,7 +197,7 @@
   </div>
 </template>
 <script>
-import { formData, addJsonToFormData, removeEmpty } from "../../helpers/general";
+import { formData, addJsonToFormData, removeEmpty, formatDateToDataBase } from "../../helpers/general";
 import headerUser  from "./header"      ;
 import userTeacher from "./user-teacher"
 import userActions from "./user-actions"
@@ -244,12 +244,15 @@ export default {
       old: null,
       name: null,
       email: null,
+      country: "Venezuela",
       country_code: "VE",
+      timeZone: "America/Caracas",
       time_zone_id: 418,
       avatar: `no-img.png`,
       description: null,
       rol_code: "AD",
-      time_schedule: {},
+      rol: "Admin",
+      timeSchedule: {},
       lists: { countries: [], timeZones: [], roles: [] },
       routes: {
         create: {
@@ -274,19 +277,6 @@ export default {
       action: "show"
     };
   }, 
-  filters: {
-    lableCode(val, list, child = null){
-      if(child){
-        for (const parent in list) {
-          if (list[parent].hasOwnProperty(val)) {
-            return list[parent][val]
-          }
-        }
-      } else {
-        return list[val]
-      }
-    }
-  },
   mounted() {
     if (this.$router.currentRoute.name === "user.new") {
       this.setAction("create");
@@ -296,7 +286,7 @@ export default {
         if (res.data.timeZones) this.lists.timeZones = res.data.timeZones;
       });
     } else {
-      if (parseInt(this.id) === this.currentUser.id) this.$router.push(`/porfile`);
+      if (parseInt(this.id) === this.currentUser.id) this.$router.push(`/user/setting`);
       this.$store.dispatch("sendGet", { url: `/api/user/${this.id}`, auth: true }).then(res => {
         if (res.data.roles) this.lists.roles = res.data.roles;
         if (res.data.countries) this.lists.countries = res.data.countries;
@@ -323,24 +313,25 @@ export default {
       }
     },
     setTimeSchedule(event){
-      if(!this.time_schedule.hasOwnProperty(event.day)) this.time_schedule[event.day] = [];
-      let day = this.time_schedule[event.day]
-      if(day.includes(event.hour)){ 
-        day.splice(day.indexOf(event.hour),1)
-      } else {
-        day.push(event.hour)
-      }
-      if(day.length === 0) {
-        delete this.time_schedule[event.day]
-        this.time_schedule = removeEmpty(this.time_schedule)
-      } else {
-        this.time_schedule[event.day] = day
-      }
+      let index ,
+      find = this.timeSchedule.some((el, i) => {
+        index = i
+        return (
+          el.year === event.year &&  
+          el.month === event.month && 
+          el.week === event.week &&
+          el.day === event.day && 
+          el.hour === event.hour && 
+          el.min === event.min
+        )
+      });
+
+      (!find)? this.timeSchedule.push(event) : this.timeSchedule.splice(index,1)
     },
     setInfo(obj) {
       for (const val in obj) {
         if (this.hasOwnProperty(val)){
-          this[val] = obj[val]
+          this[val] = (val === 'timeSchedule')? formatDateToDataBase(obj[val]) : obj[val]
         } 
       }
     },
@@ -348,11 +339,15 @@ export default {
       this.name = null;
       this.email = null;
       this.country_code = "VE";
+      this.country = "Venezuela";
       this.time_zone_id = 418;
+      this.timeZone = "America/Caracas";
       this.avatar = `no-img.png`;
       this.description = null;
       this.rol_code = "AD";
-      this.time_schedule = {};
+      this.rol = "Admin";
+      this.timeSchedule = {};
+
 
     },
     setAction(val) {
@@ -365,13 +360,13 @@ export default {
       this.loading = true;
       this.$store.dispatch("sendPost", { 
         url: this.getAction, 
-        data: addJsonToFormData({ time_schedule: JSON.stringify(this.time_schedule) },formData(this.$refs.form)), 
+        data: addJsonToFormData({ time_schedule: JSON.stringify(this.timeSchedule) },formData(this.$refs.form)), 
         auth: true 
       }).then(res => {
         if (res) {
           if (parseInt(this.id) === this.currentUser.id) this.$store.commit("refresh");
           if (this.action === "destroy") {
-            this.$router.push({ path: `/porfile` });
+            this.$router.push({ path: `/user/setting` });
           } else if (this.action === "create") {
             this.$router.push({ path: `/user/${res.data.user.id}` });
             this.old = res.data.user;
@@ -388,6 +383,17 @@ export default {
         }
         this.loading = false;
       });
+    }
+  },
+  watch:{
+    country_code(val){
+      this.country = this.lists.countries[val]
+    },
+    time_zone_id(val){
+      this.timeZone = this.lists.timeZones[this.country_code][val]
+    },
+    rol_code(val){
+      this.rol = this.lists.roles[val]
     }
   }
 };

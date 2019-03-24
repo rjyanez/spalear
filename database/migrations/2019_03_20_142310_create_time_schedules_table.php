@@ -15,8 +15,8 @@ class CreateTimeSchedulesTable extends Migration
     {
         Schema::create('time_schedules', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('day');
-            $table->integer('hour');
+            $table->integer('week');
+            $table->time('hour');
             $table->integer('user_id');
             $table->timestamps();
 

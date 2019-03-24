@@ -11,7 +11,7 @@ class TeacherController extends Controller
     public function list()
     {
         $teachers = User::where('rol_code', 'TE')
-                      ->with(['rol','timeZone','country'])
+                      ->with(['rol','timeZone','country','timeSchedule'])
                       ->get()
                       ->map(function ($item) {
                         return [
@@ -21,7 +21,12 @@ class TeacherController extends Controller
                           'avatar' => $item->avatar,
                           'rol' => $item->rol->name,
                           'country' => $item->country->name, 
-                          'timeZone' => $item->timeZone->name
+                          'timeZone' => $item->timeZone->name,
+                          'timeSchedule' => $item->timeSchedule
+                                            ->groupBy('week')
+                                              ->map(function ($day) {
+                                              return $day->pluck('hour');         
+                                            })
                         ];
                       })->toJson();  
         return response()->json(Json::response(compact('teachers')), 200);
@@ -43,10 +48,10 @@ class TeacherController extends Controller
                         'country' => $item->country->name, 
                         'timeZone' => $item->timeZone->name,
                         'timeSchedule' => $item->timeSchedule
-                                              ->groupBy('day')
-                                              ->map(function ($item, $key) {
-                                                return $item->pluck('hour');
-                                              }) 
+                                            ->groupBy('week')
+                                              ->map(function ($day) {
+                                              return $day->pluck('hour');         
+                                            })
                       ];
                     })
                     ->first();

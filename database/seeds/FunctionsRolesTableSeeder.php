@@ -22,10 +22,15 @@ class FunctionsRolesTableSeeder extends Seeder
             [ 'function_code' => 'account' , 'rol_code' => 'TE' ],
             [ 'function_code' => 'account' , 'rol_code' => 'ST' ],
 
-            [ 'function_code' => 'porfile' , 'rol_code' => 'AD' ],
-            [ 'function_code' => 'porfile' , 'rol_code' => 'SC' ],
-            [ 'function_code' => 'porfile' , 'rol_code' => 'TE' ],
-            [ 'function_code' => 'porfile' , 'rol_code' => 'ST' ],
+            [ 'function_code' => 'user.porfile' , 'rol_code' => 'AD' ],
+            [ 'function_code' => 'user.porfile' , 'rol_code' => 'SC' ],
+            [ 'function_code' => 'user.porfile' , 'rol_code' => 'TE' ],
+            [ 'function_code' => 'user.porfile' , 'rol_code' => 'ST' ],
+
+            [ 'function_code' => 'user.setting' , 'rol_code' => 'AD' ],
+            [ 'function_code' => 'user.setting' , 'rol_code' => 'SC' ],
+            [ 'function_code' => 'user.setting' , 'rol_code' => 'TE' ],
+            [ 'function_code' => 'user.setting' , 'rol_code' => 'ST' ],            
 
             [ 'function_code' => 'user', 'rol_code' => 'AD' ],
             [ 'function_code' => 'user', 'rol_code' => 'SC' ],

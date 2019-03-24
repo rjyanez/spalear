@@ -13,7 +13,7 @@
             </div>
           </th>
         </tr>
-        <tr>
+        <tr v-if="!picker">
           <th class="title" :colspan="min+1">
             <div>
               <button type="button" @click="prevWeek">
@@ -40,20 +40,25 @@
           </th>
           <template v-else>
             <th>
-              <button type="button" @click="current = new Date()" class="btn btn-link my-auto p-1">
+              <button  v-if="!picker" type="button" @click="current = new Date()" class="btn btn-link my-auto p-1">
                   <i class="fas fa-calendar-week"></i> TODAY                 
               </button>
             </th>
-            <th v-for="(day, key) in dayIndex" >
+            <th v-for="(day, week) in dayIndex" >
               <a
-              class="btn btn-link" 
-              @click="allDay(key)" 
-              role="buttom"
-              :class="{'text-orange': (String(new Date()).substring(0, 10) === String(day.value).substring(0, 10))}"
+                class="btn btn-link" 
+                @click="(isEdit)? allDay(week) : ''"
+                role="buttom"
+                :class="{'text-orange': (String(new Date()).substring(0, 10) === String(day.value).substring(0, 10))}"
               >
-                <small class="d-block">{{day.label.month}}</small>
-                {{day.label.day}}
-                <small class="d-block">{{day.label.week}}</small>
+                <template v-if="!picker">
+                  <small class="d-block">{{day.label.month}}</small>
+                  {{day.label.day}}
+                  <small class="d-block">{{day.label.week}}</small>
+                </template>
+                <template v-else>
+                  {{day.label.week}}
+                </template>   
               </a>
             </th>
           </template>
@@ -61,25 +66,22 @@
         <template v-for="hour in shiftHourRange">
           <tr v-for="(min, i) in [00,30]" :key="`${hour}-${i}`" >
             <td rowspan="2" v-if="i==0" class="hour">
-              <a style="cursor: pointer" @click="allWeek(hour)" role="buttom">
+              <a style="cursor: pointer" @click="(isEdit)? allWeek(hour) : ''" role="buttom">
                 {{ hour+':00' | hourFormat | timeConvert }}
               </a>
             </td> 
-            <calendarEventPicker 
-              v-for="(day, key) in dayIndex"
-              :key="`${key}-${hour}-${min}`"
-              :id="`${key}-${hour}-${min}`"
-              :date="day.value"
-              :hour="hour"
-              :min="min"
-              :isActive="isActive(day.value, key, hour, min)"
-              :isTimeSchedule="isTimeSchedule(key, hour)"
-              :isBooked="isBooked(day.value, key, hour, min)"
-              @clickBooked="thisBookedDay($event)"
-              @clickAddDay="thisDay(...$event)"
+            <calendarEvent 
+              v-for="(day, week) in dayIndex"
+              :key="`${week}-${hour}-${min}`"
+              :id="`${week}-${hour}-${min}`"
+              :date="objectDatesFormater(day.value, week, hour, min)"
+              :isSelected="isTimeSelectedDates(objectDatesFormater(day.value, week, hour, min))"
+              :isAllowed="isTimeAllowedDates(objectDatesFormater(day.value, week, hour, min))"
+              :isDlocked="isTimeDlockedDates(objectDatesFormater(day.value, week, hour, min))"
+              @clickAddDay="(isEdit)? thisDay(...$event) : ''"
             >
               {{ hour+':'+min | hourFormat | timeConvert }}                                         
-            </calendarEventPicker>
+            </calendarEvent>
           </tr>
         </template>
     </table>
@@ -87,14 +89,17 @@
 </template>
 
 <script>
-import calendarEventPicker from './calendarEventPicker'
+import calendarEvent from './calendarEvent'
+import {datesFrontendFormater} from './../helpers/general'
 
 export default {
   components: {
-    calendarEventPicker
+    calendarEvent
   },
   name: 'calendar',
   props: {
+    picker : false,
+    isEdit: false,
     hours : {
       type: Array,
       default : ()=> [[0,24]]
@@ -103,17 +108,17 @@ export default {
       type: Number,
       default: 7
     },
-    time_schedule:{
-      type: Object,
-      default : ()=> ({}) 
+    timeSelectedDates:{
+      type: Array,
+      default : ()=> ([]) 
     },
-    booked : {
+    timeAllowedDates : {
       type: Array,
       default : ()=> ([])        
     },
-    booking : {
-      type: Object,
-      default : ()=> ({})        
+    timeDlockedDates : {
+      type: Array,
+      default : ()=> ([])        
     }   
   },
   filters: {
@@ -142,7 +147,7 @@ export default {
       dayIndex: [],
       shift: 'AM',      
       current: new Date(),
-      dates: this.booking
+      selectedDates: this.timeSelectedDates
     };
   },
   computed: {
@@ -185,48 +190,68 @@ export default {
     this.setDays()
   },
   methods: {
-    isTimeSchedule(week, hour){
-      if(this.time_schedule.hasOwnProperty(week)){
-        if(this.time_schedule[week].includes(hour)) return true
+    objectDatesFormater(date, week, hour, min){
+      let val = []
+      if(this.picker){
+        val.push(`${hour}:${min}`)
+        val.push(week)
+      } else {
+        let d = new Date(date)
+        d.setHours(hour)
+        d.setMinutes(min)
+        val.push(d)
       }
-      return false
+      return datesFrontendFormater(...val)
     },
-    isActive(day, week, hour, min = 0){
-
-      let date = new Date(day)
-      date = new Date(date.getFullYear(), date.getMonth(), date.getDate(), hour, min, 0)
-     
-      for (const event in this.dates) {
-        const dateEvent = new Date(this.dates[event])
-        if(dateEvent.getTime() === date.getTime()) return true
-      }
-
-      let ele = document.getElementById(`${week}-${hour}-${min}`)
-      if(ele && ele.classList.contains("active")) ele.classList.remove("active")
-      return false
-           
+    isTimeSelectedDates(find){
+      return (this.selectedDates.length === 0)? false : this.selectedDates.some((el) => (
+        el.year === find.year &&  
+        el.month === find.month && 
+        el.week === find.week &&
+        el.day === find.day && 
+        el.hour === find.hour && 
+        el.min === find.min
+      ))
     },
-    isBooked(day, week, hour, min = 0){
-
-      let date = new Date(day)
-      date = new Date(date.getFullYear(), date.getMonth(), date.getDate(), hour, min, 0)
-     
-      for (const event in this.booked) {
-        const dateEvent = new Date(this.booked[event]['date'])
-        if(dateEvent.getTime() === date.getTime()) return this.booked[event]
-      }
-      return false           
+    isTimeAllowedDates(find){
+      return (this.timeAllowedDates.length === 0)? false : this.timeAllowedDates.some((el) => (
+        el.week === find.week &&
+        el.hour === find.hour && 
+        el.min === find.min
+      ))
     },
-    allDay(day){
+    isTimeDlockedDates(find){
+      return (this.timeDlockedDates.length === 0)? false : this.timeDlockedDates.some((el) => (
+        el.year === find.year &&  
+        el.month === find.month && 
+        el.week === find.week &&
+        el.day === find.day && 
+        el.hour === find.hour && 
+        el.min === find.min
+      ))
+    },
+    allDay(week){
       for(let i in this.hourRange){ 
-        this.callback(document.getElementById(`${day}-${this.hourRange[i]}-0`), this.dayIndex[day]['value'], this.hourRange[i], 0)
-        this.callback(document.getElementById(`${day}-${this.hourRange[i]}-30`), this.dayIndex[day]['value'], this.hourRange[i], 30)
+        this.emmitTimeSelectedDate(
+          document.getElementById(`${week}-${this.hourRange[i]}-0`), 
+          this.objectDatesFormater(this.dayIndex[week]['value'], week, this.hourRange[i], 0)
+        )
+        this.emmitTimeSelectedDate(
+          document.getElementById(`${week}-${this.hourRange[i]}-30`),
+          this.objectDatesFormater(this.dayIndex[week]['value'], week, this.hourRange[i], 30)
+        )
       }
     },
     allWeek(hour){
-      for(let i in this.dayIndex){ 
-        this.callback(document.getElementById(`${i}-${hour}-0`), this.dayIndex[i]['value'], hour, 0)
-        this.callback(document.getElementById(`${i}-${hour}-30`), this.dayIndex[i]['value'], hour, 30)
+      for(let week in this.dayIndex){ 
+        this.emmitTimeSelectedDate(
+          document.getElementById(`${week}-${hour}-0`), 
+          this.objectDatesFormater(this.dayIndex[week]['value'], week, hour, 0)
+        )
+        this.emmitTimeSelectedDate(
+          document.getElementById(`${week}-${hour}-30`), 
+          this.objectDatesFormater(this.dayIndex[week]['value'], week, hour, 30)
+        )
       }
     },
     setDays(){
@@ -253,8 +278,9 @@ export default {
         "October",
         "November",
         "December"
-      ],
-      weekDayNames = [
+      ]
+
+      let weekDayNames = [
         'Sunday',
         'Monday',
         'Tuesday',
@@ -262,16 +288,18 @@ export default {
         'Thursday',
         'Friday',
         'Saturday'
-      ],
-      day = date.getDate(),
-      monthIndex = date.getMonth(),
-      weekIndex = date.getDay(),
-      year = date.getFullYear(),
-      month = (type == "short") ? monthNames[monthIndex].slice(0, 3) : monthNames[monthIndex],
-      week = (type == "short") ? weekDayNames[weekIndex].slice(0, 3) : weekDayNames[weekIndex];
+      ]
+
+      let d = new Date(date)
+      let day = d.getDate()
+      let monthIndex = d.getMonth()
+      let weekIndex = d.getDay()
+      let year = d.getFullYear()
+      let month = (type == "short") ? monthNames[monthIndex].slice(0, 3) : monthNames[monthIndex]
+      let week = (type == "short") ? weekDayNames[weekIndex].slice(0, 3) : weekDayNames[weekIndex]
       return {
         label: { month, day, week },
-        value: date
+        value: d
       };
     },
     nextDate(date,index) {
@@ -283,19 +311,13 @@ export default {
     prevWeek(){
       this.current = this.nextDate(this.week.from.value,-this.min)
     },
-    thisDay(event, day, hour, min = 0) {
-      this.callback(event.target, day, hour, min)
+    thisDay(event, date) {
+      this.emmitTimeSelectedDate(event.target, date)
     },
-    thisBookedDay(event){
-      console.log('thisBookedDay')
-
-    },
-    callback(el, day, hour, min){
+    emmitTimeSelectedDate(el, date){
       if(el && !el.classList.contains("disabled") && !el.classList.contains("booked")){
         el.classList.toggle("active");
-        const date = new Date(day)
-        let value = new Date(date.getFullYear(), date.getMonth(), date.getDate(), hour, min, 0)
-        this.$emit("callback", value);
+        this.$emit("timeSelectedDate", date);
       }
     }
 
@@ -304,10 +326,6 @@ export default {
     week(){
       this.setDays()
     },
-    booked(val){
-      this.dates = {}
-      this.dates = val
-    }
   }
 };
 </script>

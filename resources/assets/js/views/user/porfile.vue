@@ -1,6 +1,6 @@
 <template>
   <div>
-    <header-teacher name=""/>
+    <header-user name=""/>
     <div class="container-fluid mt--7">
       <div class="card card-profile shadow">
         <div class="px-4">
@@ -8,7 +8,7 @@
             <div class="col-lg-3 order-lg-2">
               <div class="card-profile-image">
                 <a href="#">
-                  <img :src="`/uploads/avatar/${teacher.avatar}`" class="rounded-circle" ref="img" style="width: 10rem; height: 10rem" />
+                  <img :src="`/uploads/avatar/${user.avatar}`" class="rounded-circle" ref="img" style="width: 10rem; height: 10rem" />
                 </a>
               </div>
             </div>
@@ -20,24 +20,20 @@
             </div>
           </div>
           <div class="text-center mt-8">
-            <h2>{{ teacher.name }}</h2>
+            <h2>{{ user.name }}</h2>
             <div class="h4 font-weight-300">
               <i class="ni location_pin mr-2"> 
-                {{ teacher. timeZone}} - {{ teacher.country }}
+                {{ user. timeZone}} - {{ user.country }}
               </i>              
             </div>
             <div>
               <i class="ni education_hat mr-2">
-                {{ teacher.description }}
+                {{ user.description }}
               </i>
             </div>
           </div>
           <div class="mt-5 py-5 border-top text-center">
-            <calendar
-              class="mx-7" 
-              :hours="hours"
-              :timeAllowedDates="teacher.timeSchedule"        
-            />
+            
           </div>
         </div>
       </div>  
@@ -45,31 +41,27 @@
   </div>
 </template>
 <script>
-import headerTeacher from './header'
-import calendar from './../../components/calendar'
-import {formatDateToDataBase} from './../../helpers/general'
+import headerUser from './header'
 
 export default {
   components: {
-    headerTeacher,
-    calendar
+    headerUser
+  },
+  computed: {
+    currentUser() {
+      return ;
+    },
   },
   data(){
     return {
-      teacher: {
-        id: this.$router.currentRoute.params.id
-      },
-    }
-  },
-  computed: {
-    hours(){
-      return (this.teacher.timeSchedule)? this.teacher.timeSchedule.map(el => el.hour) : [[0,24]]
+      user: {
+        id: parseInt(this.$router.currentRoute.params.id) || this.$store.getters.currentUser.id
+      },      
     }
   },
   mounted(){
-    this.$store.dispatch('sendGet', { url:`/api/teacher/${this.teacher.id}`, auth: true}).then(res => {
-      if(res.data.teacher) this.teacher = res.data.teacher
-      if(res.data.teacher.timeSchedule) this.teacher.timeSchedule = formatDateToDataBase(res.data.teacher.timeSchedule)
+    this.$store.dispatch('sendGet', { url:`/api/user/${this.user.id}`, auth: true}).then(res => {
+      if(res.data.user) this.user = res.data.user
     })
   }
 }

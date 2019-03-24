@@ -16,18 +16,20 @@ class TimeSchedulesSeeder extends Seeder
         
         $teachers = DB::table('users')->select('id')->where('rol_code', 'TE')->get();
         $data = [];
+        $min = [0,30];
 
         foreach ($teachers as $key => $value) {
             
             for($i=0; $i < rand (1,3); $i++){
                 array_push($data,[
                     'user_id' => $value->id,
-                    'day'     => rand (0   ,6),
-                    'hour'    => rand (0   ,24),
+                    'week'     => rand (0   ,6),
+                    'hour'    => rand (0   ,24).':'.$min[rand(1,1)],
                 ]);
             }
         }
 
         DB::table('time_schedules')->insert($data);
+    
     }
 }

@@ -179,7 +179,7 @@ module.exports = function normalizeComponent (
 "use strict";
 
 
-var bind = __webpack_require__(8);
+var bind = __webpack_require__(10);
 var isBuffer = __webpack_require__(27);
 
 /*global toString:true*/
@@ -487,12 +487,14 @@ module.exports = {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["c"] = formDataToJson;
+/* harmony export (immutable) */ __webpack_exports__["d"] = formDataToJson;
 /* harmony export (immutable) */ __webpack_exports__["a"] = addJsonToFormData;
-/* harmony export (immutable) */ __webpack_exports__["b"] = formData;
-/* harmony export (immutable) */ __webpack_exports__["d"] = initialize;
-/* harmony export (immutable) */ __webpack_exports__["f"] = setAuthorization;
-/* harmony export (immutable) */ __webpack_exports__["e"] = removeEmpty;
+/* harmony export (immutable) */ __webpack_exports__["c"] = formData;
+/* harmony export (immutable) */ __webpack_exports__["f"] = initialize;
+/* harmony export (immutable) */ __webpack_exports__["g"] = setAuthorization;
+/* unused harmony export removeEmpty */
+/* harmony export (immutable) */ __webpack_exports__["e"] = formatDateToDataBase;
+/* harmony export (immutable) */ __webpack_exports__["b"] = datesFrontendFormater;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__auth__ = __webpack_require__(4);
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
@@ -595,6 +597,49 @@ function removeEmpty(obj) {
   return obj;
 }
 
+function formatDateToDataBase(time) {
+
+  var val = [];
+
+  for (var i in time) {
+    for (var j in time[i]) {
+      if (typeof time[i][j] === 'string') {
+        val.push(datesFrontendFormater(time[i][j], i));
+      }
+    }
+  }
+  return val;
+}
+
+function datesFrontendFormater(time) {
+  var key = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
+  var d = new Date(time),
+      date = false,
+      year = false,
+      month = false,
+      week = false,
+      day = false,
+      hour = false,
+      min = false;
+
+  if (d instanceof Date && !isNaN(d)) {
+    date = d;
+    year = parseInt(d.getFullYear());
+    month = parseInt(d.getMonth());
+    week = parseInt(d.getDay());
+    day = parseInt(d.getDate());
+    hour = parseInt(d.getHours());
+    min = parseInt(d.getMinutes());
+  } else {
+    time = time.split(':');
+    week = parseInt(key);
+    hour = parseInt(time[0]);
+    min = parseInt(time[1]);
+  }
+  return { date: date, year: year, month: month, week: week, day: day, hour: hour, min: min };
+}
+
 /***/ }),
 /* 3 */
 /***/ (function(module, exports) {
@@ -635,7 +680,7 @@ module.exports = g;
 function login(credentials) {
   return new Promise(function (res, rej) {
     axios.post('/api/auth/login', credentials).then(function (response) {
-      Object(__WEBPACK_IMPORTED_MODULE_0__general__["f" /* setAuthorization */])(response.data.access_token);
+      Object(__WEBPACK_IMPORTED_MODULE_0__general__["g" /* setAuthorization */])(response.data.access_token);
       res(response.data);
     }).catch(function (err) {
       rej(err);
@@ -691,10 +736,10 @@ function getDefaultAdapter() {
   var adapter;
   if (typeof XMLHttpRequest !== 'undefined') {
     // For browsers use XHR adapter
-    adapter = __webpack_require__(10);
+    adapter = __webpack_require__(12);
   } else if (typeof process !== 'undefined') {
     // For node use HTTP adapter
-    adapter = __webpack_require__(10);
+    adapter = __webpack_require__(12);
   }
   return adapter;
 }
@@ -765,10 +810,104 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = defaults;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11)))
 
 /***/ }),
 /* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(77)
+/* template */
+var __vue_template__ = __webpack_require__(78)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/calendar.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-6a975d56", Component.options)
+  } else {
+    hotAPI.reload("data-v-6a975d56", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(82)
+/* template */
+var __vue_template__ = __webpack_require__(83)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/views/user/header.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-402f6924", Component.options)
+  } else {
+    hotAPI.reload("data-v-402f6924", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 8 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3358,7 +3497,7 @@ Popper.Defaults = Defaults;
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(3)))
 
 /***/ }),
-/* 7 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -13729,7 +13868,7 @@ return jQuery;
 
 
 /***/ }),
-/* 8 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13747,7 +13886,7 @@ module.exports = function bind(fn, thisArg) {
 
 
 /***/ }),
-/* 9 */
+/* 11 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -13937,7 +14076,7 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 10 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13948,7 +14087,7 @@ var settle = __webpack_require__(30);
 var buildURL = __webpack_require__(32);
 var parseHeaders = __webpack_require__(33);
 var isURLSameOrigin = __webpack_require__(34);
-var createError = __webpack_require__(11);
+var createError = __webpack_require__(13);
 var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(35);
 
 module.exports = function xhrAdapter(config) {
@@ -14124,7 +14263,7 @@ module.exports = function xhrAdapter(config) {
 
 
 /***/ }),
-/* 11 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14149,7 +14288,7 @@ module.exports = function createError(message, config, code, request, response) 
 
 
 /***/ }),
-/* 12 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14161,7 +14300,7 @@ module.exports = function isCancel(value) {
 
 
 /***/ }),
-/* 13 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14187,7 +14326,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 14 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
@@ -14224,100 +14363,6 @@ if (false) {(function () {
     hotAPI.createRecord("data-v-334dde34", Component.options)
   } else {
     hotAPI.reload("data-v-334dde34", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 15 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(0)
-/* script */
-var __vue_script__ = __webpack_require__(77)
-/* template */
-var __vue_template__ = __webpack_require__(78)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/calendar.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-6a975d56", Component.options)
-  } else {
-    hotAPI.reload("data-v-6a975d56", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 16 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(0)
-/* script */
-var __vue_script__ = __webpack_require__(82)
-/* template */
-var __vue_template__ = __webpack_require__(83)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/views/user/header.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-402f6924", Component.options)
-  } else {
-    hotAPI.reload("data-v-402f6924", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -14430,7 +14475,7 @@ var router = new __WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]({
     mode: 'history'
 });
 
-Object(__WEBPACK_IMPORTED_MODULE_6__helpers_general__["d" /* initialize */])(store, router);
+Object(__WEBPACK_IMPORTED_MODULE_6__helpers_general__["f" /* initialize */])(store, router);
 
 var app = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
     el: '#app',
@@ -14451,7 +14496,7 @@ var app = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
 /***/ (function(module, exports, __webpack_require__) {
 
 window._ = __webpack_require__(21);
-window.Popper = __webpack_require__(6).default;
+window.Popper = __webpack_require__(8).default;
 
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
@@ -14460,7 +14505,7 @@ window.Popper = __webpack_require__(6).default;
  */
 
 try {
-  window.$ = window.jQuery = __webpack_require__(7);
+  window.$ = window.jQuery = __webpack_require__(9);
   __webpack_require__(23);
   __webpack_require__(24);
 } catch (e) {}
@@ -32682,7 +32727,7 @@ var SalesChart = function () {
   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
   */
 (function (global, factory) {
-   true ? factory(exports, __webpack_require__(7), __webpack_require__(6)) :
+   true ? factory(exports, __webpack_require__(9), __webpack_require__(8)) :
   typeof define === 'function' && define.amd ? define(['exports', 'jquery', 'popper.js'], factory) :
   (global = global || self, factory(global.bootstrap = {}, global.jQuery, global.Popper));
 }(this, function (exports, $, Popper) { 'use strict';
@@ -37127,7 +37172,7 @@ module.exports = __webpack_require__(26);
 
 
 var utils = __webpack_require__(1);
-var bind = __webpack_require__(8);
+var bind = __webpack_require__(10);
 var Axios = __webpack_require__(28);
 var defaults = __webpack_require__(5);
 
@@ -37162,9 +37207,9 @@ axios.create = function create(instanceConfig) {
 };
 
 // Expose Cancel & CancelToken
-axios.Cancel = __webpack_require__(13);
+axios.Cancel = __webpack_require__(15);
 axios.CancelToken = __webpack_require__(42);
-axios.isCancel = __webpack_require__(12);
+axios.isCancel = __webpack_require__(14);
 
 // Expose all/spread
 axios.all = function all(promises) {
@@ -37317,7 +37362,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 "use strict";
 
 
-var createError = __webpack_require__(11);
+var createError = __webpack_require__(13);
 
 /**
  * Resolve or reject a Promise based on response status.
@@ -37752,7 +37797,7 @@ module.exports = InterceptorManager;
 
 var utils = __webpack_require__(1);
 var transformData = __webpack_require__(39);
-var isCancel = __webpack_require__(12);
+var isCancel = __webpack_require__(14);
 var defaults = __webpack_require__(5);
 var isAbsoluteURL = __webpack_require__(40);
 var combineURLs = __webpack_require__(41);
@@ -37912,7 +37957,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 "use strict";
 
 
-var Cancel = __webpack_require__(13);
+var Cancel = __webpack_require__(15);
 
 /**
  * A `CancelToken` is an object that can be used to request cancellation of an operation.
@@ -50189,7 +50234,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3), __webpack_require__(9)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3), __webpack_require__(11)))
 
 /***/ }),
 /* 48 */
@@ -62775,10 +62820,13 @@ var install = VeeValidate$1.install;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__views_user_list___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__views_user_list__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__views_user_user__ = __webpack_require__(85);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__views_user_user___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__views_user_user__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__views_teacher_list__ = __webpack_require__(103);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__views_teacher_list___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__views_teacher_list__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__views_teacher_teacher__ = __webpack_require__(108);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__views_teacher_teacher___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__views_teacher_teacher__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__views_user_porfile__ = __webpack_require__(100);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__views_user_porfile___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__views_user_porfile__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__views_teacher_list__ = __webpack_require__(103);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__views_teacher_list___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__views_teacher_list__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__views_teacher_teacher__ = __webpack_require__(108);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__views_teacher_teacher___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__views_teacher_teacher__);
+
 
 
 
@@ -62808,20 +62856,13 @@ var routes = [{
         requiresAuth: true
     }
 }, {
-    path: '/porfile',
-    name: 'porfile',
-    component: __WEBPACK_IMPORTED_MODULE_5__views_user_user___default.a,
-    meta: {
-        requiresAuth: true
-    }
-}, {
     path: '/user',
     component: {
         template: '<router-view/>'
     },
     meta: {
-        requiresAuth: true,
-        deniedRoles: ['TE', 'ST']
+        requiresAuth: true
+        // deniedRoles: ['TE','ST']
     },
     children: [{
         path: '/',
@@ -62832,13 +62873,30 @@ var routes = [{
         name: 'user.new',
         component: __WEBPACK_IMPORTED_MODULE_5__views_user_user___default.a
     }, {
+        path: 'setting',
+        name: 'user.setting',
+        component: __WEBPACK_IMPORTED_MODULE_5__views_user_user___default.a
+    }, {
+        path: 'porfile',
+        component: {
+            template: '<router-view/>'
+        },
+        children: [{
+            path: '/',
+            name: 'user.porfile',
+            component: __WEBPACK_IMPORTED_MODULE_6__views_user_porfile___default.a
+        }, {
+            path: ':id',
+            component: __WEBPACK_IMPORTED_MODULE_6__views_user_porfile___default.a
+        }]
+    }, {
         path: ':id',
         component: __WEBPACK_IMPORTED_MODULE_5__views_user_user___default.a
     }]
 }, {
     path: '/account',
     name: 'account',
-    redirect: '/porfile',
+    redirect: '/user/setting',
     meta: {
         requiresAuth: true
     }
@@ -62855,11 +62913,11 @@ var routes = [{
     children: [{
         path: 'all',
         name: 'teachers.all',
-        component: __WEBPACK_IMPORTED_MODULE_6__views_teacher_list___default.a
+        component: __WEBPACK_IMPORTED_MODULE_7__views_teacher_list___default.a
     }, {
         path: ':id',
         name: 'teachers.name',
-        component: __WEBPACK_IMPORTED_MODULE_7__views_teacher_teacher___default.a
+        component: __WEBPACK_IMPORTED_MODULE_8__views_teacher_teacher___default.a
     }]
 }, {
     path: '/lessons',
@@ -63026,7 +63084,7 @@ var content = __webpack_require__(57);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(59)("094070b6", content, false, {});
+var update = __webpack_require__(59)("a8db3176", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -63050,7 +63108,7 @@ exports = module.exports = __webpack_require__(58)(false);
 
 
 // module
-exports.push([module.i, "\n.vuejs-countdown li h3 {\n  font-size: 4rem;\n}\n.vuejs-countdown li:after {\n  content: \":\";\n  position: absolute;\n  top: 0;\n  right: -1rem;\n  font-size: 4rem;\n}\n.vuejs-countdown li:last-of-type:after {\n  content: \"\";\n}\n\n", ""]);
+exports.push([module.i, "\n.vuejs-countdown li h3 {\r\n  font-size: 4rem;\n}\n.vuejs-countdown li:after {\r\n  content: \":\";\r\n  position: absolute;\r\n  top: 0;\r\n  right: -1rem;\r\n  font-size: 4rem;\n}\n.vuejs-countdown li:last-of-type:after {\r\n  content: \"\";\n}\r\n\r\n", ""]);
 
 // exports
 
@@ -63699,7 +63757,7 @@ module.exports = Component.exports
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__helpers_general__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helpers_auth__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__layouts_headers_guest__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__layouts_headers_guest__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__layouts_headers_guest___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__layouts_headers_guest__);
 //
 //
@@ -63783,7 +63841,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       var _this = this;
 
       this.loading = true;
-      Object(__WEBPACK_IMPORTED_MODULE_1__helpers_auth__["b" /* login */])(Object(__WEBPACK_IMPORTED_MODULE_0__helpers_general__["c" /* formDataToJson */])(this.$refs.form)).then(function (res) {
+      Object(__WEBPACK_IMPORTED_MODULE_1__helpers_auth__["b" /* login */])(Object(__WEBPACK_IMPORTED_MODULE_0__helpers_general__["d" /* formDataToJson */])(this.$refs.form)).then(function (res) {
         _this.$toasted.success(res.message);
         _this.$store.commit("loginSuccess", res.data);
         _this.loading = false;
@@ -64216,7 +64274,7 @@ module.exports = Component.exports
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__helpers_general__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__layouts_headers_guest__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__layouts_headers_guest__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__layouts_headers_guest___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__layouts_headers_guest__);
 //
 //
@@ -64348,7 +64406,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       var _this2 = this;
 
       this.loading = true;
-      this.$store.dispatch('sendPost', { url: '/api/auth/signup', data: Object(__WEBPACK_IMPORTED_MODULE_0__helpers_general__["b" /* formData */])(this.$refs.form) }).then(function (res) {
+      this.$store.dispatch('sendPost', { url: '/api/auth/signup', data: Object(__WEBPACK_IMPORTED_MODULE_0__helpers_general__["c" /* formData */])(this.$refs.form) }).then(function (res) {
         _this2.loading = false;
         _this2.$toasted.success(res.message);
         _this2.$router.push({ path: '/login' });
@@ -64996,7 +65054,7 @@ module.exports = Component.exports
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__views_layouts_headers_empty_vue__ = __webpack_require__(74);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__views_layouts_headers_empty_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__views_layouts_headers_empty_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_calendar_vue__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_calendar_vue__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_calendar_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_calendar_vue__);
 //
 //
@@ -65121,8 +65179,9 @@ if (false) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__calendarEventPicker__ = __webpack_require__(146);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__calendarEventPicker___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__calendarEventPicker__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__calendarEvent__ = __webpack_require__(146);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__calendarEvent___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__calendarEvent__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helpers_general__ = __webpack_require__(2);
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 //
@@ -65213,15 +65272,20 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 //
 //
 //
+//
+//
+
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    calendarEventPicker: __WEBPACK_IMPORTED_MODULE_0__calendarEventPicker___default.a
+    calendarEvent: __WEBPACK_IMPORTED_MODULE_0__calendarEvent___default.a
   },
   name: 'calendar',
   props: {
+    picker: false,
+    isEdit: false,
     hours: {
       type: Array,
       default: function _default() {
@@ -65232,22 +65296,22 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
       type: Number,
       default: 7
     },
-    time_schedule: {
-      type: Object,
-      default: function _default() {
-        return {};
-      }
-    },
-    booked: {
+    timeSelectedDates: {
       type: Array,
       default: function _default() {
         return [];
       }
     },
-    booking: {
-      type: Object,
+    timeAllowedDates: {
+      type: Array,
       default: function _default() {
-        return {};
+        return [];
+      }
+    },
+    timeDlockedDates: {
+      type: Array,
+      default: function _default() {
+        return [];
       }
     }
   },
@@ -65277,7 +65341,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
       dayIndex: [],
       shift: 'AM',
       current: new Date(),
-      dates: this.booking
+      selectedDates: this.timeSelectedDates
     };
   },
 
@@ -65327,51 +65391,44 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   },
 
   methods: {
-    isTimeSchedule: function isTimeSchedule(week, hour) {
-      if (this.time_schedule.hasOwnProperty(week)) {
-        if (this.time_schedule[week].includes(hour)) return true;
+    objectDatesFormater: function objectDatesFormater(date, week, hour, min) {
+      var val = [];
+      if (this.picker) {
+        val.push(hour + ':' + min);
+        val.push(week);
+      } else {
+        var d = new Date(date);
+        d.setHours(hour);
+        d.setMinutes(min);
+        val.push(d);
       }
-      return false;
+      return __WEBPACK_IMPORTED_MODULE_1__helpers_general__["b" /* datesFrontendFormater */].apply(undefined, val);
     },
-    isActive: function isActive(day, week, hour) {
-      var min = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
-
-
-      var date = new Date(day);
-      date = new Date(date.getFullYear(), date.getMonth(), date.getDate(), hour, min, 0);
-
-      for (var event in this.dates) {
-        var dateEvent = new Date(this.dates[event]);
-        if (dateEvent.getTime() === date.getTime()) return true;
-      }
-
-      var ele = document.getElementById(week + '-' + hour + '-' + min);
-      if (ele && ele.classList.contains("active")) ele.classList.remove("active");
-      return false;
+    isTimeSelectedDates: function isTimeSelectedDates(find) {
+      return this.selectedDates.length === 0 ? false : this.selectedDates.some(function (el) {
+        return el.year === find.year && el.month === find.month && el.week === find.week && el.day === find.day && el.hour === find.hour && el.min === find.min;
+      });
     },
-    isBooked: function isBooked(day, week, hour) {
-      var min = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
-
-
-      var date = new Date(day);
-      date = new Date(date.getFullYear(), date.getMonth(), date.getDate(), hour, min, 0);
-
-      for (var event in this.booked) {
-        var dateEvent = new Date(this.booked[event]['date']);
-        if (dateEvent.getTime() === date.getTime()) return this.booked[event];
-      }
-      return false;
+    isTimeAllowedDates: function isTimeAllowedDates(find) {
+      return this.timeAllowedDates.length === 0 ? false : this.timeAllowedDates.some(function (el) {
+        return el.week === find.week && el.hour === find.hour && el.min === find.min;
+      });
     },
-    allDay: function allDay(day) {
+    isTimeDlockedDates: function isTimeDlockedDates(find) {
+      return this.timeDlockedDates.length === 0 ? false : this.timeDlockedDates.some(function (el) {
+        return el.year === find.year && el.month === find.month && el.week === find.week && el.day === find.day && el.hour === find.hour && el.min === find.min;
+      });
+    },
+    allDay: function allDay(week) {
       for (var i in this.hourRange) {
-        this.callback(document.getElementById(day + '-' + this.hourRange[i] + '-0'), this.dayIndex[day]['value'], this.hourRange[i], 0);
-        this.callback(document.getElementById(day + '-' + this.hourRange[i] + '-30'), this.dayIndex[day]['value'], this.hourRange[i], 30);
+        this.emmitTimeSelectedDate(document.getElementById(week + '-' + this.hourRange[i] + '-0'), this.objectDatesFormater(this.dayIndex[week]['value'], week, this.hourRange[i], 0));
+        this.emmitTimeSelectedDate(document.getElementById(week + '-' + this.hourRange[i] + '-30'), this.objectDatesFormater(this.dayIndex[week]['value'], week, this.hourRange[i], 30));
       }
     },
     allWeek: function allWeek(hour) {
-      for (var i in this.dayIndex) {
-        this.callback(document.getElementById(i + '-' + hour + '-0'), this.dayIndex[i]['value'], hour, 0);
-        this.callback(document.getElementById(i + '-' + hour + '-30'), this.dayIndex[i]['value'], hour, 30);
+      for (var week in this.dayIndex) {
+        this.emmitTimeSelectedDate(document.getElementById(week + '-' + hour + '-0'), this.objectDatesFormater(this.dayIndex[week]['value'], week, hour, 0));
+        this.emmitTimeSelectedDate(document.getElementById(week + '-' + hour + '-30'), this.objectDatesFormater(this.dayIndex[week]['value'], week, hour, 30));
       }
     },
     setDays: function setDays() {
@@ -65383,17 +65440,20 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
       }
     },
     formatDate: function formatDate(date, type) {
-      var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-          weekDayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-          day = date.getDate(),
-          monthIndex = date.getMonth(),
-          weekIndex = date.getDay(),
-          year = date.getFullYear(),
-          month = type == "short" ? monthNames[monthIndex].slice(0, 3) : monthNames[monthIndex],
-          week = type == "short" ? weekDayNames[weekIndex].slice(0, 3) : weekDayNames[weekIndex];
+      var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+      var weekDayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+      var d = new Date(date);
+      var day = d.getDate();
+      var monthIndex = d.getMonth();
+      var weekIndex = d.getDay();
+      var year = d.getFullYear();
+      var month = type == "short" ? monthNames[monthIndex].slice(0, 3) : monthNames[monthIndex];
+      var week = type == "short" ? weekDayNames[weekIndex].slice(0, 3) : weekDayNames[weekIndex];
       return {
         label: { month: month, day: day, week: week },
-        value: date
+        value: d
       };
     },
     nextDate: function nextDate(date, index) {
@@ -65405,30 +65465,19 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     prevWeek: function prevWeek() {
       this.current = this.nextDate(this.week.from.value, -this.min);
     },
-    thisDay: function thisDay(event, day, hour) {
-      var min = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
-
-      this.callback(event.target, day, hour, min);
+    thisDay: function thisDay(event, date) {
+      this.emmitTimeSelectedDate(event.target, date);
     },
-    thisBookedDay: function thisBookedDay(event) {
-      console.log('thisBookedDay');
-    },
-    callback: function callback(el, day, hour, min) {
+    emmitTimeSelectedDate: function emmitTimeSelectedDate(el, date) {
       if (el && !el.classList.contains("disabled") && !el.classList.contains("booked")) {
         el.classList.toggle("active");
-        var date = new Date(day);
-        var value = new Date(date.getFullYear(), date.getMonth(), date.getDate(), hour, min, 0);
-        this.$emit("callback", value);
+        this.$emit("timeSelectedDate", date);
       }
     }
   },
   watch: {
     week: function week() {
       this.setDays();
-    },
-    booked: function booked(val) {
-      this.dates = {};
-      this.dates = val;
     }
   }
 });
@@ -65484,52 +65533,61 @@ var render = function() {
           ])
         ]),
         _vm._v(" "),
-        _c("tr", [
-          _c("th", { staticClass: "title", attrs: { colspan: _vm.min + 1 } }, [
-            _c("div", [
+        !_vm.picker
+          ? _c("tr", [
               _c(
-                "button",
-                { attrs: { type: "button" }, on: { click: _vm.prevWeek } },
-                [_c("i", { staticClass: "fas fa-chevron-left" })]
-              ),
-              _vm._v(" "),
-              _c("a", [
-                _c("small", { staticClass: "d-block" }, [
-                  _vm._v(
-                    "\n                " +
-                      _vm._s(_vm.week.from.label.week) +
-                      ", " +
-                      _vm._s(_vm.week.from.label.day) +
-                      " " +
-                      _vm._s(_vm.week.from.label.month) +
-                      "\n              "
-                  )
-                ]),
-                _vm._v("\n              -\n              "),
-                _c("small", { staticClass: "d-block" }, [
-                  _vm._v(
-                    "\n                " +
-                      _vm._s(_vm.week.to.label.week) +
-                      ", " +
-                      _vm._s(_vm.week.to.label.day) +
-                      " " +
-                      _vm._s(_vm.week.to.label.month) +
-                      "\n              "
-                  )
-                ])
-              ]),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  attrs: { type: "button", role: "button" },
-                  on: { click: _vm.nextWeek }
-                },
-                [_c("i", { staticClass: "fas fa-chevron-right" })]
+                "th",
+                { staticClass: "title", attrs: { colspan: _vm.min + 1 } },
+                [
+                  _c("div", [
+                    _c(
+                      "button",
+                      {
+                        attrs: { type: "button" },
+                        on: { click: _vm.prevWeek }
+                      },
+                      [_c("i", { staticClass: "fas fa-chevron-left" })]
+                    ),
+                    _vm._v(" "),
+                    _c("a", [
+                      _c("small", { staticClass: "d-block" }, [
+                        _vm._v(
+                          "\n                " +
+                            _vm._s(_vm.week.from.label.week) +
+                            ", " +
+                            _vm._s(_vm.week.from.label.day) +
+                            " " +
+                            _vm._s(_vm.week.from.label.month) +
+                            "\n              "
+                        )
+                      ]),
+                      _vm._v("\n              -\n              "),
+                      _c("small", { staticClass: "d-block" }, [
+                        _vm._v(
+                          "\n                " +
+                            _vm._s(_vm.week.to.label.week) +
+                            ", " +
+                            _vm._s(_vm.week.to.label.day) +
+                            " " +
+                            _vm._s(_vm.week.to.label.month) +
+                            "\n              "
+                        )
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        attrs: { type: "button", role: "button" },
+                        on: { click: _vm.nextWeek }
+                      },
+                      [_c("i", { staticClass: "fas fa-chevron-right" })]
+                    )
+                  ])
+                ]
               )
             ])
-          ])
-        ]),
+          : _vm._e(),
         _vm._v(" "),
         _c(
           "tr",
@@ -65542,25 +65600,27 @@ var render = function() {
                 ])
               : [
                   _c("th", [
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-link my-auto p-1",
-                        attrs: { type: "button" },
-                        on: {
-                          click: function($event) {
-                            _vm.current = new Date()
-                          }
-                        }
-                      },
-                      [
-                        _c("i", { staticClass: "fas fa-calendar-week" }),
-                        _vm._v(" TODAY                 \n            ")
-                      ]
-                    )
+                    !_vm.picker
+                      ? _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-link my-auto p-1",
+                            attrs: { type: "button" },
+                            on: {
+                              click: function($event) {
+                                _vm.current = new Date()
+                              }
+                            }
+                          },
+                          [
+                            _c("i", { staticClass: "fas fa-calendar-week" }),
+                            _vm._v(" TODAY                 \n            ")
+                          ]
+                        )
+                      : _vm._e()
                   ]),
                   _vm._v(" "),
-                  _vm._l(_vm.dayIndex, function(day, key) {
+                  _vm._l(_vm.dayIndex, function(day, week) {
                     return _c("th", [
                       _c(
                         "a",
@@ -65574,23 +65634,34 @@ var render = function() {
                           attrs: { role: "buttom" },
                           on: {
                             click: function($event) {
-                              return _vm.allDay(key)
+                              _vm.isEdit ? _vm.allDay(week) : ""
                             }
                           }
                         },
                         [
-                          _c("small", { staticClass: "d-block" }, [
-                            _vm._v(_vm._s(day.label.month))
-                          ]),
-                          _vm._v(
-                            "\n              " +
-                              _vm._s(day.label.day) +
-                              "\n              "
-                          ),
-                          _c("small", { staticClass: "d-block" }, [
-                            _vm._v(_vm._s(day.label.week))
-                          ])
-                        ]
+                          !_vm.picker
+                            ? [
+                                _c("small", { staticClass: "d-block" }, [
+                                  _vm._v(_vm._s(day.label.month))
+                                ]),
+                                _vm._v(
+                                  "\n                " +
+                                    _vm._s(day.label.day) +
+                                    "\n                "
+                                ),
+                                _c("small", { staticClass: "d-block" }, [
+                                  _vm._v(_vm._s(day.label.week))
+                                ])
+                              ]
+                            : [
+                                _vm._v(
+                                  "\n                " +
+                                    _vm._s(day.label.week) +
+                                    "\n              "
+                                )
+                              ]
+                        ],
+                        2
                       )
                     ])
                   })
@@ -65614,7 +65685,7 @@ var render = function() {
                           attrs: { role: "buttom" },
                           on: {
                             click: function($event) {
-                              return _vm.allWeek(hour)
+                              _vm.isEdit ? _vm.allWeek(hour) : ""
                             }
                           }
                         },
@@ -65633,26 +65704,32 @@ var render = function() {
                     ])
                   : _vm._e(),
                 _vm._v(" "),
-                _vm._l(_vm.dayIndex, function(day, key) {
+                _vm._l(_vm.dayIndex, function(day, week) {
                   return _c(
-                    "calendarEventPicker",
+                    "calendarEvent",
                     {
-                      key: key + "-" + hour + "-" + min,
+                      key: week + "-" + hour + "-" + min,
                       attrs: {
-                        id: key + "-" + hour + "-" + min,
-                        date: day.value,
-                        hour: hour,
-                        min: min,
-                        isActive: _vm.isActive(day.value, key, hour, min),
-                        isTimeSchedule: _vm.isTimeSchedule(key, hour),
-                        isBooked: _vm.isBooked(day.value, key, hour, min)
+                        id: week + "-" + hour + "-" + min,
+                        date: _vm.objectDatesFormater(
+                          day.value,
+                          week,
+                          hour,
+                          min
+                        ),
+                        isSelected: _vm.isTimeSelectedDates(
+                          _vm.objectDatesFormater(day.value, week, hour, min)
+                        ),
+                        isAllowed: _vm.isTimeAllowedDates(
+                          _vm.objectDatesFormater(day.value, week, hour, min)
+                        ),
+                        isDlocked: _vm.isTimeDlockedDates(
+                          _vm.objectDatesFormater(day.value, week, hour, min)
+                        )
                       },
                       on: {
-                        clickBooked: function($event) {
-                          return _vm.thisBookedDay($event)
-                        },
                         clickAddDay: function($event) {
-                          return _vm.thisDay.apply(void 0, $event)
+                          _vm.isEdit ? _vm.thisDay.apply(void 0, $event) : ""
                         }
                       }
                     },
@@ -65762,7 +65839,7 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__header__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__header__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__header___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__header__);
 //
 //
@@ -66295,7 +66372,7 @@ var normalizeComponent = __webpack_require__(0)
 /* script */
 var __vue_script__ = __webpack_require__(86)
 /* template */
-var __vue_template__ = __webpack_require__(102)
+var __vue_template__ = __webpack_require__(99)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -66340,13 +66417,13 @@ module.exports = Component.exports
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__helpers_general__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__header__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__header__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__header___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__header__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__user_teacher__ = __webpack_require__(87);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__user_teacher___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__user_teacher__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__user_actions__ = __webpack_require__(93);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__user_actions__ = __webpack_require__(90);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__user_actions___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__user_actions__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__user_submit__ = __webpack_require__(96);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__user_submit__ = __webpack_require__(93);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__user_submit___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__user_submit__);
 //
 //
@@ -66598,12 +66675,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       old: null,
       name: null,
       email: null,
+      country: "Venezuela",
       country_code: "VE",
+      timeZone: "America/Caracas",
       time_zone_id: 418,
       avatar: "no-img.png",
       description: null,
       rol_code: "AD",
-      time_schedule: {},
+      rol: "Admin",
+      timeSchedule: {},
       lists: { countries: [], timeZones: [], roles: [] },
       routes: {
         create: {
@@ -66628,22 +66708,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       action: "show"
     };
   },
-
-  filters: {
-    lableCode: function lableCode(val, list) {
-      var child = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
-
-      if (child) {
-        for (var parent in list) {
-          if (list[parent].hasOwnProperty(val)) {
-            return list[parent][val];
-          }
-        }
-      } else {
-        return list[val];
-      }
-    }
-  },
   mounted: function mounted() {
     var _this2 = this;
 
@@ -66655,7 +66719,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         if (res.data.timeZones) _this2.lists.timeZones = res.data.timeZones;
       });
     } else {
-      if (parseInt(this.id) === this.currentUser.id) this.$router.push("/porfile");
+      if (parseInt(this.id) === this.currentUser.id) this.$router.push("/user/setting");
       this.$store.dispatch("sendGet", { url: "/api/user/" + this.id, auth: true }).then(function (res) {
         if (res.data.roles) _this2.lists.roles = res.data.roles;
         if (res.data.countries) _this2.lists.countries = res.data.countries;
@@ -66683,24 +66747,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       }
     },
     setTimeSchedule: function setTimeSchedule(event) {
-      if (!this.time_schedule.hasOwnProperty(event.day)) this.time_schedule[event.day] = [];
-      var day = this.time_schedule[event.day];
-      if (day.includes(event.hour)) {
-        day.splice(day.indexOf(event.hour), 1);
-      } else {
-        day.push(event.hour);
-      }
-      if (day.length === 0) {
-        delete this.time_schedule[event.day];
-        this.time_schedule = Object(__WEBPACK_IMPORTED_MODULE_0__helpers_general__["e" /* removeEmpty */])(this.time_schedule);
-      } else {
-        this.time_schedule[event.day] = day;
-      }
+      var index = void 0,
+          find = this.timeSchedule.some(function (el, i) {
+        index = i;
+        return el.year === event.year && el.month === event.month && el.week === event.week && el.day === event.day && el.hour === event.hour && el.min === event.min;
+      });
+
+      !find ? this.timeSchedule.push(event) : this.timeSchedule.splice(index, 1);
     },
     setInfo: function setInfo(obj) {
       for (var val in obj) {
         if (this.hasOwnProperty(val)) {
-          this[val] = obj[val];
+          this[val] = val === 'timeSchedule' ? Object(__WEBPACK_IMPORTED_MODULE_0__helpers_general__["e" /* formatDateToDataBase */])(obj[val]) : obj[val];
         }
       }
     },
@@ -66708,11 +66766,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.name = null;
       this.email = null;
       this.country_code = "VE";
+      this.country = "Venezuela";
       this.time_zone_id = 418;
+      this.timeZone = "America/Caracas";
       this.avatar = "no-img.png";
       this.description = null;
       this.rol_code = "AD";
-      this.time_schedule = {};
+      this.rol = "Admin";
+      this.timeSchedule = {};
     },
     setAction: function setAction(val) {
       if (val === "show" && this.isEdit) this.setInfo(this.old);
@@ -66726,13 +66787,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.loading = true;
       this.$store.dispatch("sendPost", {
         url: this.getAction,
-        data: Object(__WEBPACK_IMPORTED_MODULE_0__helpers_general__["a" /* addJsonToFormData */])({ time_schedule: JSON.stringify(this.time_schedule) }, Object(__WEBPACK_IMPORTED_MODULE_0__helpers_general__["b" /* formData */])(this.$refs.form)),
+        data: Object(__WEBPACK_IMPORTED_MODULE_0__helpers_general__["a" /* addJsonToFormData */])({ time_schedule: JSON.stringify(this.timeSchedule) }, Object(__WEBPACK_IMPORTED_MODULE_0__helpers_general__["c" /* formData */])(this.$refs.form)),
         auth: true
       }).then(function (res) {
         if (res) {
           if (parseInt(_this3.id) === _this3.currentUser.id) _this3.$store.commit("refresh");
           if (_this3.action === "destroy") {
-            _this3.$router.push({ path: "/porfile" });
+            _this3.$router.push({ path: "/user/setting" });
           } else if (_this3.action === "create") {
             _this3.$router.push({ path: "/user/" + res.data.user.id });
             _this3.old = res.data.user;
@@ -66750,6 +66811,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         _this3.loading = false;
       });
     }
+  },
+  watch: {
+    country_code: function country_code(val) {
+      this.country = this.lists.countries[val];
+    },
+    time_zone_id: function time_zone_id(val) {
+      this.timeZone = this.lists.timeZones[this.country_code][val];
+    },
+    rol_code: function rol_code(val) {
+      this.rol = this.lists.roles[val];
+    }
   }
 });
 
@@ -66762,7 +66834,7 @@ var normalizeComponent = __webpack_require__(0)
 /* script */
 var __vue_script__ = __webpack_require__(88)
 /* template */
-var __vue_template__ = __webpack_require__(92)
+var __vue_template__ = __webpack_require__(89)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -66806,8 +66878,8 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_calendarPicker_vue__ = __webpack_require__(89);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_calendarPicker_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_calendarPicker_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_calendar_vue__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_calendar_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_calendar_vue__);
 //
 //
 //
@@ -66826,445 +66898,32 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'userTeacher',
   components: {
-    calendarPicker: __WEBPACK_IMPORTED_MODULE_0__components_calendarPicker_vue___default.a
+    calendar: __WEBPACK_IMPORTED_MODULE_0__components_calendar_vue___default.a
   },
   props: {
     isEdit: false,
-    time_schedule: {
-      type: Object,
+    timeSchedule: {
+      type: Array,
       default: function _default() {
-        return {};
+        return [];
       }
     }
   },
   data: function data() {
     return {
-      dates: this.time_schedule
+      timeSelectedDates: this.timeSchedule
     };
   },
 
   methods: {
-    selectTime: function selectTime(event) {
-      this.$emit("callback", event);
+    timeSelectedDate: function timeSelectedDate(event) {
+      this.$emit("timeSelectedDate", event);
     }
   }
 });
 
 /***/ }),
 /* 89 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(0)
-/* script */
-var __vue_script__ = __webpack_require__(90)
-/* template */
-var __vue_template__ = __webpack_require__(91)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/calendarPicker.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-2d19057a", Component.options)
-  } else {
-    hotAPI.reload("data-v-2d19057a", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 90 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'calendar-piker',
-  props: {
-    isEdit: false,
-    hours: {
-      type: Array,
-      default: function _default() {
-        return [[0, 24]];
-      }
-    },
-    min: {
-      type: Number,
-      default: 7
-    },
-    time_schedule: {
-      type: Object,
-      default: function _default() {
-        return {};
-      }
-    }
-  },
-  filters: {
-    hourFormat: function hourFormat(val) {
-      var time = val.toString();
-      if (time.length > 1) {
-        time = time.split(':');
-        for (var i in time) {
-          time[i] = time[i].length > 1 ? time[i] : '0' + time[i];
-        }
-      }
-      return time.join(':');
-    },
-    timeConvert: function timeConvert(val) {
-      var time = val.toString();
-      if (time.length > 1) {
-        time = time.split(':');
-        time[time.length - 1] += time[0] < 12 ? ' AM' : ' PM';
-        time[0] = +time[0] % 12 || 12;
-      }
-      return time.join(':');
-    }
-  },
-  data: function data() {
-    return {
-      dayIndex: [],
-      current: new Date(),
-      shift: 'AM',
-      dates: this.time_schedule
-    };
-  },
-
-  computed: {
-    hourRange: function hourRange() {
-      var values = [];
-      for (var key in this.hours) {
-        if (typeof this.hours[key] === 'array' || _typeof(this.hours[key]) === 'object') {
-          var start = parseInt(this.hours[key][0]),
-              end = parseInt(this.hours[key][1]);
-          if (Number.isInteger(start) && Number.isInteger(end)) {
-            for (var i = start; i < end; i++) {
-              values.push(i);
-            }
-          }
-        } else {
-          values.push(this.hours[key]);
-        }
-      }
-      values.sort(function (a, b) {
-        return a - b;
-      });
-      return values;
-    },
-    shiftHourRange: function shiftHourRange() {
-      return this.shift === 'AM' ? this.hourRange.filter(function (hour) {
-        return hour < 12;
-      }) : this.hourRange.filter(function (hour) {
-        return hour >= 12;
-      });
-    },
-    todaysDate: function todaysDate() {
-      return this.formatDate(new Date(this.current), "short");
-    },
-    week: function week() {
-      var date = new Date(this.current),
-          startDate = date.getDate() - date.getDay() + 0,
-          endDate = date.getDate() - date.getDay() + 6;
-      return {
-        from: this.formatDate(new Date(date.setDate(startDate)), "short"),
-        to: this.formatDate(new Date(date.setDate(endDate)), "short")
-      };
-    }
-  },
-  mounted: function mounted() {
-    this.setDays();
-  },
-
-  methods: {
-    isActive: function isActive(day, hour) {
-      var ele = document.getElementById(day + '-' + hour);
-      if (this.dates.hasOwnProperty(day) && this.dates[day].includes(hour)) {
-        return true;
-      } else {
-        if (ele && ele.classList.contains("active")) ele.classList.remove("active");
-        return false;
-      }
-    },
-    allDay: function allDay(day) {
-      for (var i in this.hourRange) {
-        document.getElementById(day + '-' + this.hourRange[i]).classList.toggle("active");
-        this.$emit("callback", { day: day, hour: this.hourRange[i] });
-      }
-    },
-    allWeek: function allWeek(hour) {
-      for (var i in this.dayIndex) {
-        document.getElementById(i + '-' + hour).classList.toggle("active");
-        this.$emit("callback", { day: i, hour: hour });
-      }
-    },
-    setDays: function setDays() {
-      this.dayIndex = [];
-      var dateIndex = 0;
-      for (var index = 0; index < this.min; index++) {
-        this.dayIndex.push(this.formatDate(this.nextDate(this.week.from.value, dateIndex), "short"));
-        dateIndex++;
-      }
-    },
-    formatDate: function formatDate(date, type) {
-      var weekDayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-          weekIndex = date.getDay(),
-          week = type == "short" ? weekDayNames[weekIndex].slice(0, 3) : weekDayNames[weekIndex];
-      return {
-        label: { week: week },
-        value: date
-      };
-    },
-    nextDate: function nextDate(date, index) {
-      return new Date(new Date(date).getTime() + index * 24 * 60 * 60 * 1000);
-    },
-    slot: function slot(event, select) {
-      event.target.classList.toggle("active");
-      this.$emit("callback", select);
-    }
-  },
-  watch: {
-    week: function week() {
-      this.setDays();
-    },
-    time_schedule: function time_schedule(val) {
-      this.dates = {};
-      this.dates = val;
-    }
-  }
-});
-
-/***/ }),
-/* 91 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", [
-    _c(
-      "table",
-      { staticClass: "calendar-table" },
-      [
-        _c("tr", [
-          _c("th", { staticClass: "title", attrs: { colspan: _vm.min + 1 } }, [
-            _c("div", [
-              _c(
-                "button",
-                {
-                  attrs: { type: "button", disabled: _vm.shift == "AM" },
-                  on: {
-                    click: function($event) {
-                      _vm.shift = "AM"
-                    }
-                  }
-                },
-                [
-                  _c("i", { staticClass: "far fa-sun" }),
-                  _vm._v(" AM                \n            ")
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  attrs: { type: "button", disabled: _vm.shift == "PM" },
-                  on: {
-                    click: function($event) {
-                      _vm.shift = "PM"
-                    }
-                  }
-                },
-                [
-                  _c("i", { staticClass: "far fa-moon" }),
-                  _vm._v(" PM                 \n            ")
-                ]
-              )
-            ])
-          ])
-        ]),
-        _vm._v(" "),
-        _c(
-          "tr",
-          [
-            _c("th"),
-            _vm._v(" "),
-            _vm._l(_vm.dayIndex, function(day, value) {
-              return _c("th", [
-                _c(
-                  "a",
-                  {
-                    staticClass: "btn btn-link",
-                    attrs: { role: "buttom" },
-                    on: {
-                      click: function($event) {
-                        _vm.isEdit ? _vm.allDay(value) : ""
-                      }
-                    }
-                  },
-                  [
-                    _vm._v(
-                      "\n            " + _vm._s(day.label.week) + "\n          "
-                    )
-                  ]
-                )
-              ])
-            })
-          ],
-          2
-        ),
-        _vm._v(" "),
-        _vm._l(_vm.shiftHourRange, function(hour, i) {
-          return _c(
-            "tr",
-            { key: hour + "-" + i },
-            [
-              _c("td", { staticClass: "hour" }, [
-                _c(
-                  "a",
-                  {
-                    staticStyle: { cursor: "pointer" },
-                    attrs: { role: "buttom" },
-                    on: {
-                      click: function($event) {
-                        _vm.isEdit ? _vm.allWeek(hour) : ""
-                      }
-                    }
-                  },
-                  [
-                    _vm._v(
-                      "\n            " +
-                        _vm._s(
-                          _vm._f("timeConvert")(
-                            _vm._f("hourFormat")(hour + ":00")
-                          )
-                        ) +
-                        "\n          "
-                    )
-                  ]
-                )
-              ]),
-              _vm._v(" "),
-              _vm._l(_vm.dayIndex, function(day, key) {
-                return _c(
-                  "td",
-                  {
-                    key: key + "-" + hour,
-                    class: _vm.isActive(key, hour) ? "active" : "",
-                    attrs: { id: key + "-" + hour },
-                    on: {
-                      click: function($event) {
-                        _vm.isEdit
-                          ? _vm.slot($event, { day: key, hour: hour })
-                          : ""
-                      }
-                    }
-                  },
-                  [
-                    _vm._v(
-                      "         \n          " +
-                        _vm._s(
-                          _vm._f("timeConvert")(
-                            _vm._f("hourFormat")(hour + ":00")
-                          )
-                        ) +
-                        "\n        "
-                    )
-                  ]
-                )
-              })
-            ],
-            2
-          )
-        })
-      ],
-      2
-    )
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-2d19057a", module.exports)
-  }
-}
-
-/***/ }),
-/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -67278,11 +66937,15 @@ var render = function() {
       "div",
       { staticClass: "pl-lg-4" },
       [
-        _c("calendar-picker", {
-          attrs: { time_schedule: _vm.dates, isEdit: _vm.isEdit },
+        _c("calendar", {
+          attrs: {
+            picker: "true",
+            timeSelectedDates: _vm.timeSelectedDates,
+            isEdit: _vm.isEdit
+          },
           on: {
-            callback: function($event) {
-              return _vm.selectTime($event)
+            timeSelectedDate: function($event) {
+              return _vm.timeSelectedDate($event)
             }
           }
         })
@@ -67315,15 +66978,15 @@ if (false) {
 }
 
 /***/ }),
-/* 93 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(94)
+var __vue_script__ = __webpack_require__(91)
 /* template */
-var __vue_template__ = __webpack_require__(95)
+var __vue_template__ = __webpack_require__(92)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -67362,7 +67025,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 94 */
+/* 91 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -67415,7 +67078,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 95 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -67505,15 +67168,15 @@ if (false) {
 }
 
 /***/ }),
-/* 96 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(97)
+var __vue_script__ = __webpack_require__(94)
 /* template */
-var __vue_template__ = __webpack_require__(101)
+var __vue_template__ = __webpack_require__(98)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -67552,12 +67215,12 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 97 */
+/* 94 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_buttonConfirmation__ = __webpack_require__(98);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_buttonConfirmation__ = __webpack_require__(95);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_buttonConfirmation___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_buttonConfirmation__);
 //
 //
@@ -67607,15 +67270,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 98 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(99)
+var __vue_script__ = __webpack_require__(96)
 /* template */
-var __vue_template__ = __webpack_require__(100)
+var __vue_template__ = __webpack_require__(97)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -67654,7 +67317,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 99 */
+/* 96 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -67717,7 +67380,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 100 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -67752,7 +67415,7 @@ if (false) {
 }
 
 /***/ }),
-/* 101 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -67775,7 +67438,7 @@ var render = function() {
                 staticClass: "spinner-grow spinner-grow-sm",
                 attrs: { role: "status", "aria-hidden": "true" }
               }),
-              _vm._v("\n    Loading...\n  ")
+              _vm._v("\r\n    Loading...\r\n  ")
             ]
           )
         : _vm._e(),
@@ -67793,7 +67456,7 @@ var render = function() {
                 }
               }
             },
-            [_vm._v("\n    Cancel\n  ")]
+            [_vm._v("\r\n    Cancel\r\n  ")]
           )
         : _vm._e(),
       _vm._v(" "),
@@ -67807,7 +67470,7 @@ var render = function() {
               },
               attrs: { type: "submit", disabled: !_vm.submit || _vm.loading }
             },
-            [_vm._v("\n    Save\n  ")]
+            [_vm._v("\r\n    Save\r\n  ")]
           )
         : _vm._e(),
       _vm._v(" "),
@@ -67839,7 +67502,7 @@ if (false) {
 }
 
 /***/ }),
-/* 102 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -67912,7 +67575,7 @@ var render = function() {
                             [
                               _vm._v(
                                 "\n                  " +
-                                  _vm._s(_vm.lists.roles[_vm.rol_code]) +
+                                  _vm._s(_vm.rol) +
                                   "\n                "
                               )
                             ]
@@ -68001,20 +67664,9 @@ var render = function() {
                           _c("i", { staticClass: "ni location_pin mr-2" }, [
                             _vm._v(
                               " \n                    " +
-                                _vm._s(
-                                  _vm._f("lableCode")(
-                                    _vm.time_zone_id,
-                                    _vm.lists.timeZones,
-                                    true
-                                  )
-                                ) +
+                                _vm._s(_vm.timeZone) +
                                 " - " +
-                                _vm._s(
-                                  _vm._f("lableCode")(
-                                    _vm.country_code,
-                                    _vm.lists.countries
-                                  )
-                                ) +
+                                _vm._s(_vm.country) +
                                 "\n                  "
                             )
                           ])
@@ -68299,12 +67951,7 @@ var render = function() {
                               ? _c("input", {
                                   staticClass: "form-control",
                                   attrs: { type: "text", readonly: "" },
-                                  domProps: {
-                                    value: _vm._f("lableCode")(
-                                      _vm.country_code,
-                                      _vm.lists.countries
-                                    )
-                                  }
+                                  domProps: { value: _vm.country }
                                 })
                               : _vm._e(),
                             _vm._v(" "),
@@ -68416,13 +68063,7 @@ var render = function() {
                                     ? _c("input", {
                                         staticClass: "form-control",
                                         attrs: { type: "text", readonly: "" },
-                                        domProps: {
-                                          value: _vm._f("lableCode")(
-                                            _vm.time_zone_id,
-                                            _vm.lists.timeZones,
-                                            true
-                                          )
-                                        }
+                                        domProps: { value: _vm.timeZone }
                                       })
                                     : _vm._e(),
                                   _vm._v(" "),
@@ -68540,9 +68181,7 @@ var render = function() {
                                     ? _c("input", {
                                         staticClass: "form-control",
                                         attrs: { type: "text", readonly: "" },
-                                        domProps: {
-                                          value: _vm.lists.roles[_vm.rol_code]
-                                        }
+                                        domProps: { value: _vm.rol }
                                       })
                                     : _vm._e(),
                                   _vm._v(" "),
@@ -68657,10 +68296,10 @@ var render = function() {
                         ? _c("userTeacher", {
                             attrs: {
                               isEdit: _vm.isEdit,
-                              time_schedule: _vm.time_schedule
+                              timeSchedule: _vm.timeSchedule
                             },
                             on: {
-                              callback: function($event) {
+                              timeSelectedDate: function($event) {
                                 return _vm.setTimeSchedule($event)
                               }
                             }
@@ -68723,6 +68362,213 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-567423ec", module.exports)
+  }
+}
+
+/***/ }),
+/* 100 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(101)
+/* template */
+var __vue_template__ = __webpack_require__(102)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/views/user/porfile.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-7895e484", Component.options)
+  } else {
+    hotAPI.reload("data-v-7895e484", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 101 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__header__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__header___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__header__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    headerUser: __WEBPACK_IMPORTED_MODULE_0__header___default.a
+  },
+  computed: {
+    currentUser: function currentUser() {
+      return;
+    }
+  },
+  data: function data() {
+    return {
+      user: {
+        id: parseInt(this.$router.currentRoute.params.id) || this.$store.getters.currentUser.id
+      }
+    };
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    this.$store.dispatch('sendGet', { url: '/api/user/' + this.user.id, auth: true }).then(function (res) {
+      if (res.data.user) _this.user = res.data.user;
+    });
+  }
+});
+
+/***/ }),
+/* 102 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c("header-user", { attrs: { name: "" } }),
+      _vm._v(" "),
+      _c("div", { staticClass: "container-fluid mt--7" }, [
+        _c("div", { staticClass: "card card-profile shadow" }, [
+          _c("div", { staticClass: "px-4" }, [
+            _c("div", { staticClass: "row justify-content-center" }, [
+              _c("div", { staticClass: "col-lg-3 order-lg-2" }, [
+                _c("div", { staticClass: "card-profile-image" }, [
+                  _c("a", { attrs: { href: "#" } }, [
+                    _c("img", {
+                      ref: "img",
+                      staticClass: "rounded-circle",
+                      staticStyle: { width: "10rem", height: "10rem" },
+                      attrs: { src: "/uploads/avatar/" + _vm.user.avatar }
+                    })
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", {
+                staticClass:
+                  "col-lg-4 order-lg-3 text-lg-right align-self-lg-center"
+              }),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-lg-4 order-lg-1" })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "text-center mt-8" }, [
+              _c("h2", [_vm._v(_vm._s(_vm.user.name))]),
+              _vm._v(" "),
+              _c("div", { staticClass: "h4 font-weight-300" }, [
+                _c("i", { staticClass: "ni location_pin mr-2" }, [
+                  _vm._v(
+                    " \n              " +
+                      _vm._s(_vm.user.timeZone) +
+                      " - " +
+                      _vm._s(_vm.user.country) +
+                      "\n            "
+                  )
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", [
+                _c("i", { staticClass: "ni education_hat mr-2" }, [
+                  _vm._v(
+                    "\n              " +
+                      _vm._s(_vm.user.description) +
+                      "\n            "
+                  )
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "mt-5 py-5 border-top text-center" })
+          ])
+        ])
+      ])
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-7895e484", module.exports)
   }
 }
 
@@ -69362,57 +69208,56 @@ module.exports = Component.exports
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__header__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__header___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__header__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_calendar__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_calendar__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_calendar___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_calendar__);
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__helpers_general__ = __webpack_require__(2);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -69426,22 +69271,15 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
     return {
       teacher: {
         id: this.$router.currentRoute.params.id
-      },
-      booked: [{
-        date: '2019-04-10 15:30:00'
-      }, {
-        date: '2019-04-07 18:00:00'
-      }]
+      }
     };
   },
 
   computed: {
     hours: function hours() {
-      var hoursByDay = [];
-      for (var day in this.teacher.timeSchedule) {
-        hoursByDay = hoursByDay.concat(this.teacher.timeSchedule[day]);
-      }
-      return [].concat(_toConsumableArray(hoursByDay));
+      return this.teacher.timeSchedule ? this.teacher.timeSchedule.map(function (el) {
+        return el.hour;
+      }) : [[0, 24]];
     }
   },
   mounted: function mounted() {
@@ -69449,6 +69287,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
     this.$store.dispatch('sendGet', { url: '/api/teacher/' + this.teacher.id, auth: true }).then(function (res) {
       if (res.data.teacher) _this.teacher = res.data.teacher;
+      if (res.data.teacher.timeSchedule) _this.teacher.timeSchedule = Object(__WEBPACK_IMPORTED_MODULE_2__helpers_general__["e" /* formatDateToDataBase */])(res.data.teacher.timeSchedule);
     });
   }
 });
@@ -69525,8 +69364,7 @@ var render = function() {
                   staticClass: "mx-7",
                   attrs: {
                     hours: _vm.hours,
-                    time_schedule: _vm.teacher.timeSchedule,
-                    booked: _vm.booked
+                    timeAllowedDates: _vm.teacher.timeSchedule
                   }
                 })
               ],
@@ -70108,72 +69946,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -70284,9 +70056,9 @@ var render = function() {
                 [
                   _c("a", { staticClass: "mb-0 d-block font-weight-bold" }, [
                     _vm._v(
-                      "\n                        " +
+                      "\r\n                        " +
                         _vm._s(_vm.currentUser.name) +
-                        "\n                    "
+                        "\r\n                    "
                     )
                   ]),
                   _vm._v(" "),
@@ -70336,7 +70108,7 @@ var render = function() {
                             _vm._v(
                               " " +
                                 _vm._s(link.title) +
-                                "\n                    "
+                                "\r\n                    "
                             )
                           ]
                         )
@@ -70473,7 +70245,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/calendarEventPicker.vue"
+Component.options.__file = "resources/assets/js/components/calendarEvent.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -70482,9 +70254,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-098b8b63", Component.options)
+    hotAPI.createRecord("data-v-ae0d1116", Component.options)
   } else {
-    hotAPI.reload("data-v-098b8b63", Component.options)
+    hotAPI.reload("data-v-ae0d1116", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -70508,18 +70280,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['isTimeSchedule', 'isBooked', 'isActive', 'date', 'hour', 'min'],
+  props: ['isSelected', 'isAllowed', 'isDlocked', 'date'],
   methods: {
-    clickBooked: function clickBooked() {
-      this.$emit("clickBooked", []);
-    },
     clickAddDay: function clickAddDay(event) {
-      this.$emit("clickAddDay", [event, this.date, this.hour, this.min]);
+      this.$emit("clickAddDay", [event, this.date]);
     }
   }
 
@@ -70537,22 +70303,13 @@ var render = function() {
     "td",
     {
       class: {
-        active: _vm.isActive,
-        disabled: !_vm.isTimeSchedule,
-        booked: _vm.isBooked
-      },
-      attrs: {
-        "data-toggle": _vm.isBooked ? "tooltip" : "",
-        "data-html": _vm.isBooked ? "true" : "",
-        title: _vm.isBooked ? _vm.isBooked.date : ""
+        active: _vm.isSelected,
+        disabled: !_vm.isAllowed,
+        booked: _vm.isDlocked
       },
       on: {
         click: function($event) {
-          _vm.isTimeSchedule
-            ? _vm.isBooked
-              ? _vm.clickBooked()
-              : _vm.clickAddDay($event)
-            : ""
+          _vm.isAllowed && !_vm.isDlocked ? _vm.clickAddDay($event) : ""
         }
       }
     },
@@ -70566,7 +70323,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-098b8b63", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-ae0d1116", module.exports)
   }
 }
 

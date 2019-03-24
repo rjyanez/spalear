@@ -4,6 +4,7 @@ import Signup from './views/auth/signup.vue';
 import Dashboard from './views/dashboard';
 import UserList from './views/user/list';
 import User from './views/user/user';
+import Porfile from './views/user/porfile';
 import TeacherList from './views/teacher/list'
 import Teacher from './views/teacher/teacher'
 
@@ -32,21 +33,13 @@ export const routes = [
         }
     },
     {
-        path: '/porfile',
-        name: 'porfile',
-        component: User,
-        meta: {
-            requiresAuth: true
-        }
-    },
-    {
         path: '/user',
         component: {
             template: '<router-view/>',
         },
         meta: {
             requiresAuth: true,
-            deniedRoles: ['TE','ST']
+            // deniedRoles: ['TE','ST']
         },
         children: [
             {
@@ -60,6 +53,28 @@ export const routes = [
                 component: User
             },
             {
+                path: 'setting',
+                name: 'user.setting',
+                component: User
+            },
+            {
+                path: 'porfile',
+                component: {
+                    template: '<router-view/>',
+                },                
+                children: [
+                    {
+                        path: '/',
+                        name: 'user.porfile',
+                        component: Porfile
+                    },                
+                    {
+                        path: ':id',
+                        component: Porfile
+                    },
+                ]
+            },
+            {
                 path: ':id',
                 component: User
             }
@@ -68,7 +83,7 @@ export const routes = [
     {
         path: '/account',
         name: 'account',
-        redirect: '/porfile',
+        redirect: '/user/setting',
         meta: {
             requiresAuth: true
         }

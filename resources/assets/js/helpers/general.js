@@ -63,3 +63,45 @@ export function removeEmpty(obj) {
   });
   return obj;
 }
+
+export function formatDateToDataBase(time){
+
+  let val = []
+
+  for (let i in time) {
+    for(let j in time[i]){
+      if(typeof time[i][j] === 'string'){
+        val.push(datesFrontendFormater(time[i][j], i))
+      }
+    }
+  }
+  return val
+
+}
+
+export function datesFrontendFormater(time, key = null){
+  let d = new Date(time),
+  date = false ,
+  year = false ,
+  month = false ,
+  week = false ,
+  day = false ,
+  hour = false ,
+  min = false
+
+  if(d instanceof Date && !isNaN(d)){
+    date = d
+    year = parseInt(d.getFullYear())
+    month = parseInt(d.getMonth())
+    week = parseInt(d.getDay())
+    day = parseInt(d.getDate())
+    hour  = parseInt(d.getHours())
+    min  = parseInt(d.getMinutes())
+  } else {
+    time = time.split(':')
+    week = parseInt(key)
+    hour = parseInt(time[0])
+    min = parseInt(time[1])
+  }
+  return {date, year, month, week, day, hour, min}
+}

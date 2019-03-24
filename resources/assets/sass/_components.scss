@@ -24,10 +24,10 @@ table.calendar-table {
     td{
       border: 1px solid lighten($primary, 30% );
       @extend .p-0;
-      &:first-child[rowspan="2"]{
-        @extend .text-muted;
+      // &:first-child[rowspan="2"]{
+      //   @extend .text-muted;
   
-      }
+      // }
       &:not(.hour), &.disabled, &.booked{
         color: transparent;
         &.active{
