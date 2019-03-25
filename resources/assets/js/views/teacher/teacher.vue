@@ -13,11 +13,9 @@
               </div>
             </div>
             <div class="col-lg-4 order-lg-3 text-lg-right align-self-lg-center">
-              <div class="card-profile-actions py-4 mt-lg-0">
-                <button type="button" class="btn mr-4 btn-info btn-sm">
-                  Add to Favorites
-                </button>
-                <message :related="teacher"/>
+              <div class="card-profile-actions py-4 mt-lg-0 d-flex align-items-center">
+                <button-favorites :related="teacher" class="mr-4"/>
+                <message :related="teacher" class="mr-4"/>
               </div>
             </div>
             <div class="col-lg-4 order-lg-1">
@@ -53,12 +51,14 @@
 import headerTeacher from './header'
 import calendar from './../../components/calendar'
 import message from './../../components/message'
+import buttonFavorites from './../../components/duttonFavorites'
 import {formatDateToDataBase} from './../../helpers/general'
 
 export default {
   components: {
     headerTeacher,
     calendar,
+    buttonFavorites,
     message
   },
   data(){

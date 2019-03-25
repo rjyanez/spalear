@@ -36,22 +36,23 @@ class TeacherController extends Controller
     {
       $teacher = User::whereId($id)
                   ->where('rol_code','TE')
-                  ->with(['rol','timeZone','country','timeSchedule'])
+                  ->with(['rol','timeZone','country','timeSchedule','teacherStudents'])
                   ->get()
                   ->map(
                     function ($item) {
                       return [
-                        'id' => $item->id,
-                        'name' => $item->name, 
-                        'avatar' => $item->avatar,
-                        'description' => $item->description,
-                        'country' => $item->country->name, 
-                        'timeZone' => $item->timeZone->name,
+                        'id'           => $item->id,
+                        'name'         => $item->name,
+                        'avatar'       => $item->avatar,
+                        'description'  => $item->description,
+                        'country'      => $item->country->name,
+                        'timeZone'     => $item->timeZone->name,
+                        'ranking'      => $item->teacherStudents->pluck('ranking')->avg(),
                         'timeSchedule' => $item->timeSchedule
                                             ->groupBy('week')
-                                              ->map(function ($day) {
-                                              return $day->pluck('hour');         
-                                            })
+                                            ->map(function ($day) {
+                                            return $day->pluck('hour');
+                        })
                       ];
                     })
                     ->first();

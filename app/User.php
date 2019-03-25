@@ -38,6 +38,18 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany('App\TimeSchedule', 'user_id', 'id');
     }
 
+    public function studentTeachers()
+    {
+        return $this->belongsToMany('App\User','students_teachers','student_id','teacher_id');
+
+    }
+
+    public function teacherStudents()
+    {
+        return $this->belongsToMany('App\User','students_teachers','teacher_id','student_id');
+
+    }
+
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      * @return mixed

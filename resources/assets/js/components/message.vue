@@ -1,11 +1,11 @@
 <template>
-<div class="dropdown">
+<div class="dropdown dropright">
   <button type="button" class="btn float-right btn-default btn-sm" data-toggle="dropdown" >
     Message
   </button>
-  <form class="dropdown-menu p-4 mt-6" style="width=5rem">
+  <form class="dropdown-menu p-4" style="min-width: 20rem">
     <div class="form-group">
-      <textarea name="message" rows="10" cols="30" class="form-control" placeholder="make a suggestion"></textarea>
+      <textarea name="message" rows="10" cols="30" class="form-control" placeholder="Make a suggestion"></textarea>
     </div>
     <button type="submit" class="btn btn-primary">Send</button>
   </form>
