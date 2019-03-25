@@ -54,3 +54,4 @@ class CodesMetaTableSeeder extends Seeder
     	];
     }
 }
+
