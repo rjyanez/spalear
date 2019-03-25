@@ -24,7 +24,7 @@ class TimeSchedulesSeeder extends Seeder
                 array_push($data,[
                     'user_id' => $value->id,
                     'week'     => rand (0   ,6),
-                    'hour'    => rand (0   ,24).':'.$min[rand(1,1)],
+                    'hour'    => rand (0   ,23).':'.$min[rand(1,1)],
                 ]);
             }
         }

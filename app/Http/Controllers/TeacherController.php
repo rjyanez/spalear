@@ -19,7 +19,7 @@ class TeacherController extends Controller
                           'name' => $item->name, 
                           'email' => $item->email,
                           'avatar' => $item->avatar,
-                          'rol' => $item->rol->name,
+                          'rol' => $item->rol->key,
                           'country' => $item->country->name, 
                           'timeZone' => $item->timeZone->name,
                           'timeSchedule' => $item->timeSchedule

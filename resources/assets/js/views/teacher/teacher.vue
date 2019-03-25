@@ -13,7 +13,12 @@
               </div>
             </div>
             <div class="col-lg-4 order-lg-3 text-lg-right align-self-lg-center">
-              <!-- opciones de la derecha -->
+              <div class="card-profile-actions py-4 mt-lg-0">
+                <button type="button" class="btn mr-4 btn-info btn-sm">
+                  Add to Favorites
+                </button>
+                <message :related="teacher"/>
+              </div>
             </div>
             <div class="col-lg-4 order-lg-1">
               <!-- info de la isquierda -->
@@ -47,12 +52,14 @@
 <script>
 import headerTeacher from './header'
 import calendar from './../../components/calendar'
+import message from './../../components/message'
 import {formatDateToDataBase} from './../../helpers/general'
 
 export default {
   components: {
     headerTeacher,
-    calendar
+    calendar,
+    message
   },
   data(){
     return {
@@ -63,7 +70,15 @@ export default {
   },
   computed: {
     hours(){
-      return (this.teacher.timeSchedule)? this.teacher.timeSchedule.map(el => el.hour) : [[0,24]]
+      if (this.teacher.timeSchedule){
+        let hours = [], values =this.teacher.timeSchedule.map(el => el.hour)
+        for (const key in values) {
+          if(!hours.includes(values[key])) hours.push(values[key])
+        }
+        return hours 
+      } else { 
+        return [[0,24]] 
+      }
     }
   },
   mounted(){

@@ -1,18 +1,18 @@
 <template>
 <ul class="list-unstyled">
-	<li class="media" v-for="i in min">
+	<li class="media my-3" v-for="(lesson, i) in list" :key="i">
 		<img 
-			src="list[i]['teacher']['avatar']" 
-			title="list[i]['teacher']['name']" 
-			class="mr-3"
+			:src="`/uploads/avatar/${lesson.teacher.avatar}`" 
+			:title="lesson.teacher.name" 
+			class="mr-3 rounded-circle"
+			style="width: 5rem; height: 5rem;"
 			data-toggle="tooltip" 
 			data-placement="top"  
 		>
-		<div class="media-body">
-			{{list[i]}}
-			<h5 class="mt-0 mb-1" v-if="list[i]['type']['code'] === 'GR' ">
-				Lesson
-			</h5>
+		<div class="media-body text-left">
+			<span class="mt-0 mb-1" v-if="lesson.type === 'GR' ">Lesson</span>
+			<h4 class="heading">{{ lesson.type_name }}</h4>
+			<span class="description">{{ lesson.date }}</span>
 		</div>
 	</li>
 </ul>
@@ -26,17 +26,11 @@ export default {
 		list: {
 			type: Array,
 			default: () => []
-		},
-		min: {
-	      type: Number,
-	      default: 7
-	    },
+		}
 	},
-	watch: {
-		list(val){
-			for (let i in this.list) {
-				if(this.list[i].hasOwnProperty('date')) this.list[i]['date'] = datesFrontendFormater(this.list[i]['date'])
-			}
+	mounted() {
+		for (let i in this.list) {
+			if(this.list[i].hasOwnProperty('date')) this.list[i]['date'] = datesFrontendFormater(this.list[i]['date'])
 		}
 	}
 }

@@ -214,7 +214,7 @@ export default {
       ))
     },
     isTimeAllowedDates(find){
-      return (this.timeAllowedDates.length === 0)? false : this.timeAllowedDates.some((el) => (
+      return (this.timeAllowedDates.length === 0)? true : this.timeAllowedDates.some((el) => (
         el.week === find.week &&
         el.hour === find.hour && 
         el.min === find.min

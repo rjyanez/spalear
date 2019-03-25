@@ -150,18 +150,18 @@ class UserController extends Controller
 
   public function saveTimeSchedule($times,$id)
   {
-	if(!empty($times)):
-	  TimeSchedule::where('user_id', $id)->delete();
-	  $data= [];
-	  foreach ($times as $time):		
-		array_push($data, [
-		  'user_id' => $id,
-		  'week'     => $time->week,
-		  'hour'    => $time->hour.':'.$time->min
-		]);		  
-	  endforeach;
-	  TimeSchedule::insert($data);
-	endif;    
+		if(!empty($times)):
+			TimeSchedule::where('user_id', $id)->delete();
+			$data= [];
+			foreach ($times as $time):		
+			array_push($data, [
+				'user_id' => $id,
+				'week'     => $time->week,
+				'hour'    => $time->hour.':'.$time->min
+			]);		  
+			endforeach;
+			TimeSchedule::insert($data);
+		endif;    
   }
   
 

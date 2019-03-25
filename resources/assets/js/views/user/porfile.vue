@@ -33,7 +33,7 @@
             </div>
           </div>
           <div class="mt-5 py-5 border-top text-center">
-            <agenda :list="classList"/>
+            <agenda :list="classList" class="mx-8"/>
             
           </div>
         </div>
@@ -58,10 +58,8 @@ export default {
       classList: [
         {
           date: "2019/03/24 8:30:00",
-          type: {
-            code: "CO",
-            name: "Conversational",
-          },
+          type: "CO",
+          type_name: "Conversational",
           teacher : {
             name: "Nombre del Profesor",
             avatar: "no-img.png",
@@ -69,10 +67,8 @@ export default {
         },
         {
           date: "2019/03/24 8:30:00",
-          type: {
-            code: "GR",
-            name: "Gramatical",
-          },
+          type: "GR",
+          type_name: "Gramatical",
           teacher : {
             name: "Nombre del Profesor",
             avatar: "no-img.png",
