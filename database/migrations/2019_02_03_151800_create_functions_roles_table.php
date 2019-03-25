@@ -18,7 +18,7 @@ class CreateFunctionsRolesTable extends Migration
             $table->string('rol_code');
             $table->string('function_code');
 
-            $table->foreign('rol_code')->references('code')->on('roles');
+            $table->foreign('rol_code')->references('key')->on('codes_meta');
             $table->foreign('function_code')->references('code')->on('functions');
 
         });

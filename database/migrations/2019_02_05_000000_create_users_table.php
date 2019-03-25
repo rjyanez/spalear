@@ -30,7 +30,7 @@ class CreateUsersTable extends Migration
 
             $table->foreign('country_code')->references('code')->on('countries');
             $table->foreign('time_zone_id')->references('id')->on('time_zones');
-            $table->foreign('rol_code')->references('code')->on('roles');
+            $table->foreign('rol_code')->references('key')->on('codes_meta');
 
         });
     }

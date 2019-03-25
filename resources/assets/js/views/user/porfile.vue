@@ -33,6 +33,7 @@
             </div>
           </div>
           <div class="mt-5 py-5 border-top text-center">
+            <agenda :list="classList"/>
             
           </div>
         </div>
@@ -42,21 +43,42 @@
 </template>
 <script>
 import headerUser from './header'
+import agenda from './../lesson/agenda'
 
 export default {
   components: {
-    headerUser
-  },
-  computed: {
-    currentUser() {
-      return ;
-    },
+    headerUser,
+    agenda
   },
   data(){
     return {
       user: {
         id: parseInt(this.$router.currentRoute.params.id) || this.$store.getters.currentUser.id
-      },      
+      },
+      classList: [
+        {
+          date: "2019/03/24 8:30:00",
+          type: {
+            code: "CO",
+            name: "Conversational",
+          },
+          teacher : {
+            name: "Nombre del Profesor",
+            avatar: "no-img.png",
+          },
+        },
+        {
+          date: "2019/03/24 8:30:00",
+          type: {
+            code: "GR",
+            name: "Gramatical",
+          },
+          teacher : {
+            name: "Nombre del Profesor",
+            avatar: "no-img.png",
+          }
+        }
+      ]      
     }
   },
   mounted(){

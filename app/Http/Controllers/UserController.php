@@ -6,7 +6,7 @@ use App\User;
 use App\Country;
 use App\TimeSchedule;
 use App\TimeZone;
-use App\Rol;
+use App\CodeMeta;
 use App\Transformers\Json;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -25,7 +25,7 @@ class UserController extends Controller
 					  'id' => $item->id,
 					  'name' => $item->name, 
 					  'email' => $item->email,
-					  'rol' => $item->rol->name,
+					  'rol' => $item->rol->value,
 					  'country' => $item->country->name, 
 					  'timeZone' => $item->timeZone->name
 					];
@@ -61,7 +61,7 @@ class UserController extends Controller
 	{
 		$user = $this->getUserById($id);
 
-		$roles = Rol::where('code', '!=', 'ST')->pluck('name', 'code');
+		$roles = CodeMeta::where('type', 'rol')->where('key', '!=', 'ST')->pluck('value', 'key');
 		$countries = Country::with(['timeZones'])->pluck('name', 'code');
 		$timeZones = TimeZone::select('id', DB::raw("name ||' '||gmt_offset as name"), 'country_code')
 			  ->get()
@@ -114,7 +114,7 @@ class UserController extends Controller
 					'avatar' => $item->avatar,
 					'description' => $item->description,
 					'rol_code' => $item->rol_code,
-					'rol' => $item->rol->name,
+					'rol' => $item->rol->value,
 					'country_code' => $item->country_code,
 					'country' => $item->country->name,
 					'time_zone_id' => $item->time_zone_id,

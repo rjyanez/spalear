@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateRolesTable extends Migration
+class CreateCodesMetaTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,12 @@ class CreateRolesTable extends Migration
      */
     public function up()
     {
-        Schema::create('roles', function (Blueprint $table) {
-            $table->string('code',2)->unique();
-            $table->string('name');
-            $table->softDeletes();
+        Schema::create('codes_meta', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('type')->default('null');
+            $table->string('key')->unique()->index();
+            $table->text('value')->nullable();
             $table->timestamps();
-
-            $table->primary('code');
         });
     }
 
@@ -30,6 +29,6 @@ class CreateRolesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('roles');
+        Schema::dropIfExists('codes_meta');
     }
 }

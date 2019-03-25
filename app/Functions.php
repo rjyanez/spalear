@@ -17,7 +17,7 @@ class Functions extends Model
 
     public function roles()
     {
-        return $this->belongsToMany('App\Rol','functions_roles','function_code','rol_code');
+        return $this->belongsToMany('App\CodeMeta','functions_roles','function_code','rol_code');
 
     }
 }
