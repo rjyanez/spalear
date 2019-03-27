@@ -5,7 +5,6 @@ use App\Rol;
 use App\Country;
 use App\TimeZone;
 use App\User;
-use Carbon\Carbon;
 use App\Transformers\Json;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -40,14 +39,24 @@ class AuthController extends Controller
         } catch (JWTException $e) {
             return response()->json(Json::response(null,'Failed to login, please try again.'), 500);
         }
-        return response()->json(Json::response([
-                'access_token' => $token,
-                'user' => Auth::user() 
-            ],'Login success, welcome back!'));
+
+        if($token){
+            $user = Auth::user();
+            $user->online = true;
+            $user->save();
+            
+            return response()->json(Json::response([
+                    'access_token' => $token,
+                    'user' => Auth::user() 
+                ],'Login success, welcome back!'));
+        }
     }
     public function logout(Request $request) 
     {
         try {
+            $user = Auth::user();
+            $user->online = false;
+            $user->save();
             JWTAuth::parseToken()->invalidate();
             return response()->json(Json::response(null,"User successfully logged out."));
         } catch (JWTException $e) {

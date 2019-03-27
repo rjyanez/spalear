@@ -4,9 +4,9 @@ import Signup from './views/auth/signup.vue';
 import Dashboard from './views/dashboard';
 import UserList from './views/user/list';
 import User from './views/user/user';
-import Porfile from './views/user/porfile';
+import UserPorfile from './views/user/porfile';
 import TeacherList from './views/teacher/list'
-import Teacher from './views/teacher/teacher'
+import TeacherPorfile from './views/teacher/porfile'
 
 export const routes = [
     {
@@ -66,11 +66,11 @@ export const routes = [
                     {
                         path: '/',
                         name: 'user.porfile',
-                        component: Porfile
+                        component: UserPorfile
                     },                
                     {
                         path: ':id',
-                        component: Porfile
+                        component: UserPorfile
                     },
                 ]
             },
@@ -107,7 +107,7 @@ export const routes = [
             {
                 path: ':id',
                 name: 'teachers.name',
-                component: Teacher
+                component: TeacherPorfile 
             }
         ]
     },

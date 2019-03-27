@@ -11,6 +11,7 @@ class TeacherController extends Controller
     public function list()
     {
         $teachers = User::where('rol_code', 'TE')
+                      ->where('online', true)
                       ->with(['rol','timeZone','country','timeSchedule'])
                       ->get()
                       ->map(function ($item) {
@@ -20,6 +21,7 @@ class TeacherController extends Controller
                           'email' => $item->email,
                           'avatar' => $item->avatar,
                           'rol' => $item->rol->key,
+                          'online' => $item->online,
                           'country' => $item->country->name, 
                           'timeZone' => $item->timeZone->name,
                           'timeSchedule' => $item->timeSchedule

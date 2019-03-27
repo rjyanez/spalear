@@ -39,19 +39,7 @@
         <div class="card-body p-0">
           <div class="row">
             <div class="col-xl-4" v-for="(item, index) in (sortedActivity, filteredList)" :key="index">
-              <div class="card border-0 my-4">
-                <div class="card-profile-image">
-                  <router-link :to="`/teachers/${item.id}`">
-                    <img class="card-img-top rounded-circle" :src="`/uploads/avatar/${item.avatar}`" ref="img" style="width: 7rem; height: 7rem">
-                  </router-link>
-                </div>
-                <div class="card-body text-center mt-6">               
-                  <h3>
-                    {{ item.name }}
-                  </h3>
-                  <div class="h5"><i class="ni business_briefcase-24 mr-2"></i>{{ item.country }} - {{ item.timeZone }}</div>
-                </div>                        
-              </div>
+              <teacher :teacher="item" />
             </div>
           </div>
         </div>
@@ -77,10 +65,12 @@
 </template>
 <script>
 import headerTeacher from './header'
+import teacher from './teacher'
 
 export default {
   components: {
-  headerTeacher
+  headerTeacher,
+  teacher
   },
   data(){
   return {

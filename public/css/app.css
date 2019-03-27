@@ -39150,3 +39150,7 @@ table.calendar-table tr td.booked:hover {
   background: #f6993f;
 }
 
+.status-porfile {
+  z-index: 1060;
+}
+

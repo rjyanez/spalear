@@ -24,6 +24,7 @@ class CreateUsersTable extends Migration
             $table->string('avatar')->default('no-img.png');
             $table->text('description')->nullable();
             $table->string('rol_code',2);
+            $table->boolean('online')->default(false);
             $table->rememberToken();
             $table->softDeletes();
             $table->timestamps();

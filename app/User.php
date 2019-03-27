@@ -12,9 +12,25 @@ class User extends Authenticatable implements JWTSubject
 {
     use Notifiable, SoftDeletes, Metable;
 
-    protected $dates =      ['deleted_at'];
-    protected $fillable =   ['id', 'name', 'email', 'password','country_code','time_zone_id','avatar','description','rol_code'];
-    protected $hidden =     ['password', 'remember_token'];
+    protected $dates =      [
+        'deleted_at'
+    ];
+    protected $fillable =   [
+        'id', 
+        'name', 
+        'email', 
+        'password',
+        'country_code',
+        'time_zone_id',
+        'avatar',
+        'description',
+        'rol_code',
+        'online',
+    ];
+    protected $hidden =     [
+        'password', 
+        'remember_token'
+    ];
 
     protected $metaTable =  'users_meta'; 
 
