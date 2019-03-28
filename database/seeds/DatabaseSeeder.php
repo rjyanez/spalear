@@ -18,7 +18,8 @@ class DatabaseSeeder extends Seeder
             CountriesTableSeeder::class,
             TimeZonesTableSeeder::class,
             UsersTableSeeder::class,
-            TimeSchedulesSeeder::class
+            TimeSchedulesSeeder::class,
+            StudensTeachersSeeder::class,
         ]);
     }
 }

@@ -16,7 +16,7 @@ class FunctionsTableSeeder extends Seeder
         DB::table('functions')->insert([
             
             [ 'code' => 'account'      , 'title' => 'My account'   , 'url' => '/account'       , 'icon' => 'fas fa-user-circle'             , 'parent_name' => null       , 'order' => 0 , 'menu' => true],
-            [ 'code' => 'user.porfile'      , 'title' => 'Profile'      , 'url' => '/user/porfile'       , 'icon' => 'fas fa-user text-teal'          , 'parent_name' => 'account'  , 'order' => 0 , 'menu' => true],
+            [ 'code' => 'user.profile'      , 'title' => 'Profile'      , 'url' => '/user/profile'       , 'icon' => 'fas fa-user text-teal'          , 'parent_name' => 'account'  , 'order' => 0 , 'menu' => true],
             [ 'code' => 'user.setting'      , 'title' => 'Setting'      , 'url' => '/user/setting'       , 'icon' => 'fas fa-cog text-blue'          , 'parent_name' => 'account'  , 'order' => 1 , 'menu' => true],
            
 

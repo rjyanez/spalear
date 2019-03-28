@@ -1,6 +1,8 @@
 <template>
 	<nav :class="{ 'navbar navbar-top navbar-expand-md navbar-dark' : true ,'navbar-horizontal' : isLoggedIn}">
 	    <div :class="{'container px-4': !isLoggedIn, 'container-fluid' : isLoggedIn}" >
+			<slot name="toggle"></slot>
+
 			<!-- Brand -->
 			<router-link  :to="(isLoggedIn)? '/dashboard': '/'" class="h2 mb-0 text-white text-uppercase d-none d-lg-inline-block navbar-brand">
 				Spalear

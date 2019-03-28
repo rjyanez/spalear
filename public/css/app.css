@@ -5705,7 +5705,7 @@ License - nucleoapp.com/license/
 @font-face {
   font-family: 'NucleoIcons';
   src: url(/fonts/nucleo-icons.eot?c1733565b32b585676302d4233c39da8);
-  src: url(/fonts/nucleo-icons.eot?c1733565b32b585676302d4233c39da8) format("embedded-opentype"), url(/fonts/nucleo-icons.woff2?426439788ec5ba772cdf94057f6f4659) format("woff2"), url(/fonts/nucleo-icons.woff?2569aaea6eaaf8cd210db7f2fa016743) format("woff"), url(/fonts/nucleo-icons.ttf?f82ec6ba2dc4181db2af35c499462840) format("truetype"), url(/fonts/nucleo-icons.svg?0b8a30b10cbe7708d5f3a4b007c1d665) format("svg");
+  src: url(/fonts/nucleo-icons.eot?c1733565b32b585676302d4233c39da8) format("embedded-opentype"), url(/fonts/nucleo-icons.woff2?426439788ec5ba772cdf94057f6f4659) format("woff2"), url(/fonts/nucleo-icons.woff?2569aaea6eaaf8cd210db7f2fa016743) format("woff"), url(/fonts/nucleo-icons.ttf?f82ec6ba2dc4181db2af35c499462840) format("truetype"), url(/fonts/nucleo-icons.svg?46abbc4a676739dbd61f8a305cb63fd8) format("svg");
   font-weight: normal;
   font-style: normal;
 }
@@ -39082,6 +39082,90 @@ html:not([dir='rtl']) .noUi-horizontal .noUi-handle {
   height: 3px;
 }
 
+.w-rem-1 {
+  width: 1rem !important;
+}
+
+.h-rem-1 {
+  height: 1rem !important;
+}
+
+.w-rem-2 {
+  width: 2rem !important;
+}
+
+.h-rem-2 {
+  height: 2rem !important;
+}
+
+.w-rem-3 {
+  width: 3rem !important;
+}
+
+.h-rem-3 {
+  height: 3rem !important;
+}
+
+.w-rem-4 {
+  width: 4rem !important;
+}
+
+.h-rem-4 {
+  height: 4rem !important;
+}
+
+.w-rem-5 {
+  width: 5rem !important;
+}
+
+.h-rem-5 {
+  height: 5rem !important;
+}
+
+.w-rem-6 {
+  width: 6rem !important;
+}
+
+.h-rem-6 {
+  height: 6rem !important;
+}
+
+.w-rem-7 {
+  width: 7rem !important;
+}
+
+.h-rem-7 {
+  height: 7rem !important;
+}
+
+.w-rem-8 {
+  width: 8rem !important;
+}
+
+.h-rem-8 {
+  height: 8rem !important;
+}
+
+.w-rem-9 {
+  width: 9rem !important;
+}
+
+.h-rem-9 {
+  height: 9rem !important;
+}
+
+.w-rem-10 {
+  width: 10rem !important;
+}
+
+.h-rem-10 {
+  height: 10rem !important;
+}
+
+.fill-body {
+  fill: #f8fafc;
+}
+
 .toasted {
   margin-bottom: 1rem !important;
   padding: 1rem 1.5rem !important;
@@ -39110,6 +39194,22 @@ html:not([dir='rtl']) .noUi-horizontal .noUi-handle {
 .toasted.default {
   border-color: #3c4d69 !important;
   background-color: #3c4d69 !important;
+}
+
+.slide-fade-enter-active {
+  -webkit-transition: all .3s ease;
+  transition: all .3s ease;
+}
+
+.slide-fade-leave-active {
+  -webkit-transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-fade-enter,
+.slide-fade-leave-to {
+  -webkit-transform: translateX(-10%);
+          transform: translateX(-10%);
 }
 
 table.calendar-table tr th.title {
@@ -39152,5 +39252,133 @@ table.calendar-table tr td.booked:hover {
 
 .status-porfile {
   z-index: 1060;
+}
+
+.menu-toggle {
+  width: 3rem;
+  height: 3rem;
+  margin: 1rem auto;
+  margin-right: 1.5rem;
+  position: relative;
+  cursor: pointer;
+}
+
+.menu-toggle span {
+  display: block;
+  background: white;
+  border-radius: 10%;
+  -webkit-transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1);
+  transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.menu-toggle .hamburger {
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  -webkit-transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1);
+  transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.menu-toggle .hamburger span {
+  width: 80%;
+  height: 5%;
+  margin: 10% 0%;
+  position: relative;
+  -webkit-transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1);
+  transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.menu-toggle .hamburger span:nth-child(1) {
+  -webkit-transition-delay: .5s;
+          transition-delay: .5s;
+}
+
+.menu-toggle .hamburger span:nth-child(2) {
+  -webkit-transition-delay: .625s;
+          transition-delay: .625s;
+}
+
+.menu-toggle .hamburger span:nth-child(3) {
+  -webkit-transition-delay: .75s;
+          transition-delay: .75s;
+}
+
+.menu-toggle .cross {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  -webkit-transform: rotate(45deg);
+          transform: rotate(45deg);
+  -webkit-transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1);
+  transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.menu-toggle .cross span {
+  -webkit-transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1);
+  transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.menu-toggle .cross span:nth-child(1) {
+  height: 0%;
+  width: 5%;
+  position: absolute;
+  top: 10%;
+  left: 45%;
+  -webkit-transition-delay: 0s;
+          transition-delay: 0s;
+}
+
+.menu-toggle .cross span:nth-child(2) {
+  width: 0%;
+  height: 5%;
+  position: absolute;
+  left: 10%;
+  top: 45%;
+  -webkit-transition-delay: .25s;
+          transition-delay: .25s;
+}
+
+.menu-toggle.open .hamburger span {
+  width: 0%;
+}
+
+.menu-toggle.open .hamburger span:nth-child(1) {
+  -webkit-transition-delay: 0s;
+          transition-delay: 0s;
+}
+
+.menu-toggle.open .hamburger span:nth-child(2) {
+  -webkit-transition-delay: .125s;
+          transition-delay: .125s;
+}
+
+.menu-toggle.open .hamburger span:nth-child(3) {
+  -webkit-transition-delay: .25s;
+          transition-delay: .25s;
+}
+
+.menu-toggle.open .cross span:nth-child(1) {
+  height: 80%;
+  -webkit-transition-delay: .625s;
+          transition-delay: .625s;
+}
+
+.menu-toggle.open .cross span:nth-child(2) {
+  width: 80%;
+  -webkit-transition-delay: .375s;
+          transition-delay: .375s;
 }
 

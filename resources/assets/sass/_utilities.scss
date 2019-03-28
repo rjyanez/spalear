@@ -1,0 +1,12 @@
+@for $i from 1 through 10 {
+	.w-rem-#{$i} {
+		width: 	#{$i}rem !important;
+	}
+	.h-rem-#{$i} {
+		height: #{$i}rem !important;
+	}
+}
+
+.fill-body {	
+	fill: $body-bg;
+}

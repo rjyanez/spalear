@@ -24,6 +24,7 @@ $factory->define(App\User::class, function (Faker $faker) {
         'country_code'   => 'VE',
         'time_zone_id'   => 418,
         'description'    => $faker->paragraph,
-        'rol_code'       => $roles[rand(0,3)]
+        'rol_code'       => $roles[rand(0,3)],
+        'online'		 => rand(0,1)
     ];
 });

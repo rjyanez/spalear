@@ -20,4 +20,10 @@ class Functions extends Model
         return $this->belongsToMany('App\CodeMeta','functions_roles','function_code','rol_code');
 
     }
+
+    public function childFunctions()
+    {
+        return $this->hasMany('App\Functions','parent_name','code');
+
+    }
 }
