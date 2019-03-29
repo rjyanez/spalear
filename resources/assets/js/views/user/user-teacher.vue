@@ -6,7 +6,7 @@
       </div>                
     </div>
     <div class="pl-lg-4">
-      <calendar picker='true' @timeSelectedDate="timeSelectedDate($event)" :timeSelectedDates="timeSelectedDates" :isEdit="isEdit"/>
+      <calendar byShift="true" picker="true" @timeSelectedDate="timeSelectedDate($event)" :timeSelectedDates="timeSelectedDates" :isEdit="isEdit"/>
     </div>
   </div> 
 </template>

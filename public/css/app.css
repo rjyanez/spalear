@@ -39166,6 +39166,10 @@ html:not([dir='rtl']) .noUi-horizontal .noUi-handle {
   fill: #f8fafc;
 }
 
+.modal-bg {
+  background: rgba(52, 58, 64, 0.8);
+}
+
 .toasted {
   margin-bottom: 1rem !important;
   padding: 1rem 1.5rem !important;

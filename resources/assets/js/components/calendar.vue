@@ -1,7 +1,7 @@
 <template lang="html">
   <div>
     <table class="calendar-table">
-        <tr>
+        <tr v-if="byShift">
           <th class="title" :colspan="min+1">
             <div>
               <button type="button" @click="shift = 'AM'" :disabled="shift == 'AM'">
@@ -35,7 +35,7 @@
           </th>
         </tr>
         <tr>
-          <th v-if="shiftHourRange.length ===0" :colspan="dayIndex.length + 1">
+          <th v-if="shiftHourRange.length ===0 && byShift" :colspan="dayIndex.length + 1">
             the tutor does not have available hours on this shift
           </th>
           <template v-else>
@@ -100,6 +100,7 @@ export default {
   props: {
     picker : false,
     isEdit: false,
+    byShift: false,
     hours : {
       type: Array,
       default : ()=> [[0,24]]
@@ -169,9 +170,13 @@ export default {
       return values
     },
     shiftHourRange(){
-      return (this.shift === 'AM')? 
-              this.hourRange.filter((hour)=> hour < 12) :
-              this.hourRange.filter((hour)=> hour >= 12)
+      if(!this.byShift) {
+        return this.hourRange
+      } else {        
+        return (this.shift === 'AM')? 
+                this.hourRange.filter((hour)=> hour < 12) :
+                this.hourRange.filter((hour)=> hour >= 12)
+      }
     },
     todaysDate(){
       return this.formatDate(new Date(this.current), "short")
@@ -329,4 +334,3 @@ export default {
   }
 };
 </script>
-

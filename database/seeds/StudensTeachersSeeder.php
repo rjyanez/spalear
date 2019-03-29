@@ -14,10 +14,17 @@ class StudensTeachersSeeder extends Seeder
     public function run()
     {
 		DB::statement('ALTER SEQUENCE students_teachers_id_seq RESTART WITH 1'); 
-        
-        $teachers = DB::table('users')->select('id')->where('rol_code', 'TE')->get();
-        $students = DB::table('users')->select('id')->where('rol_code', 'ST')->get();
+
         $data = [];
+        
+        $teachers = DB::table('users')->select('id')
+                                        ->where('rol_code', 'TE')
+                                        ->get();
+        $students = DB::table('users')->select('id')
+                                        ->where(function ($query) {
+                                            $query->where('rol_code', 'ST')
+                                            ->orWhere('email','admin@admin.com');
+                                        })->get();
 
 
         foreach ($teachers as $key => $value) {

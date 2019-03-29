@@ -18,23 +18,26 @@
       class="d-flex justify-content-between align-items-center mt-2 mx-auto w-rem-7" 
     >
       <button 
-        type="button" 
-        data-toggle="dropdown" 
         class="rounded-circle btn btn-primary btn-sm float-left status-porfile" 
         title="Time Schedule"
+        type="button" 
         @click="showTeacherTimeSchedule"
       >
-        <i class="fas fa-calendar-alt"></i>
+        <i class="fas fa-calendar-alt"></i>       
       </button>
-      <span 
-        v-if="teacher.online"
-        class="rounded-circle bg-success float-right status-porfile w-rem-1 h-rem-1" 
-        title="Online"
-      >
-      </span>
+      <button-favorite 
+        :related="teacher" 
+        :favorite="favorite" 
+        text="false"
+        class="rounded-circle status-porfile btn-danger mb--5" 
+      />
+      <button-online-status 
+        :online="online" 
+        class="float-right status-porfile" 
+      />
     </div>
   </div>
-  <div class="card-body pt-1 pb-3 h-100 text-center">
+  <div class="card-body pt-3 pb-3 h-100 text-center">
     <stars class="w-rem-8 mx-auto" :points="teacher.ranking" />
     <h3> {{ teacher.name }} </h3>
     <i>{{ teacher.country }} - {{ teacher.timeZone }}</i>
@@ -42,18 +45,31 @@
 </div>
 </template>
 <script>
-import stars from './../../components/stars'
 import {formatDateToDataBase} from './../../helpers/general'
+import buttonOnlineStatus from './../../components/buttonOnlineStatus'
+import buttonFavorite from './../../components/buttonFavorite'
+import stars from './../../components/stars'
 
 export default {
   name: 'teacher',
   props: ['teacher'],
   components: {
-    stars
+    stars,
+    buttonFavorite,
+    buttonOnlineStatus
+  },
+  computed:{
+    favorite(){
+      return this.teacher.favorite
+    },
+    online(){
+      return this.teacher.online
+    }
   },
   methods: {
     showTeacherTimeSchedule(){
-      this.$emit("showTeacherTimeSchedule", formatDateToDataBase(this.teacher.timeSchedule));
+      let time = formatDateToDataBase(this.teacher.timeSchedule)
+      this.$emit("showTeacherTimeSchedule", { 'teacher': this.teacher ,time})
     }
   }
 }

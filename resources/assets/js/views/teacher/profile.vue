@@ -14,7 +14,7 @@
             </div>
             <div class="col-lg-4 order-lg-3 text-lg-right align-self-lg-center">
               <div class="card-profile-actions py-4 mt-lg-0 d-flex align-items-center">
-                <button-favorites :related="teacher" class="mr-4"/>
+                <button-favorite :related="teacher" class="mr-4 float-right btn-primary" text="true"/>
                 <message :related="teacher" class="mr-4"/>
               </div>
             </div>
@@ -37,6 +37,7 @@
           </div>
           <div class="mt-5 py-5 border-top text-center">
             <calendar
+              byShift="true"
               class="mx-7" 
               :hours="hours"
               :timeAllowedDates="teacher.timeSchedule"        
@@ -51,14 +52,14 @@
 import headerTeacher from './header'
 import calendar from './../../components/calendar'
 import message from './../../components/message'
-import buttonFavorites from './../../components/duttonFavorites'
+import buttonFavorite from './../../components/buttonFavorite'
 import {formatDateToDataBase} from './../../helpers/general'
 
 export default {
   components: {
     headerTeacher,
     calendar,
-    buttonFavorites,
+    buttonFavorite,
     message
   },
   data(){

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="!isLoggedIn">
     <header-guest title="Sign In"/>
     <div class="container mt--8 pb-5">
         <div class="row justify-content-center">
@@ -74,6 +74,11 @@ export default {
         password: null
       }
     },
+    computed: {
+        isLoggedIn() {
+            return this.$store.getters.isLoggedIn;
+        }
+    },    
     methods: {
       authenticate(){
         

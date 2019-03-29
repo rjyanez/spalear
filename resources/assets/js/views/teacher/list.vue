@@ -65,29 +65,19 @@
         </div>
       </div>  
     </div>
-    <modal id="teacherCalendar">
-      <template v-slot:body>
-          <calendar 
-            picker='true' 
-            isEdit="false"
-            :timeSelectedDates="modalTime" 
-          />
-      </template>
-    </modal>    
+    <modal-time-schedule :options="modal" @close="closeModalTime"/>
   </div>
 </template>
 <script>
 import headerTeacher from './header'
 import teacher from './teacher'
-import modal from './../../components/modal'
-import calendar from './../../components/calendar'
+import modalTimeSchedule from './modalTimeSchedule'
 
 export default {
   components: {
     headerTeacher,
     teacher,
-    modal,
-    calendar
+    modalTimeSchedule
   },
   data(){
     return {
@@ -99,10 +89,11 @@ export default {
       pageSize: 6,
       currentPage: 1,
       total: 0,
-      modalTime: {
-        type: Array,
-        default: () => []
-      }            
+      modal: {
+        show : false,
+        teacher : {},
+        time: [],
+      }, 
     }
   },
   methods:{
@@ -117,9 +108,19 @@ export default {
     },
     prevPage:function() {
       if(this.currentPage > 1) this.currentPage--;
-    }
     },
-    computed: {
+    showModalTime(event){
+      this.modal = { 
+        show : true, 
+        teacher : event.teacher,
+        time: event.time 
+      }
+    },
+    closeModalTime(){
+      this.modal = { show : false, teacher : {}, time: [] }
+    }
+  },
+  computed: {
     sortedActivity:function() {
       return this.teachers.sort((a,b) => {
       let modifier = 1;
@@ -157,9 +158,6 @@ export default {
       let from = base-(this.pageSize -1)
       let to = (list.length < this.pageSize)? from + (list.length - 1) :  base
       return {from, to}
-    },
-    showModalTime(timeSchedule){
-      this.modalTime = timeSchedule
     }
   },
   mounted(){
