@@ -10,7 +10,7 @@ import Toasted from 'vue-toasted';
 import {routes} from './routes';
 import {initialize} from './helpers/general';
 import StoreData from './store';
-import mainApp from './views/layouts/mainApp.vue';
+import App from './views/layouts/app.vue';
 
 
 Vue.use(VueRouter);
@@ -42,6 +42,6 @@ const app = new Vue({
         }
     },
     components: {
-       'main-app': mainApp
+       App
     }
 });

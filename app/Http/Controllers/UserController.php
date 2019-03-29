@@ -25,12 +25,15 @@ class UserController extends Controller
 					  'id' => $item->id,
 					  'name' => $item->name, 
 					  'email' => $item->email,
+					  'rol_code' => $item->rol->key,
 					  'rol' => $item->rol->value,
 					  'country' => $item->country->name, 
 					  'timeZone' => $item->timeZone->name
 					];
 				  })->toJson();  
-	return response()->json(Json::response(compact('users')), 200);
+	$roles = CodeMeta::where('type', 'rol')->pluck('value', 'key');
+
+	return response()->json(Json::response(compact('users', 'roles')), 200);
   }
 
   public function store(Request $request)

@@ -15,7 +15,7 @@
     </head>
     <body class="{{ $class ?? '' }}" >
         <div id="app" class="min-vh-100" :class="{'bg-primary' : !isLoggedIn}">
-            <main-app/>    
+            <App />    
         </div>
         <script src="{{ asset('js') }}/app.js"></script>
     </body>

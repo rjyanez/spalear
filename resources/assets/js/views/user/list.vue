@@ -17,7 +17,18 @@
                 </div>
               </div>
             </div>
-            <div class="col-6 text-right">
+            <div class="col">
+              <div class="navbar-search navbar-search-light">
+                <div class="form-group mb-0">
+                  <div class="input-group input-group-alternative shadow ">
+                    <select class="custom-select form-control"v-model="filter">
+                        <option v-for="(val,code) in filterOptions" :value="code">{{val}}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col text-right">
               <router-link class="btn  btn-primary" :to="`/user/create`">
                 Add New
               </router-link>
@@ -61,11 +72,15 @@
               of <b class="text-primary">{{ total }}</b> 
             </span>
             <ul class="pagination" role="navigation">
-              <li class="page-item " :class="{ 'disabled' : currentPage === 1 }">
-                <button @click="prevPage" class="page-link" aria-label="« Previous"><i class="fas fa-chevron-left fa-lg"></i></button> 
+              <li class="page-item " v-show="currentPage > 1">
+                <button @click="prevPage" class="page-link" >
+                  <i class="fas fa-chevron-left fa-lg"></i>
+                </button> 
               </li>
-              <li class="page-item" :class="{ 'disabled' : currentPage ===  sortedActivity.length }" >
-                <button @click="nextPage" class="page-link" aria-label="Next »"><i class="fas fa-chevron-right fa-lg"></i></button>        
+              <li class="page-item" v-show="rangeList.to < total">
+                <button @click="nextPage" class="page-link" >
+                  <i class="fas fa-chevron-right fa-lg"></i>
+                </button>        
               </li>
             </ul>
           </nav>
@@ -84,6 +99,9 @@ export default {
   data(){
   return {
     users: [],
+    filterOptions: [],
+    filterName: 'rol_code',
+    filter: 'ST',
     currentSort:'name',
     currentSortDir:'asc',
     search: '',
@@ -127,8 +145,9 @@ export default {
       let name = data.name.toLowerCase().match(this.search.toLowerCase());
       let rol = data.rol.toLowerCase().match(this.search.toLowerCase());
       let country = data.country.toLowerCase().match(this.search.toLowerCase());
-      let timeZone = data.timeZone.toLowerCase().match(this.search.toLowerCase());        
-      return email || name || rol || timeZone || country;
+      let timeZone = data.timeZone.toLowerCase().match(this.search.toLowerCase());    
+      let filter = data[this.filterName].toLowerCase().match(this.filter.toLowerCase())    
+      return ((email || name || rol || timeZone || country) && filter);
     });
 
     this.total = list.length;
@@ -150,6 +169,7 @@ export default {
   mounted(){
   this.$store.dispatch('sendGet', { url:`/api/user/list`, auth: true}).then(res => {
     if(res.data.users) this.users = JSON.parse(res.data.users)
+    if(res.data.roles) this.filterOptions = res.data.roles
   })
   }
 }

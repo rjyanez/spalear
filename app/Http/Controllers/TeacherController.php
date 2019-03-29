@@ -10,6 +10,7 @@ class TeacherController extends Controller
 {
     public function list()
     {
+
         $teachers = User::where('rol_code', 'TE')
                       ->where('online', true)
                       ->with(['rol','timeZone','country','timeSchedule','teacherStudents'])
@@ -24,7 +25,7 @@ class TeacherController extends Controller
                           'online' => $item->online,
                           'country' => $item->country->name, 
                           'timeZone' => $item->timeZone->name,                          
-                          'ranking'      => $item->teacherStudents->avg('pivot.ranking'),
+                          'ranking'      => round($item->teacherStudents->avg('pivot.ranking')),
                           'timeSchedule' => $item->timeSchedule
                                             ->groupBy('week')
                                               ->map(function ($day) {

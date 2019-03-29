@@ -5,7 +5,7 @@
 		</transition>
 		<div class="main-content">		
 			<navbar>
-				<template v-slot:toggle>
+				<template v-slot:toggle v-if="isLoggedIn">
 					<closeMenu @toggle="sidebar = !sidebar" :open="sidebar" />
 				</template>
 			</navbar>
@@ -19,7 +19,7 @@ import navbar from './navbar.vue';
 import sidebar from './sidebar.vue'
 
 export default {
-    name: 'main-app',
+    name: 'App',
     components: {navbar,sidebar,closeMenu},
     data(){
 		return{

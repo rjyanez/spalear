@@ -2,7 +2,7 @@
 <div class="d-flex justify-content-between align-items-center" :class="'text-'+color" >
 	<i 
 		v-for="i in 5"
-		:class="{'far': i >= points , 'fas': i < points, 'fa-star': true}" 
+		:class="{'far': i > points , 'fas': i <= points, 'fa-star': true}" 
 	></i>
 </div>
 </template>

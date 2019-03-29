@@ -39251,7 +39251,7 @@ table.calendar-table tr td.booked:hover {
 }
 
 .status-porfile {
-  z-index: 1060;
+  z-index: 1000;
 }
 
 .menu-toggle {

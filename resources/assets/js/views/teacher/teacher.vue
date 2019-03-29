@@ -18,10 +18,11 @@
       class="d-flex justify-content-between align-items-center mt-2 mx-auto w-rem-7" 
     >
       <button 
+        type="button" 
+        data-toggle="dropdown" 
         class="rounded-circle btn btn-primary btn-sm float-left status-porfile" 
         title="Time Schedule"
-        data-toggle="modal" 
-        data-target="#timeScheduleModal"
+        @click="showTeacherTimeSchedule"
       >
         <i class="fas fa-calendar-alt"></i>
       </button>
@@ -34,19 +35,26 @@
     </div>
   </div>
   <div class="card-body pt-1 pb-3 h-100 text-center">
-    <stars class="w-rem-8 mx-auto" :points="Math.round(teacher.ranking)" />
+    <stars class="w-rem-8 mx-auto" :points="teacher.ranking" />
     <h3> {{ teacher.name }} </h3>
-    <div class="h5">{{ teacher.country }} - {{ teacher.timeZone }}</div>
+    <i>{{ teacher.country }} - {{ teacher.timeZone }}</i>
   </div>
 </div>
 </template>
 <script>
 import stars from './../../components/stars'
+import {formatDateToDataBase} from './../../helpers/general'
+
 export default {
   name: 'teacher',
   props: ['teacher'],
   components: {
     stars
+  },
+  methods: {
+    showTeacherTimeSchedule(){
+      this.$emit("showTeacherTimeSchedule", formatDateToDataBase(this.teacher.timeSchedule));
+    }
   }
 }
 </script>
