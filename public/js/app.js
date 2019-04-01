@@ -63131,7 +63131,7 @@ var content = __webpack_require__(58);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(60)("a8db3176", content, false, {});
+var update = __webpack_require__(60)("094070b6", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -63155,7 +63155,7 @@ exports = module.exports = __webpack_require__(59)(false);
 
 
 // module
-exports.push([module.i, "\n.vuejs-countdown li h3 {\r\n  font-size: 4rem;\n}\n.vuejs-countdown li:after {\r\n  content: \":\";\r\n  position: absolute;\r\n  top: 0;\r\n  right: -1rem;\r\n  font-size: 4rem;\n}\n.vuejs-countdown li:last-of-type:after {\r\n  content: \"\";\n}\r\n\r\n", ""]);
+exports.push([module.i, "\n.vuejs-countdown li h3 {\n  font-size: 4rem;\n}\n.vuejs-countdown li:after {\n  content: \":\";\n  position: absolute;\n  top: 0;\n  right: -1rem;\n  font-size: 4rem;\n}\n.vuejs-countdown li:last-of-type:after {\n  content: \"\";\n}\n\n", ""]);
 
 // exports
 
@@ -67739,7 +67739,7 @@ var render = function() {
                 staticClass: "spinner-grow spinner-grow-sm",
                 attrs: { role: "status", "aria-hidden": "true" }
               }),
-              _vm._v("\r\n    Loading...\r\n  ")
+              _vm._v("\n    Loading...\n  ")
             ]
           )
         : _vm._e(),
@@ -67757,7 +67757,7 @@ var render = function() {
                 }
               }
             },
-            [_vm._v("\r\n    Cancel\r\n  ")]
+            [_vm._v("\n    Cancel\n  ")]
           )
         : _vm._e(),
       _vm._v(" "),
@@ -67771,7 +67771,7 @@ var render = function() {
               },
               attrs: { type: "submit", disabled: !_vm.submit || _vm.loading }
             },
-            [_vm._v("\r\n    Save\r\n  ")]
+            [_vm._v("\n    Save\n  ")]
           )
         : _vm._e(),
       _vm._v(" "),
@@ -69235,7 +69235,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       var _this = this;
 
       this.$store.dispatch('sendGet', { url: '/api/teacher/' + id, auth: true }).then(function (res) {
-        if (res.data.teacher) _this.teachers[index] = JSON.parse(res.data.teacher);
+        console.log(res.data.teacher);
+        _this.$set(_this.teachers, index, res.data.teacher);
       });
     }
   },
@@ -69506,6 +69507,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
@@ -69674,10 +69680,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       var _this = this;
 
       this.$store.dispatch("sendPost", {
-        url: '/api/teacher/list',
+        url: '/api/teacher/favorite',
         data: Object(__WEBPACK_IMPORTED_MODULE_0__helpers_general__["a" /* addJsonToFormData */])({
-          user: JSON.stringify(this.currentUser),
-          teacher: JSON.stringify(this.teacher)
+          user: this.currentUser.id,
+          teacher: this.teacher,
+          favorite: !this.favorite
         }),
         auth: true
       }).then(function (res) {
@@ -69779,6 +69786,7 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__helpers_general__ = __webpack_require__(2);
 //
 //
 //
@@ -69787,6 +69795,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'stars',
@@ -69795,10 +69810,38 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       type: Number,
       default: 0
     },
-
     color: {
       type: String,
       default: 'yellow'
+    },
+    teacher: 0
+  },
+  computed: {
+    currentUser: function currentUser() {
+      return this.$store.getters.currentUser;
+    }
+  },
+  methods: {
+    toggleFavorite: function toggleFavorite(ranking) {
+      var _this = this;
+
+      this.$store.dispatch("sendPost", {
+        url: '/api/teacher/ranking',
+        data: Object(__WEBPACK_IMPORTED_MODULE_0__helpers_general__["a" /* addJsonToFormData */])({
+          user: this.currentUser.id,
+          teacher: this.teacher,
+          ranking: ranking
+        }),
+        auth: true
+      }).then(function (res) {
+        if (res) {
+          _this.$toasted.success(res.message);
+          _this.$emit('ranked');
+        } else {
+          _this.$toasted.error("Something went wrong, please try again.");
+        }
+        _this.loading = false;
+      });
     }
   }
 });
@@ -69814,12 +69857,19 @@ var render = function() {
   return _c(
     "div",
     {
-      staticClass: "d-flex justify-content-between align-items-center",
+      staticClass: "d-flex justify-content-between align-items-center ranking",
       class: "text-" + _vm.color
     },
     _vm._l(5, function(i) {
       return _c("i", {
-        class: { far: i > _vm.points, fas: i <= _vm.points, "fa-star": true }
+        key: i,
+        class: { far: i > _vm.points, fas: i <= _vm.points, "fa-star": true },
+        attrs: { "data-toggle": "tooltip", "data-placement": "top", title: i },
+        on: {
+          click: function($event) {
+            return _vm.toggleFavorite(i)
+          }
+        }
       })
     }),
     0
@@ -69892,7 +69942,7 @@ var render = function() {
             _c("button-favorite", {
               staticClass: "rounded-circle status-porfile btn-danger mb--5",
               attrs: {
-                related: _vm.teacher,
+                teacher: _vm.teacher.id,
                 favorite: _vm.favorite,
                 text: "false"
               },
@@ -69915,10 +69965,13 @@ var render = function() {
       [
         _c("stars", {
           staticClass: "w-rem-8 mx-auto",
-          attrs: { points: _vm.teacher.ranking }
+          attrs: { points: _vm.teacher.ranking, teacher: _vm.teacher.id },
+          on: { ranked: _vm.refreshTeacher }
         }),
         _vm._v(" "),
-        _c("h3", [_vm._v(" " + _vm._s(_vm.teacher.name) + " ")]),
+        _c("h3", { staticClass: "mb-0 mt-2" }, [
+          _vm._v(" " + _vm._s(_vm.teacher.name) + " ")
+        ]),
         _vm._v(" "),
         _c("i", [
           _vm._v(
@@ -70878,7 +70931,7 @@ var staticRenderFns = [
           staticClass: "btn float-right btn-default btn-sm",
           attrs: { type: "button", "data-toggle": "dropdown" }
         },
-        [_vm._v("\r\n    Message\r\n  ")]
+        [_vm._v("\n    Message\n  ")]
       ),
       _vm._v(" "),
       _c(
@@ -71857,9 +71910,9 @@ var render = function() {
                 [
                   _c("a", { staticClass: "mb-0 d-block font-weight-bold" }, [
                     _vm._v(
-                      "\r\n                        " +
+                      "\n                        " +
                         _vm._s(_vm.currentUser.name) +
-                        "\r\n                    "
+                        "\n                    "
                     )
                   ]),
                   _vm._v(" "),
@@ -71906,9 +71959,9 @@ var render = function() {
                           { staticClass: "nav-link", attrs: { to: link.url } },
                           [
                             _vm._v(
-                              "\r\n                        " +
+                              "\n                        " +
                                 _vm._s(link.title) +
-                                "\r\n                    "
+                                "\n                    "
                             )
                           ]
                         )

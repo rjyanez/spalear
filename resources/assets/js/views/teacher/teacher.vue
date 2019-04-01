@@ -27,7 +27,7 @@
       </button>
       <button-favorite
         @toggleFavorite="refreshTeacher" 
-        :related="teacher" 
+        :teacher="teacher.id" 
         :favorite="favorite" 
         text="false"
         class="rounded-circle status-porfile btn-danger mb--5" 
@@ -39,8 +39,13 @@
     </div>
   </div>
   <div class="card-body pt-3 pb-3 h-100 text-center">
-    <stars class="w-rem-8 mx-auto" :points="teacher.ranking" />
-    <h3> {{ teacher.name }} </h3>
+    <stars 
+      class="w-rem-8 mx-auto" 
+      :points="teacher.ranking" 
+      @ranked="refreshTeacher"
+      :teacher="teacher.id" 
+    />
+    <h3 class="mb-0 mt-2"> {{ teacher.name }} </h3>
     <i>{{ teacher.country }} - {{ teacher.timeZone }}</i>
   </div>
 </div>

@@ -28,14 +28,15 @@ export default {
   methods: {
     toggleFavorite(){
       this.$store.dispatch("sendPost", { 
-        url: `/api/teacher/list`, 
+        url: `/api/teacher/favorite`, 
         data: addJsonToFormData({ 
-          user: JSON.stringify(this.currentUser),
-          teacher:  JSON.stringify(this.teacher)
+          user: this.currentUser.id,
+          teacher: this.teacher,
+          favorite: !this.favorite
         }), 
         auth: true 
       }).then(res => {
-        if (res) {          
+        if (res) {         
           this.$toasted.success(res.message);
           this.$emit('toggleFavorite')
         } else {

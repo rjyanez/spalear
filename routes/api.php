@@ -4,35 +4,49 @@ use Illuminate\Http\Request;
 
 
 Route::group(['prefix' => 'auth'], function () {
+
     Route::post('login', 'Auth\AuthController@login');
     Route::post('signup', 'Auth\AuthController@signup');
     Route::get('signup', 'Auth\AuthController@create');
     Route::post('password/email', 'Auth\ForgotPasswordController@getResetToken');
     Route::post('password/reset', 'Auth\ResetPasswordController@reset');  
-    Route::group(['middleware' => 'auth:api'], function() {
-        Route::get('logout', 'Auth\AuthController@logout');
-        Route::get('user', 'Auth\AuthController@user');
-    });
+    Route::get('logout', 'Auth\AuthController@logout')->middleware('auth:api');
+    Route::get('user', 'Auth\AuthController@user')->middleware('auth:api');
+
 });
 
-Route::group(['middleware' => 'auth:api'], function ($router) {
-   
-    Route::post('user/', 'UserController@store');
-    Route::get('user/list', 'UserController@list');
-    Route::get('user/create', 'Auth\AuthController@create');
-    Route::get('user/{id}', 'UserController@show');
-    Route::put('user/{id}/update', 'UserController@update');
-    Route::delete('user/{id}/destroy', 'UserController@destroy');
+Route::group(['middleware' => 'auth:api'], function () {
     
-    Route::get('teacher/list', 'TeacherController@list');
-    Route::get('teacher/list/favorite', 'TeacherController@listFavorites');
-    Route::get('teacher/{id}', 'TeacherController@show');
-    
-    Route::post('teacher/favorite', 'TeacherController@favorite');
-    
-    Route::get('function/primary/{rol}', 'FunctionsController@primaryMenu');
-    Route::get('function/secondary/{rol}', 'FunctionsController@secondaryMenu');
+    Route::group(['prefix' => 'user'], function() {
 
+        Route::post('/', 'UserController@store');
+        Route::get('list', 'UserController@list');
+        Route::get('create', 'Auth\AuthController@create');
+        Route::get('{id}', 'UserController@show');
+        Route::put('{id}/update', 'UserController@update');
+        Route::delete('{id}/destroy', 'UserController@destroy');    
+
+    });
+
+    
+    Route::group(['prefix' => 'teacher'], function() {   
+
+        Route::get('list', 'TeacherController@list');
+        Route::get('list/favorite', 'TeacherController@listFavorites');
+        Route::get('{id}', 'TeacherController@show');    
+        Route::post('favorite', 'TeacherController@favorite');
+        Route::post('ranking', 'TeacherController@ranking');        
+
+    });
+
+    
+    Route::group(['prefix' => 'function'], function() {
+
+        Route::get('primary/{rol}', 'FunctionsController@primaryMenu');
+        Route::get('secondary/{rol}', 'FunctionsController@secondaryMenu');
+
+    });
+    
 });
 
 Route::get('migrate',  function (){ 
