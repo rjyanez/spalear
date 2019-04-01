@@ -14471,7 +14471,7 @@ module.exports = Component.exports
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(20);
-module.exports = __webpack_require__(148);
+module.exports = __webpack_require__(151);
 
 
 /***/ }),
@@ -14489,8 +14489,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vue_toasted___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_vue_toasted__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__routes__ = __webpack_require__(53);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__helpers_general__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__store__ = __webpack_require__(135);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__views_layouts_app_vue__ = __webpack_require__(136);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__store__ = __webpack_require__(138);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__views_layouts_app_vue__ = __webpack_require__(139);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__views_layouts_app_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__views_layouts_app_vue__);
 
 __webpack_require__(21);
@@ -62871,7 +62871,7 @@ var install = VeeValidate$1.install;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__views_user_profile___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__views_user_profile__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__views_teacher_list__ = __webpack_require__(110);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__views_teacher_list___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__views_teacher_list__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__views_teacher_profile__ = __webpack_require__(129);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__views_teacher_profile__ = __webpack_require__(132);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__views_teacher_profile___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__views_teacher_profile__);
 
 
@@ -69054,7 +69054,7 @@ var normalizeComponent = __webpack_require__(0)
 /* script */
 var __vue_script__ = __webpack_require__(111)
 /* template */
-var __vue_template__ = __webpack_require__(128)
+var __vue_template__ = __webpack_require__(131)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -69102,8 +69102,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__header___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__header__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__teacher__ = __webpack_require__(114);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__teacher___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__teacher__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__modalTimeSchedule__ = __webpack_require__(173);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__modalTimeSchedule__ = __webpack_require__(125);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__modalTimeSchedule___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__modalTimeSchedule__);
+//
+//
+//
+//
+//
 //
 //
 //
@@ -69225,41 +69230,48 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     closeModalTime: function closeModalTime() {
       this.modal = { show: false, teacher: {}, time: [] };
+    },
+    refreshTeacher: function refreshTeacher(index, id) {
+      var _this = this;
+
+      this.$store.dispatch('sendGet', { url: '/api/teacher/' + id, auth: true }).then(function (res) {
+        if (res.data.teacher) _this.teachers[index] = JSON.parse(res.data.teacher);
+      });
     }
   },
   computed: {
     sortedActivity: function sortedActivity() {
-      var _this = this;
+      var _this2 = this;
 
       return this.teachers.sort(function (a, b) {
         var modifier = 1;
-        if (_this.currentSortDir === 'desc') modifier = -1;
-        if (a[_this.currentSort] < b[_this.currentSort]) return -1 * modifier;
-        if (a[_this.currentSort] > b[_this.currentSort]) return 1 * modifier;
+        if (_this2.currentSortDir === 'desc') modifier = -1;
+        if (a[_this2.currentSort] < b[_this2.currentSort]) return -1 * modifier;
+        if (a[_this2.currentSort] > b[_this2.currentSort]) return 1 * modifier;
         return 0;
       }).filter(function (row, index) {
-        var start = (_this.currentPage - 1) * _this.pageSize;
-        var end = _this.currentPage * _this.pageSize;
+        var start = (_this2.currentPage - 1) * _this2.pageSize;
+        var end = _this2.currentPage * _this2.pageSize;
         if (index >= start && index < end) return true;
       });
     },
     filteredList: function filteredList() {
-      var _this2 = this;
+      var _this3 = this;
 
       var list = this.teachers.filter(function (data) {
-        var email = data.email.toLowerCase().match(_this2.search.toLowerCase());
-        var name = data.name.toLowerCase().match(_this2.search.toLowerCase());
-        var rol = data.rol.toLowerCase().match(_this2.search.toLowerCase());
-        var country = data.country.toLowerCase().match(_this2.search.toLowerCase());
-        var timeZone = data.timeZone.toLowerCase().match(_this2.search.toLowerCase());
+        var email = data.email.toLowerCase().match(_this3.search.toLowerCase());
+        var name = data.name.toLowerCase().match(_this3.search.toLowerCase());
+        var rol = data.rol.toLowerCase().match(_this3.search.toLowerCase());
+        var country = data.country.toLowerCase().match(_this3.search.toLowerCase());
+        var timeZone = data.timeZone.toLowerCase().match(_this3.search.toLowerCase());
         return email || name || rol || timeZone || country;
       });
 
       this.total = list.length;
 
       return list.filter(function (row, index) {
-        var start = (_this2.currentPage - 1) * _this2.pageSize;
-        var end = _this2.currentPage * _this2.pageSize;
+        var start = (_this3.currentPage - 1) * _this3.pageSize;
+        var end = _this3.currentPage * _this3.pageSize;
         if (index >= start && index < end) return true;
       });
     },
@@ -69272,10 +69284,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     }
   },
   mounted: function mounted() {
-    var _this3 = this;
+    var _this4 = this;
 
     this.$store.dispatch('sendGet', { url: '/api/teacher/list', auth: true }).then(function (res) {
-      if (res.data.teachers) _this3.teachers = JSON.parse(res.data.teachers);
+      if (res.data.teachers) _this4.teachers = JSON.parse(res.data.teachers);
     });
   }
 });
@@ -69493,6 +69505,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 
@@ -69501,7 +69514,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'teacher',
-  props: ['teacher'],
+  props: ['teacher', 'index'],
   components: {
     stars: __WEBPACK_IMPORTED_MODULE_3__components_stars___default.a,
     buttonFavorite: __WEBPACK_IMPORTED_MODULE_2__components_buttonFavorite___default.a,
@@ -69519,6 +69532,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     showTeacherTimeSchedule: function showTeacherTimeSchedule() {
       var time = Object(__WEBPACK_IMPORTED_MODULE_0__helpers_general__["e" /* formatDateToDataBase */])(this.teacher.timeSchedule);
       this.$emit("showTeacherTimeSchedule", { 'teacher': this.teacher, time: time });
+    },
+    refreshTeacher: function refreshTeacher() {
+      this.$emit('refreshTeacher', this.index);
     }
   }
 });
@@ -69627,6 +69643,7 @@ if (false) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__helpers_general__ = __webpack_require__(2);
 //
 //
 //
@@ -69639,9 +69656,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
+
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'button-favorites',
-  props: ['related', 'favorite', 'text'],
+  props: ['teacher', 'favorite', 'text'],
   computed: {
     currentUser: function currentUser() {
       return this.$store.getters.currentUser;
@@ -69652,7 +69671,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   },
   methods: {
     toggleFavorite: function toggleFavorite() {
-      // this.favorite = !this.favorite
+      var _this = this;
+
+      this.$store.dispatch("sendPost", {
+        url: '/api/teacher/list',
+        data: Object(__WEBPACK_IMPORTED_MODULE_0__helpers_general__["a" /* addJsonToFormData */])({
+          user: JSON.stringify(this.currentUser),
+          teacher: JSON.stringify(this.teacher)
+        }),
+        auth: true
+      }).then(function (res) {
+        if (res) {
+          _this.$toasted.success(res.message);
+          _this.$emit('toggleFavorite');
+        } else {
+          _this.$toasted.error("Something went wrong, please try again.");
+        }
+        _this.loading = false;
+      });
     }
   }
 });
@@ -69859,7 +69895,8 @@ var render = function() {
                 related: _vm.teacher,
                 favorite: _vm.favorite,
                 text: "false"
-              }
+              },
+              on: { toggleFavorite: _vm.refreshTeacher }
             }),
             _vm._v(" "),
             _c("button-online-status", {
@@ -69912,7 +69949,123 @@ var normalizeComponent = __webpack_require__(0)
 /* script */
 var __vue_script__ = __webpack_require__(126)
 /* template */
-var __vue_template__ = __webpack_require__(127)
+var __vue_template__ = __webpack_require__(130)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/views/teacher/modalTimeSchedule.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-cb77ea7e", Component.options)
+  } else {
+    hotAPI.reload("data-v-cb77ea7e", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 126 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_modal__ = __webpack_require__(127);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_modal___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_modal__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_calendar__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_calendar___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_calendar__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: 'modal-time-schedule',
+  props: ['options'],
+  components: {
+    modal: __WEBPACK_IMPORTED_MODULE_0__components_modal___default.a,
+    calendar: __WEBPACK_IMPORTED_MODULE_1__components_calendar___default.a
+  },
+  computed: {
+    modalHours: function modalHours() {
+      if (this.options.time) {
+        var hours = [],
+            values = this.options.time.map(function (el) {
+          return el.hour;
+        });
+        for (var key in values) {
+          if (!hours.includes(values[key])) hours.push(values[key]);
+        }
+        return hours;
+      } else {
+        return [[0, 24]];
+      }
+    }
+  },
+  methods: {
+    closeModalTime: function closeModalTime() {
+      this.$emit("close");
+    }
+  }
+});
+
+/***/ }),
+/* 127 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(128)
+/* template */
+var __vue_template__ = __webpack_require__(129)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -69951,7 +70104,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 126 */
+/* 128 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -70002,7 +70155,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 127 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -70079,7 +70232,108 @@ if (false) {
 }
 
 /***/ }),
-/* 128 */
+/* 130 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("modal", {
+    attrs: { show: _vm.options.show },
+    on: { close: _vm.closeModalTime },
+    scopedSlots: _vm._u([
+      {
+        key: "header",
+        fn: function() {
+          return [
+            _c("div", { staticClass: "avatar-group mr-1 d-inline-block" }, [
+              _c(
+                "a",
+                {
+                  staticClass: "avatar avatar-sm",
+                  attrs: {
+                    href: "#",
+                    "data-toggle": "tooltip",
+                    "data-original-title": _vm.options.teacher.name
+                  }
+                },
+                [
+                  _c("img", {
+                    staticClass: "rounded-circle",
+                    attrs: {
+                      alt: _vm.options.teacher.name,
+                      src: "/uploads/avatar/" + _vm.options.teacher.avatar
+                    }
+                  })
+                ]
+              )
+            ]),
+            _vm._v(" "),
+            _c("h2", { staticClass: "modal-title mt-2" }, [
+              _vm._v(_vm._s(_vm.options.teacher.name) + " Time Schedule ")
+            ])
+          ]
+        },
+        proxy: true
+      },
+      {
+        key: "body",
+        fn: function() {
+          return [
+            _c("calendar", {
+              attrs: {
+                picker: "true",
+                isEdit: "false",
+                hours: _vm.modalHours,
+                timeAllowedDates: _vm.options.time
+              }
+            })
+          ]
+        },
+        proxy: true
+      },
+      {
+        key: "footer",
+        fn: function() {
+          return [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-secondary",
+                attrs: { type: "button" },
+                on: { click: _vm.closeModalTime }
+              },
+              [_vm._v("Close")]
+            ),
+            _vm._v(" "),
+            _c(
+              "router-link",
+              {
+                staticClass: "btn btn-primary",
+                attrs: { to: "/teachers/" + _vm.options.teacher.id }
+              },
+              [_vm._v("Profile")]
+            )
+          ]
+        },
+        proxy: true
+      }
+    ])
+  })
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-cb77ea7e", module.exports)
+  }
+}
+
+/***/ }),
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -70216,8 +70470,11 @@ var render = function() {
                   { key: index, staticClass: "col-xl-4" },
                   [
                     _c("teacher", {
-                      attrs: { teacher: item },
+                      attrs: { index: index, teacher: item },
                       on: {
+                        refreshTeacher: function($event) {
+                          return _vm.refreshTeacher($event, item.id)
+                        },
                         showTeacherTimeSchedule: function($event) {
                           return _vm.showModalTime($event)
                         }
@@ -70351,15 +70608,15 @@ if (false) {
 }
 
 /***/ }),
-/* 129 */
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(130)
+var __vue_script__ = __webpack_require__(133)
 /* template */
-var __vue_template__ = __webpack_require__(134)
+var __vue_template__ = __webpack_require__(137)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -70398,7 +70655,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 130 */
+/* 133 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -70407,7 +70664,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__header___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__header__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_calendar__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_calendar___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_calendar__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_message__ = __webpack_require__(131);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_message__ = __webpack_require__(134);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_message___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_message__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_buttonFavorite__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_buttonFavorite___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__components_buttonFavorite__);
@@ -70511,15 +70768,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 131 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(132)
+var __vue_script__ = __webpack_require__(135)
 /* template */
-var __vue_template__ = __webpack_require__(133)
+var __vue_template__ = __webpack_require__(136)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -70558,7 +70815,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 132 */
+/* 135 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -70600,7 +70857,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 133 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -70663,7 +70920,7 @@ if (false) {
 }
 
 /***/ }),
-/* 134 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -70783,7 +71040,7 @@ if (false) {
 }
 
 /***/ }),
-/* 135 */
+/* 138 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -70872,15 +71129,15 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__helpers_auth__["a" /* getLocalUse
 });
 
 /***/ }),
-/* 136 */
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(137)
+var __vue_script__ = __webpack_require__(140)
 /* template */
-var __vue_template__ = __webpack_require__(147)
+var __vue_template__ = __webpack_require__(150)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -70919,16 +71176,16 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 137 */
+/* 140 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_closeMenu__ = __webpack_require__(138);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_closeMenu__ = __webpack_require__(141);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_closeMenu___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_closeMenu__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__navbar_vue__ = __webpack_require__(141);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__navbar_vue__ = __webpack_require__(144);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__navbar_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__navbar_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__sidebar_vue__ = __webpack_require__(144);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__sidebar_vue__ = __webpack_require__(147);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__sidebar_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__sidebar_vue__);
 //
 //
@@ -70967,15 +71224,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 138 */
+/* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(139)
+var __vue_script__ = __webpack_require__(142)
 /* template */
-var __vue_template__ = __webpack_require__(140)
+var __vue_template__ = __webpack_require__(143)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -71014,7 +71271,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 139 */
+/* 142 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -71045,7 +71302,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 140 */
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -71096,15 +71353,15 @@ if (false) {
 }
 
 /***/ }),
-/* 141 */
+/* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(142)
+var __vue_script__ = __webpack_require__(145)
 /* template */
-var __vue_template__ = __webpack_require__(143)
+var __vue_template__ = __webpack_require__(146)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -71143,7 +71400,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 142 */
+/* 145 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -71233,7 +71490,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 143 */
+/* 146 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -71398,15 +71655,15 @@ if (false) {
 }
 
 /***/ }),
-/* 144 */
+/* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(145)
+var __vue_script__ = __webpack_require__(148)
 /* template */
-var __vue_template__ = __webpack_require__(146)
+var __vue_template__ = __webpack_require__(149)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -71445,7 +71702,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 145 */
+/* 148 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -71555,7 +71812,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 146 */
+/* 149 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -71700,7 +71957,7 @@ if (false) {
 }
 
 /***/ }),
-/* 147 */
+/* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -71767,251 +72024,10 @@ if (false) {
 }
 
 /***/ }),
-/* 148 */
+/* 151 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 149 */,
-/* 150 */,
-/* 151 */,
-/* 152 */,
-/* 153 */,
-/* 154 */,
-/* 155 */,
-/* 156 */,
-/* 157 */,
-/* 158 */,
-/* 159 */,
-/* 160 */,
-/* 161 */,
-/* 162 */,
-/* 163 */,
-/* 164 */,
-/* 165 */,
-/* 166 */,
-/* 167 */,
-/* 168 */,
-/* 169 */,
-/* 170 */,
-/* 171 */,
-/* 172 */,
-/* 173 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(0)
-/* script */
-var __vue_script__ = __webpack_require__(174)
-/* template */
-var __vue_template__ = __webpack_require__(175)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/views/teacher/modalTimeSchedule.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-cb77ea7e", Component.options)
-  } else {
-    hotAPI.reload("data-v-cb77ea7e", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 174 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_modal__ = __webpack_require__(125);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_modal___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_modal__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_calendar__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_calendar___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_calendar__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'modal-time-schedule',
-  props: ['options'],
-  components: {
-    modal: __WEBPACK_IMPORTED_MODULE_0__components_modal___default.a,
-    calendar: __WEBPACK_IMPORTED_MODULE_1__components_calendar___default.a
-  },
-  computed: {
-    modalHours: function modalHours() {
-      if (this.options.time) {
-        var hours = [],
-            values = this.options.time.map(function (el) {
-          return el.hour;
-        });
-        for (var key in values) {
-          if (!hours.includes(values[key])) hours.push(values[key]);
-        }
-        return hours;
-      } else {
-        return [[0, 24]];
-      }
-    }
-  },
-  methods: {
-    closeModalTime: function closeModalTime() {
-      this.$emit("close");
-    }
-  }
-});
-
-/***/ }),
-/* 175 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("modal", {
-    attrs: { show: _vm.options.show },
-    on: { close: _vm.closeModalTime },
-    scopedSlots: _vm._u([
-      {
-        key: "header",
-        fn: function() {
-          return [
-            _c("div", { staticClass: "avatar-group mr-1 d-inline-block" }, [
-              _c(
-                "a",
-                {
-                  staticClass: "avatar avatar-sm",
-                  attrs: {
-                    href: "#",
-                    "data-toggle": "tooltip",
-                    "data-original-title": _vm.options.teacher.name
-                  }
-                },
-                [
-                  _c("img", {
-                    staticClass: "rounded-circle",
-                    attrs: {
-                      alt: _vm.options.teacher.name,
-                      src: "/uploads/avatar/" + _vm.options.teacher.avatar
-                    }
-                  })
-                ]
-              )
-            ]),
-            _vm._v(" "),
-            _c("h2", { staticClass: "modal-title mt-2" }, [
-              _vm._v(_vm._s(_vm.options.teacher.name) + " Time Schedule ")
-            ])
-          ]
-        },
-        proxy: true
-      },
-      {
-        key: "body",
-        fn: function() {
-          return [
-            _c("calendar", {
-              attrs: {
-                picker: "true",
-                isEdit: "false",
-                hours: _vm.modalHours,
-                timeAllowedDates: _vm.options.time
-              }
-            })
-          ]
-        },
-        proxy: true
-      },
-      {
-        key: "footer",
-        fn: function() {
-          return [
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-secondary",
-                attrs: { type: "button" },
-                on: { click: _vm.closeModalTime }
-              },
-              [_vm._v("Close")]
-            ),
-            _vm._v(" "),
-            _c(
-              "router-link",
-              {
-                staticClass: "btn btn-primary",
-                attrs: { to: "/teachers/" + _vm.options.teacher.id }
-              },
-              [_vm._v("Profile")]
-            )
-          ]
-        },
-        proxy: true
-      }
-    ])
-  })
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-cb77ea7e", module.exports)
-  }
-}
 
 /***/ })
 /******/ ]);

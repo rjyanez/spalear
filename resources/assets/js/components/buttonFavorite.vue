@@ -10,10 +10,12 @@
   </button>
 </template>
 <script>
+import {addJsonToFormData} from './../helpers/general'
+
 export default {
   name: 'button-favorites',
   props: [
-    'related', 'favorite', 'text'
+    'teacher', 'favorite', 'text'
   ],
   computed: {
     currentUser() {
@@ -25,7 +27,23 @@ export default {
   },
   methods: {
     toggleFavorite(){
-      // this.favorite = !this.favorite
+      this.$store.dispatch("sendPost", { 
+        url: `/api/teacher/list`, 
+        data: addJsonToFormData({ 
+          user: JSON.stringify(this.currentUser),
+          teacher:  JSON.stringify(this.teacher)
+        }), 
+        auth: true 
+      }).then(res => {
+        if (res) {          
+          this.$toasted.success(res.message);
+          this.$emit('toggleFavorite')
+        } else {
+          this.$toasted.error("Something went wrong, please try again.");
+        }
+        this.loading = false;
+      });
+     
     }
   },
 }

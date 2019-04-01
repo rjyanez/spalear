@@ -39,7 +39,12 @@
         <div class="card-body p-0">
           <div class="row">
             <div class="col-xl-4" v-for="(item, index) in (sortedActivity, filteredList)" :key="index">
-              <teacher :teacher="item" @showTeacherTimeSchedule="showModalTime($event)"/>
+              <teacher 
+                :index="index" 
+                :teacher="item" 
+                @refreshTeacher="refreshTeacher($event, item.id)" 
+                @showTeacherTimeSchedule="showModalTime($event)"
+              />
             </div>
           </div>
         </div>
@@ -118,6 +123,11 @@ export default {
     },
     closeModalTime(){
       this.modal = { show : false, teacher : {}, time: [] }
+    },
+    refreshTeacher(index, id){
+        this.$store.dispatch('sendGet', { url:`/api/teacher/${id}`, auth: true}).then(res => {
+            if(res.data.teacher) this.teachers[index] = JSON.parse(res.data.teacher)
+        })
     }
   },
   computed: {

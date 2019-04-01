@@ -25,7 +25,8 @@
       >
         <i class="fas fa-calendar-alt"></i>       
       </button>
-      <button-favorite 
+      <button-favorite
+        @toggleFavorite="refreshTeacher" 
         :related="teacher" 
         :favorite="favorite" 
         text="false"
@@ -52,7 +53,7 @@ import stars from './../../components/stars'
 
 export default {
   name: 'teacher',
-  props: ['teacher'],
+  props: ['teacher','index'],
   components: {
     stars,
     buttonFavorite,
@@ -70,6 +71,9 @@ export default {
     showTeacherTimeSchedule(){
       let time = formatDateToDataBase(this.teacher.timeSchedule)
       this.$emit("showTeacherTimeSchedule", { 'teacher': this.teacher ,time})
+    },
+    refreshTeacher(){
+      this.$emit('refreshTeacher',this.index)
     }
   }
 }
