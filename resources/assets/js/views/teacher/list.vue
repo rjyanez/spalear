@@ -125,10 +125,16 @@ export default {
       this.modal = { show : false, teacher : {}, time: [] }
     },
     refreshTeacher(index, id){
-        this.$store.dispatch('sendGet', { url:`/api/teacher/${id}`, auth: true}).then(res => {
-          console.log(res.data.teacher)
+      this.$store.dispatch('sendGet', { url:`/api/teacher/${id}`, auth: true}).then(res => {
+        console.log(res.data.teacher)
             this.$set(this.teachers, index, res.data.teacher)
         })
+    },
+    searchList(){
+      const url = (this.$router.currentRoute.name === "teachers.favorite")? `/api/teacher/list/favorite` : `/api/teacher/list`
+      this.$store.dispatch('sendGet', { url, auth: true}).then(res => {
+        if(res.data.teachers) this.teachers = JSON.parse(res.data.teachers)
+      })
     }
   },
   computed: {
@@ -172,9 +178,12 @@ export default {
     }
   },
   mounted(){
-    this.$store.dispatch('sendGet', { url:`/api/teacher/list`, auth: true}).then(res => {
-      if(res.data.teachers) this.teachers = JSON.parse(res.data.teachers)
-    })
+    this.searchList()
+  },
+  watch:{
+    $route (to, from){
+      this.searchList()
+    }
   }
 }
 </script>

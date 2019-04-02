@@ -62962,6 +62962,10 @@ var routes = [{
         name: 'teachers.all',
         component: __WEBPACK_IMPORTED_MODULE_7__views_teacher_list___default.a
     }, {
+        path: 'favorite',
+        name: 'teachers.favorite',
+        component: __WEBPACK_IMPORTED_MODULE_7__views_teacher_list___default.a
+    }, {
         path: ':id',
         name: 'teachers.name',
         component: __WEBPACK_IMPORTED_MODULE_8__views_teacher_profile___default.a
@@ -69238,41 +69242,49 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         console.log(res.data.teacher);
         _this.$set(_this.teachers, index, res.data.teacher);
       });
+    },
+    searchList: function searchList() {
+      var _this2 = this;
+
+      var url = this.$router.currentRoute.name === "teachers.favorite" ? '/api/teacher/list/favorite' : '/api/teacher/list';
+      this.$store.dispatch('sendGet', { url: url, auth: true }).then(function (res) {
+        if (res.data.teachers) _this2.teachers = JSON.parse(res.data.teachers);
+      });
     }
   },
   computed: {
     sortedActivity: function sortedActivity() {
-      var _this2 = this;
+      var _this3 = this;
 
       return this.teachers.sort(function (a, b) {
         var modifier = 1;
-        if (_this2.currentSortDir === 'desc') modifier = -1;
-        if (a[_this2.currentSort] < b[_this2.currentSort]) return -1 * modifier;
-        if (a[_this2.currentSort] > b[_this2.currentSort]) return 1 * modifier;
+        if (_this3.currentSortDir === 'desc') modifier = -1;
+        if (a[_this3.currentSort] < b[_this3.currentSort]) return -1 * modifier;
+        if (a[_this3.currentSort] > b[_this3.currentSort]) return 1 * modifier;
         return 0;
       }).filter(function (row, index) {
-        var start = (_this2.currentPage - 1) * _this2.pageSize;
-        var end = _this2.currentPage * _this2.pageSize;
+        var start = (_this3.currentPage - 1) * _this3.pageSize;
+        var end = _this3.currentPage * _this3.pageSize;
         if (index >= start && index < end) return true;
       });
     },
     filteredList: function filteredList() {
-      var _this3 = this;
+      var _this4 = this;
 
       var list = this.teachers.filter(function (data) {
-        var email = data.email.toLowerCase().match(_this3.search.toLowerCase());
-        var name = data.name.toLowerCase().match(_this3.search.toLowerCase());
-        var rol = data.rol.toLowerCase().match(_this3.search.toLowerCase());
-        var country = data.country.toLowerCase().match(_this3.search.toLowerCase());
-        var timeZone = data.timeZone.toLowerCase().match(_this3.search.toLowerCase());
+        var email = data.email.toLowerCase().match(_this4.search.toLowerCase());
+        var name = data.name.toLowerCase().match(_this4.search.toLowerCase());
+        var rol = data.rol.toLowerCase().match(_this4.search.toLowerCase());
+        var country = data.country.toLowerCase().match(_this4.search.toLowerCase());
+        var timeZone = data.timeZone.toLowerCase().match(_this4.search.toLowerCase());
         return email || name || rol || timeZone || country;
       });
 
       this.total = list.length;
 
       return list.filter(function (row, index) {
-        var start = (_this3.currentPage - 1) * _this3.pageSize;
-        var end = _this3.currentPage * _this3.pageSize;
+        var start = (_this4.currentPage - 1) * _this4.pageSize;
+        var end = _this4.currentPage * _this4.pageSize;
         if (index >= start && index < end) return true;
       });
     },
@@ -69285,11 +69297,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     }
   },
   mounted: function mounted() {
-    var _this4 = this;
+    this.searchList();
+  },
 
-    this.$store.dispatch('sendGet', { url: '/api/teacher/list', auth: true }).then(function (res) {
-      if (res.data.teachers) _this4.teachers = JSON.parse(res.data.teachers);
-    });
+  watch: {
+    $route: function $route(to, from) {
+      this.searchList();
+    }
   }
 });
 

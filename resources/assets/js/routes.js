@@ -105,6 +105,11 @@ export const routes = [
                 component: TeacherList
             },
             {
+                path: 'favorite',
+                name: 'teachers.favorite',
+                component: TeacherList
+            },
+            {
                 path: ':id',
                 name: 'teachers.name',
                 component: TeacherProfile 
