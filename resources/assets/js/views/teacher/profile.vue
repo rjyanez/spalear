@@ -14,16 +14,28 @@
             </div>
             <div class="col-lg-4 order-lg-3 text-lg-right align-self-lg-center">
               <div class="card-profile-actions py-4 mt-lg-0 d-flex align-items-center">
-                <button-favorite :related="teacher" class="mr-4 float-right btn-primary" text="true"/>
-                <message :related="teacher" class="mr-4"/>
+                <button-favorite 
+                :teacher="teacher.id" 
+                :favorite="teacher.favorite"
+                @toggleFavorite="searchTeacher"
+                class="mr-4 float-right btn-primary" 
+                text="true"
+                />
+                <button-message :teacher="teacher.id" class="mr-4"/>
               </div>
             </div>
             <div class="col-lg-4 order-lg-1">
               <!-- info de la isquierda -->
             </div>
           </div>
-          <div class="text-center mt-8">
+          <div class="text-center mt-5 pb-4 border-bottom  ">
             <h2>{{ teacher.name }}</h2>
+            <stars 
+              class="w-rem-8 mx-auto my-3" 
+              :points="teacher.ranking" 
+              @ranked="searchTeacher"
+              :teacher="teacher.id" 
+            />
             <div class="h4 font-weight-300">
               <i class="ni location_pin mr-2"> 
                 {{ teacher. timeZone}} - {{ teacher.country }}
@@ -35,14 +47,7 @@
               </i>
             </div>
           </div>
-          <div class="mt-5 py-5 border-top text-center">
-            <calendar
-              byShift="true"
-              class="mx-7" 
-              :hours="hours"
-              :timeAllowedDates="teacher.timeSchedule"        
-            />
-          </div>
+          <schedule-class :teacher="teacher" class="mx-9"/>
         </div>
       </div>  
     </div>    
@@ -50,43 +55,37 @@
 </template>
 <script>
 import headerTeacher from './header'
-import calendar from './../../components/calendar'
-import message from './../../components/message'
+import scheduleClass from './../../components/scheduleClass'
+import buttonMessage from './../../components/buttonMessage'
 import buttonFavorite from './../../components/buttonFavorite'
+import stars from './../../components/stars'
 import {formatDateToDataBase} from './../../helpers/general'
 
 export default {
   components: {
+    scheduleClass,
     headerTeacher,
-    calendar,
     buttonFavorite,
-    message
+    buttonMessage,
+    stars
   },
   data(){
     return {
       teacher: {
         id: this.$router.currentRoute.params.id
-      },
-    }
-  },
-  computed: {
-    hours(){
-      if (this.teacher.timeSchedule){
-        let hours = [], values =this.teacher.timeSchedule.map(el => el.hour)
-        for (const key in values) {
-          if(!hours.includes(values[key])) hours.push(values[key])
-        }
-        return hours 
-      } else { 
-        return [[0,24]] 
       }
     }
   },
   mounted(){
-    this.$store.dispatch('sendGet', { url:`/api/teacher/${this.teacher.id}`, auth: true}).then(res => {
-      if(res.data.teacher) this.teacher = res.data.teacher
-      if(res.data.teacher.timeSchedule) this.teacher.timeSchedule = formatDateToDataBase(res.data.teacher.timeSchedule)
-    })
+    this.searchTeacher()
+  },
+  methods:{
+    searchTeacher(){
+      this.$store.dispatch('sendGet', { url:`/api/teacher/${this.teacher.id}`, auth: true}).then(res => {
+        if(res.data.teacher) this.teacher = res.data.teacher
+        if(res.data.teacher.timeSchedule) this.teacher.timeSchedule = formatDateToDataBase(res.data.teacher.timeSchedule)
+      })
+    }
   }
 }
 </script>

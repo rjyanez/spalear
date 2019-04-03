@@ -99,6 +99,7 @@ export default {
   name: 'calendar',
   props: {
     picker : false,
+    minToday: false,
     isEdit: false,
     byShift: false,
     hours : {
@@ -226,6 +227,10 @@ export default {
       ))
     },
     isTimeDlockedDates(find){
+      if(this.minToday){
+        let current = new Date()
+        if(find.date.getTime() <= current.getTime()) return true
+      } 
       return (this.timeDlockedDates.length === 0)? false : this.timeDlockedDates.some((el) => (
         el.year === find.year &&  
         el.month === find.month && 

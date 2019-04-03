@@ -1,7 +1,7 @@
 <template>
   <td 
     @click=" (isAllowed && !isDlocked)? clickAddDay($event) : '' "
-    :class="{ 'active': isSelected, 'disabled' : !isAllowed, 'booked' : isDlocked}"
+    :class="{ 'active': isSelected, 'disabled' : !isAllowed || isDlocked}"
   >
     <slot></slot> 
   </td>

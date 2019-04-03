@@ -1,4 +1,4 @@
-@for $i from 1 through 10 {
+@for $i from 1 through 20 {
 	.w-rem-#{$i} {
 		width: 	#{$i}rem !important;
 	}

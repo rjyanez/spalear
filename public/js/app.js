@@ -65352,6 +65352,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   name: 'calendar',
   props: {
     picker: false,
+    minToday: false,
     isEdit: false,
     byShift: false,
     hours: {
@@ -65487,6 +65488,10 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
       });
     },
     isTimeDlockedDates: function isTimeDlockedDates(find) {
+      if (this.minToday) {
+        var current = new Date();
+        if (find.date.getTime() <= current.getTime()) return true;
+      }
       return this.timeDlockedDates.length === 0 ? false : this.timeDlockedDates.some(function (el) {
         return el.year === find.year && el.month === find.month && el.week === find.week && el.day === find.day && el.hour === find.hour && el.min === find.min;
       });
@@ -65639,8 +65644,7 @@ var render = function() {
     {
       class: {
         active: _vm.isSelected,
-        disabled: !_vm.isAllowed,
-        booked: _vm.isDlocked
+        disabled: !_vm.isAllowed || _vm.isDlocked
       },
       on: {
         click: function($event) {
@@ -69686,7 +69690,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       return this.$store.getters.currentUser;
     },
     lable: function lable() {
-      return this.text === true ? (this.favorite ? 'Remove' : 'Add') + ' Favorit' : '';
+      return this.text === 'true' ? (this.favorite ? 'Remove' : 'Add') + ' Favorite' : '';
     }
   },
   methods: {
@@ -70729,13 +70733,15 @@ module.exports = Component.exports
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__header__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__header___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__header__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_calendar__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_calendar___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_calendar__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_message__ = __webpack_require__(134);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_message___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_message__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_scheduleClass__ = __webpack_require__(179);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_scheduleClass___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_scheduleClass__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_buttonMessage__ = __webpack_require__(176);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_buttonMessage___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_buttonMessage__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_buttonFavorite__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_buttonFavorite___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__components_buttonFavorite__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__helpers_general__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_stars__ = __webpack_require__(121);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_stars___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__components_stars__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__helpers_general__ = __webpack_require__(2);
 //
 //
 //
@@ -70786,6 +70792,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+
 
 
 
@@ -70795,10 +70807,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
+    scheduleClass: __WEBPACK_IMPORTED_MODULE_1__components_scheduleClass___default.a,
     headerTeacher: __WEBPACK_IMPORTED_MODULE_0__header___default.a,
-    calendar: __WEBPACK_IMPORTED_MODULE_1__components_calendar___default.a,
     buttonFavorite: __WEBPACK_IMPORTED_MODULE_3__components_buttonFavorite___default.a,
-    message: __WEBPACK_IMPORTED_MODULE_2__components_message___default.a
+    buttonMessage: __WEBPACK_IMPORTED_MODULE_2__components_buttonMessage___default.a,
+    stars: __WEBPACK_IMPORTED_MODULE_4__components_stars___default.a
   },
   data: function data() {
     return {
@@ -70807,186 +70820,26 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       }
     };
   },
-
-  computed: {
-    hours: function hours() {
-      if (this.teacher.timeSchedule) {
-        var hours = [],
-            values = this.teacher.timeSchedule.map(function (el) {
-          return el.hour;
-        });
-        for (var key in values) {
-          if (!hours.includes(values[key])) hours.push(values[key]);
-        }
-        return hours;
-      } else {
-        return [[0, 24]];
-      }
-    }
-  },
   mounted: function mounted() {
-    var _this = this;
-
-    this.$store.dispatch('sendGet', { url: '/api/teacher/' + this.teacher.id, auth: true }).then(function (res) {
-      if (res.data.teacher) _this.teacher = res.data.teacher;
-      if (res.data.teacher.timeSchedule) _this.teacher.timeSchedule = Object(__WEBPACK_IMPORTED_MODULE_4__helpers_general__["e" /* formatDateToDataBase */])(res.data.teacher.timeSchedule);
-    });
-  }
-});
-
-/***/ }),
-/* 134 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(0)
-/* script */
-var __vue_script__ = __webpack_require__(135)
-/* template */
-var __vue_template__ = __webpack_require__(136)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/message.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-ac5bce80", Component.options)
-  } else {
-    hotAPI.reload("data-v-ac5bce80", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 135 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'message',
-  computed: {
-    currentUser: function currentUser() {
-      return this.$store.getters.currentUser;
-    }
+    this.searchTeacher();
   },
-  props: ['related'],
-  data: function data() {
-    var _this = this;
 
-    return {
-      userRelated: {
-        type: Object,
-        default: function _default() {
-          return _this.related;
-        }
-      }
-    };
+  methods: {
+    searchTeacher: function searchTeacher() {
+      var _this = this;
+
+      this.$store.dispatch('sendGet', { url: '/api/teacher/' + this.teacher.id, auth: true }).then(function (res) {
+        if (res.data.teacher) _this.teacher = res.data.teacher;
+        if (res.data.teacher.timeSchedule) _this.teacher.timeSchedule = Object(__WEBPACK_IMPORTED_MODULE_5__helpers_general__["e" /* formatDateToDataBase */])(res.data.teacher.timeSchedule);
+      });
+    }
   }
 });
 
 /***/ }),
-/* 136 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "dropdown dropright" }, [
-      _c(
-        "button",
-        {
-          staticClass: "btn float-right btn-default btn-sm",
-          attrs: { type: "button", "data-toggle": "dropdown" }
-        },
-        [_vm._v("\n    Message\n  ")]
-      ),
-      _vm._v(" "),
-      _c(
-        "form",
-        {
-          staticClass: "dropdown-menu p-4",
-          staticStyle: { "min-width": "20rem" }
-        },
-        [
-          _c("div", { staticClass: "form-group" }, [
-            _c("textarea", {
-              staticClass: "form-control",
-              attrs: {
-                name: "message",
-                rows: "10",
-                cols: "30",
-                placeholder: "Make a suggestion"
-              }
-            })
-          ]),
-          _vm._v(" "),
-          _c(
-            "button",
-            { staticClass: "btn btn-primary", attrs: { type: "submit" } },
-            [_vm._v("Send")]
-          )
-        ]
-      )
-    ])
-  }
-]
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-ac5bce80", module.exports)
-  }
-}
-
-/***/ }),
+/* 134 */,
+/* 135 */,
+/* 136 */,
 /* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -71001,95 +70854,108 @@ var render = function() {
       _vm._v(" "),
       _c("div", { staticClass: "container-fluid mt--7" }, [
         _c("div", { staticClass: "card card-profile shadow" }, [
-          _c("div", { staticClass: "px-4" }, [
-            _c("div", { staticClass: "row justify-content-center" }, [
-              _c("div", { staticClass: "col-lg-3 order-lg-2" }, [
-                _c("div", { staticClass: "card-profile-image" }, [
-                  _c("a", { attrs: { href: "#" } }, [
-                    _c("img", {
-                      ref: "img",
-                      staticClass: "rounded-circle",
-                      staticStyle: { width: "10rem", height: "10rem" },
-                      attrs: { src: "/uploads/avatar/" + _vm.teacher.avatar }
-                    })
+          _c(
+            "div",
+            { staticClass: "px-4" },
+            [
+              _c("div", { staticClass: "row justify-content-center" }, [
+                _c("div", { staticClass: "col-lg-3 order-lg-2" }, [
+                  _c("div", { staticClass: "card-profile-image" }, [
+                    _c("a", { attrs: { href: "#" } }, [
+                      _c("img", {
+                        ref: "img",
+                        staticClass: "rounded-circle",
+                        staticStyle: { width: "10rem", height: "10rem" },
+                        attrs: { src: "/uploads/avatar/" + _vm.teacher.avatar }
+                      })
+                    ])
                   ])
-                ])
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "col-lg-4 order-lg-3 text-lg-right align-self-lg-center"
+                  },
+                  [
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "card-profile-actions py-4 mt-lg-0 d-flex align-items-center"
+                      },
+                      [
+                        _c("button-favorite", {
+                          staticClass: "mr-4 float-right btn-primary",
+                          attrs: {
+                            teacher: _vm.teacher.id,
+                            favorite: _vm.teacher.favorite,
+                            text: "true"
+                          },
+                          on: { toggleFavorite: _vm.searchTeacher }
+                        }),
+                        _vm._v(" "),
+                        _c("button-message", {
+                          staticClass: "mr-4",
+                          attrs: { teacher: _vm.teacher.id }
+                        })
+                      ],
+                      1
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-lg-4 order-lg-1" })
               ]),
               _vm._v(" "),
               _c(
                 "div",
-                {
-                  staticClass:
-                    "col-lg-4 order-lg-3 text-lg-right align-self-lg-center"
-                },
+                { staticClass: "text-center mt-5 pb-4 border-bottom  " },
                 [
-                  _c(
-                    "div",
-                    {
-                      staticClass:
-                        "card-profile-actions py-4 mt-lg-0 d-flex align-items-center"
+                  _c("h2", [_vm._v(_vm._s(_vm.teacher.name))]),
+                  _vm._v(" "),
+                  _c("stars", {
+                    staticClass: "w-rem-8 mx-auto my-3",
+                    attrs: {
+                      points: _vm.teacher.ranking,
+                      teacher: _vm.teacher.id
                     },
-                    [
-                      _c("button-favorite", {
-                        staticClass: "mr-4 float-right btn-primary",
-                        attrs: { related: _vm.teacher, text: "true" }
-                      }),
-                      _vm._v(" "),
-                      _c("message", {
-                        staticClass: "mr-4",
-                        attrs: { related: _vm.teacher }
-                      })
-                    ],
-                    1
-                  )
-                ]
+                    on: { ranked: _vm.searchTeacher }
+                  }),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "h4 font-weight-300" }, [
+                    _c("i", { staticClass: "ni location_pin mr-2" }, [
+                      _vm._v(
+                        " \n              " +
+                          _vm._s(_vm.teacher.timeZone) +
+                          " - " +
+                          _vm._s(_vm.teacher.country) +
+                          "\n            "
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", [
+                    _c("i", { staticClass: "ni education_hat mr-2" }, [
+                      _vm._v(
+                        "\n              " +
+                          _vm._s(_vm.teacher.description) +
+                          "\n            "
+                      )
+                    ])
+                  ])
+                ],
+                1
               ),
               _vm._v(" "),
-              _c("div", { staticClass: "col-lg-4 order-lg-1" })
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "text-center mt-8" }, [
-              _c("h2", [_vm._v(_vm._s(_vm.teacher.name))]),
-              _vm._v(" "),
-              _c("div", { staticClass: "h4 font-weight-300" }, [
-                _c("i", { staticClass: "ni location_pin mr-2" }, [
-                  _vm._v(
-                    " \n              " +
-                      _vm._s(_vm.teacher.timeZone) +
-                      " - " +
-                      _vm._s(_vm.teacher.country) +
-                      "\n            "
-                  )
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", [
-                _c("i", { staticClass: "ni education_hat mr-2" }, [
-                  _vm._v(
-                    "\n              " +
-                      _vm._s(_vm.teacher.description) +
-                      "\n            "
-                  )
-                ])
-              ])
-            ]),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "mt-5 py-5 border-top text-center" },
-              [
-                _c("calendar", {
-                  staticClass: "mx-7",
-                  attrs: {
-                    byShift: "true",
-                    hours: _vm.hours,
-                    timeAllowedDates: _vm.teacher.timeSchedule
-                  }
-                })
-              ],
-              1
-            )
-          ])
+              _c("schedule-class", {
+                staticClass: "mx-9",
+                attrs: { teacher: _vm.teacher }
+              })
+            ],
+            1
+          )
         ])
       ])
     ],
@@ -71838,7 +71704,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             this.$store.dispatch('sendGet', { url: '/api/auth/logout' }).then(function (res) {
                 _this.$store.commit('logout');
-                _this.$router.push('/login');
+                _this.$router.push('/');
                 _this.$toasted.success(res.message);
             }).catch(function (error) {
                 _this.$toasted.error('Something went wrong, please try again.');
@@ -72095,6 +71961,640 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 152 */,
+/* 153 */,
+/* 154 */,
+/* 155 */,
+/* 156 */,
+/* 157 */,
+/* 158 */,
+/* 159 */,
+/* 160 */,
+/* 161 */,
+/* 162 */,
+/* 163 */,
+/* 164 */,
+/* 165 */,
+/* 166 */,
+/* 167 */,
+/* 168 */,
+/* 169 */,
+/* 170 */,
+/* 171 */,
+/* 172 */,
+/* 173 */,
+/* 174 */,
+/* 175 */,
+/* 176 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(177)
+/* template */
+var __vue_template__ = __webpack_require__(178)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/buttonMessage.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-7e97ed24", Component.options)
+  } else {
+    hotAPI.reload("data-v-7e97ed24", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 177 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__helpers_general__ = __webpack_require__(2);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: 'button-message',
+  computed: {
+    currentUser: function currentUser() {
+      return this.$store.getters.currentUser;
+    }
+  },
+  data: function data() {
+    return {
+      message: ''
+    };
+  },
+
+  props: ['teacher'],
+  methods: {
+    submit: function submit() {
+      var _this = this;
+
+      this.$store.dispatch("sendPost", {
+        url: '/api/teacher/message',
+        data: Object(__WEBPACK_IMPORTED_MODULE_0__helpers_general__["a" /* addJsonToFormData */])({
+          user: this.currentUser.id,
+          teacher: this.teacher,
+          message: this.message
+        }),
+        auth: true
+      }).then(function (res) {
+        if (res) {
+          _this.$refs.button.click();
+          _this.$toasted.success(res.message);
+        } else {
+          _this.$toasted.error("Something went wrong, please try again.");
+        }
+      });
+    }
+  }
+});
+
+/***/ }),
+/* 178 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "dropdown dropright" }, [
+    _c(
+      "button",
+      {
+        ref: "button",
+        staticClass: "btn float-right btn-default btn-sm",
+        attrs: { type: "button", "data-toggle": "dropdown" },
+        on: {
+          click: function($event) {
+            _vm.message = ""
+          }
+        }
+      },
+      [
+        _c("i", { staticClass: "fas fa-paper-plane" }),
+        _vm._v(" Send Message\n  ")
+      ]
+    ),
+    _vm._v(" "),
+    _c(
+      "form",
+      {
+        staticClass: "dropdown-menu p-4",
+        staticStyle: { "min-width": "20rem" },
+        on: {
+          submit: function($event) {
+            $event.preventDefault()
+            return _vm.submit($event)
+          }
+        }
+      },
+      [
+        _c("div", { staticClass: "form-group" }, [
+          _c("textarea", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.message,
+                expression: "message"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: {
+              name: "message",
+              rows: "10",
+              cols: "30",
+              placeholder: "Make a suggestion"
+            },
+            domProps: { value: _vm.message },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.message = $event.target.value
+              }
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _c(
+          "button",
+          { staticClass: "btn btn-primary", attrs: { type: "submit" } },
+          [_vm._v("Send")]
+        )
+      ]
+    )
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-7e97ed24", module.exports)
+  }
+}
+
+/***/ }),
+/* 179 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(180)
+/* template */
+var __vue_template__ = __webpack_require__(181)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/scheduleClass.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-3ca0ac1a", Component.options)
+  } else {
+    hotAPI.reload("data-v-3ca0ac1a", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 180 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__calendar__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__calendar___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__calendar__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: 'schedule-class',
+  components: {
+    calendar: __WEBPACK_IMPORTED_MODULE_0__calendar___default.a
+  },
+  props: ['teacher'],
+  data: function data() {
+    return {
+      list: {
+        type: {
+          GR: 'Gramatical',
+          CN: 'Conversational'
+        },
+        lessons: []
+      },
+      type: 'CN',
+      index: 0,
+      lesson: {},
+      timeSelectedDates: []
+    };
+  },
+
+  computed: {
+    hours: function hours() {
+      if (this.teacher.timeSchedule) {
+        var hours = [],
+            values = this.teacher.timeSchedule.map(function (el) {
+          return el.hour;
+        });
+        for (var key in values) {
+          if (!hours.includes(values[key])) hours.push(values[key]);
+        }
+        return hours;
+      } else {
+        return [[0, 24]];
+      }
+    },
+    currentUser: function currentUser() {
+      return this.$store.getters.currentUser;
+    }
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    this.$store.dispatch('sendGet', { url: '/api/lesson/' + this.currentUser.meta_data.level, auth: true }).then(function (res) {
+      if (res.data.lessons) {
+        _this.list.lessons = res.data.lessons;
+        _this.lesson = _this.list.lessons[0];
+      }
+    });
+  },
+
+  methods: {
+    setTimeSelectedDates: function setTimeSelectedDates(event) {
+      var index = void 0,
+          find = this.timeSelectedDates.some(function (el, i) {
+        index = i;
+        return el.year === event.year && el.month === event.month && el.week === event.week && el.day === event.day && el.hour === event.hour && el.min === event.min;
+      });
+
+      !find ? this.timeSelectedDates.push(event) : this.timeSelectedDates.splice(index, 1);
+    }
+  },
+  watch: {
+    index: function index(val) {
+      this.lesson = this.list.lessons[val];
+    }
+  }
+});
+
+/***/ }),
+/* 181 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "text-center" }, [
+    _c("div", { staticClass: "row" }, [
+      _c(
+        "div",
+        { staticClass: "col" },
+        [
+          _c("h3", { staticClass: "text-muted mt-4 mb-2" }, [
+            _vm._v("\n        Select the classes you want to schedule\n      ")
+          ]),
+          _vm._v(" "),
+          _c("calendar", {
+            attrs: {
+              minToday: "true",
+              byShift: _vm.hours.length > 5,
+              isEdit: "true",
+              hours: _vm.hours,
+              timeAllowedDates: _vm.teacher.timeSchedule,
+              timeSelectedDates: _vm.timeSelectedDates
+            },
+            on: {
+              timeSelectedDate: function($event) {
+                return _vm.setTimeSelectedDates($event)
+              }
+            }
+          })
+        ],
+        1
+      )
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col" }, [
+        _c("h3", { staticClass: "text-muted mt-4 mb-2" }, [
+          _vm._v(" Class Type")
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "btn-group w-100", attrs: { role: "group" } },
+          _vm._l(_vm.list.type, function(name, value) {
+            return _c(
+              "button",
+              {
+                key: value,
+                class: {
+                  "btn btn-primary w-50": true,
+                  disabled: _vm.type != value
+                },
+                attrs: { type: "button" },
+                on: {
+                  click: function($event) {
+                    _vm.type = value
+                  }
+                }
+              },
+              [_vm._v("\n          " + _vm._s(name) + "\n        ")]
+            )
+          }),
+          0
+        )
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col" }, [
+        _c("h3", { staticClass: "text-muted mt-4 mb-2" }, [
+          _vm._v("\n        Select your lesson\n      ")
+        ]),
+        _vm._v(" "),
+        _c(
+          "select",
+          {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.index,
+                expression: "index"
+              }
+            ],
+            class: { "custom-select form-control": true },
+            on: {
+              change: function($event) {
+                var $$selectedVal = Array.prototype.filter
+                  .call($event.target.options, function(o) {
+                    return o.selected
+                  })
+                  .map(function(o) {
+                    var val = "_value" in o ? o._value : o.value
+                    return val
+                  })
+                _vm.index = $event.target.multiple
+                  ? $$selectedVal
+                  : $$selectedVal[0]
+              }
+            }
+          },
+          _vm._l(_vm.list.lessons, function(value, index) {
+            return _c("option", { key: index, domProps: { value: index } }, [
+              _vm._v("\n          Lesson " + _vm._s(value.name) + "\n        ")
+            ])
+          }),
+          0
+        )
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col" }, [
+        _c("div", { staticClass: "card card-stats my-4 " }, [
+          _c("div", { staticClass: "card-body" }, [
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-2" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "icon icon-shape bg-danger text-white rounded-circle shadow"
+                  },
+                  [_c("strong", [_vm._v(_vm._s(_vm.type))])]
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col text-left" }, [
+                _c(
+                  "div",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.type === "GR",
+                        expression: "type === 'GR'"
+                      }
+                    ],
+                    staticClass: "col "
+                  },
+                  [
+                    _c(
+                      "h5",
+                      {
+                        staticClass: "card-title text-uppercase text-muted mb-0"
+                      },
+                      [_vm._v(" Lesson " + _vm._s(_vm.lesson.name))]
+                    ),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "h4 font-weight-bold mb-0" }, [
+                      _vm._v(_vm._s(_vm.lesson.description))
+                    ])
+                  ]
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "row" }, [
+              _c(
+                "div",
+                { staticClass: "col-2" },
+                _vm._l(_vm.timeSelectedDates, function(item, i) {
+                  return _c(
+                    "p",
+                    { key: i, staticClass: "mt-3 mb-0 text-muted text-sm" },
+                    [
+                      _c("span", { staticClass: "text-success mr-2" }, [
+                        _vm._v(_vm._s(1 + i))
+                      ]),
+                      _vm._v(" "),
+                      _c("span", { staticClass: "text-nowrap" }, [
+                        _vm._v("Since last month")
+                      ])
+                    ]
+                  )
+                }),
+                0
+              )
+            ])
+          ])
+        ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-3ca0ac1a", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

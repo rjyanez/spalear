@@ -69,7 +69,8 @@ export default {
 	},
 	methods: {
 		updateAuthLinks(){
-			this.$store.dispatch('sendGet', { url:`/api/function/primary/${this.currentUser.rol_code}`, auth: true}).then(res => {
+			this.$store.dispatch('sendGet', { url:`/api/function/primary/${this.currentUser.rol_code}`, auth: true})
+			.then(res => {
 				if(res) this.links.auth = JSON.parse(res.data.funtions)        
 			})
 		}

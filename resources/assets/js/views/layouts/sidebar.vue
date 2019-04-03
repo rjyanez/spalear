@@ -57,7 +57,7 @@ computed: {
       logout(){
         this.$store.dispatch('sendGet', { url:`/api/auth/logout`}).then((res) => {
             this.$store.commit('logout')
-            this.$router.push('/login')
+            this.$router.push('/')
             this.$toasted.success(res.message)		           
         })
         .catch((error) => {

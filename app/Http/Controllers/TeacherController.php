@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Mail;
+use App\Mail\MessageMail;
 use Illuminate\Http\Request;
 use App\Transformers\Json;
 use App\User;
-use PhpParser\Node\Stmt\TryCatch;
 
 class TeacherController extends Controller
 {
@@ -107,13 +108,11 @@ class TeacherController extends Controller
 				];
 			})
 			->first();
-
 		return response()->json(
 			Json::response(compact('teacher')),
 			200
 		);
 	}
-
 
 	public function favorite(Request $request)
 	{
@@ -173,5 +172,18 @@ class TeacherController extends Controller
 		} catch (\Throwable $th) {
 			return response()->json(null, 401);
 		}
+	}
+
+	public function message(Request $request)
+	{
+		$issuer     =  User::whereId($request->input('user'))->first();
+		$content 		= [
+			'user' => User::whereId($request->input('teacher'))->first(),
+			'message'	=> $request->input('message'),
+		];
+		Mail::to(env('MAIL_USERNAME'))
+						->send(new MessageMail($issuer, $content));
+
+		return response()->json(Json::response(null,"Message sent successfully"), 200);
 	}
 }

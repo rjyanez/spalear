@@ -22,7 +22,8 @@ class CodesMetaTableSeeder extends Seeder
     	$values = [];
     	$data  	= [
     		'rol'		=>	$this->rolesMeta(),
-    		'lesson'	=>	$this->lessonsMeta()
+            'lesson'	=>	$this->lessonsMeta(),
+            'level'     =>  $this->levelsMeta(),
     	];
     	foreach ($data as $type => $options) {
     		foreach ($options as $key => $value) {
@@ -52,6 +53,16 @@ class CodesMetaTableSeeder extends Seeder
     		'GR' => 'Gramatical',
     		'CN' => 'Conversational'
     	];
+    }    
+    
+    public function levelsMeta()
+    {
+    	return [
+    		'BAS' => 'Basic',
+            'MED' => 'Medium',
+    		'ADV' => 'Advanced',            
+    	];
     }
+
 }
 

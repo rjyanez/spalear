@@ -53,7 +53,7 @@ class UserController extends Controller
 				$user->save();
 			}
 			if ($user->rol_code == 'TE') $this->saveTimeSchedule(json_decode($request->input('time_schedule')),  $user->id);
-			$user = $this->getUserById($id);
+			$user = $this->getUserById($user->id);
 			return response()->json(Json::response(compact('user'), 'Successfully created user!'), 200);
 		} else {
 			return response()->json(null, 401);

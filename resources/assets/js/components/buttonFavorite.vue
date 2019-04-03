@@ -22,7 +22,7 @@ export default {
       return this.$store.getters.currentUser;
     },
     lable(){
-      return (this.text === true)? (`${(this.favorite)? 'Remove' : 'Add'} Favorit`) : ''
+      return (this.text === 'true')? (`${(this.favorite)? 'Remove' : 'Add'} Favorite`) : ''
     }
   },
   methods: {

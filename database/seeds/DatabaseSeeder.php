@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             UsersTableSeeder::class,
             TimeSchedulesSeeder::class,
             StudensTeachersSeeder::class,
+            LessonsTableSeeder::class
         ]);
     }
 }
