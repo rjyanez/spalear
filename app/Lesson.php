@@ -18,4 +18,9 @@ class Lesson extends Model
         return $this->belongsTo(CodeMeta::class, 'level_code');
     }
 
+    public function userLessons()
+    {
+        return $this->hasMany(Classes::class,'lesson_id','id');
+    }
+
 }

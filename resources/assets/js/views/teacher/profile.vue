@@ -28,7 +28,7 @@
               <!-- info de la isquierda -->
             </div>
           </div>
-          <div class="text-center mt-5 pb-4 border-bottom  ">
+          <div class="text-center mt-5 pb-4  border-bottom  ">
             <h2>{{ teacher.name }}</h2>
             <stars 
               class="w-rem-8 mx-auto my-3" 
@@ -47,7 +47,11 @@
               </i>
             </div>
           </div>
-          <schedule-class :teacher="teacher" class="mx-9"/>
+          <classes 
+            :teacher="teacher" 
+            class="mx-9 my-5"
+            @scheduleClass="searchTeacher"
+          />
         </div>
       </div>  
     </div>    
@@ -55,7 +59,7 @@
 </template>
 <script>
 import headerTeacher from './header'
-import scheduleClass from './../../components/scheduleClass'
+import classes from './classes'
 import buttonMessage from './../../components/buttonMessage'
 import buttonFavorite from './../../components/buttonFavorite'
 import stars from './../../components/stars'
@@ -63,7 +67,7 @@ import {formatDateToDataBase} from './../../helpers/general'
 
 export default {
   components: {
-    scheduleClass,
+    classes,
     headerTeacher,
     buttonFavorite,
     buttonMessage,

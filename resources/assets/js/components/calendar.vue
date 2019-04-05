@@ -335,7 +335,7 @@ export default {
   watch:{
     week(){
       this.setDays()
-    },
+    }
   }
 };
 </script>

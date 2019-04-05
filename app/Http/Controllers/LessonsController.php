@@ -16,6 +16,6 @@ class LessonsController extends Controller
 			Json::response(compact('lessons')),
 			200
 		);
-
     }
+
 }

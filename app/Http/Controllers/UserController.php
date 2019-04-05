@@ -106,7 +106,15 @@ class UserController extends Controller
 	public function getUserById($id)
 	{
 		return User::whereId($id)
-			->with(['rol', 'timeZone', 'country', 'timeSchedule'])
+			->with([
+				'rol', 
+				'timeZone', 
+				'country', 
+				'timeSchedule',
+				'studentLessons' => function ($query) {
+					return $query;
+				}
+			])
 			->get()
 			->map(
 				function ($item) {

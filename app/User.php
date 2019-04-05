@@ -51,21 +51,29 @@ class User extends Authenticatable implements JWTSubject
 
     public function timeSchedule()
     {
-        return $this->hasMany('App\TimeSchedule', 'user_id', 'id');
+        return $this->hasMany(TimeSchedule::class, 'user_id', 'id');
     }
 
     public function studentTeachers()
     {
-        return $this->belongsToMany('App\User','students_teachers','student_id','teacher_id')
+        return $this->belongsToMany(User::class,'students_teachers','student_id','teacher_id')
                                     ->withPivot('ranking', 'favorite');
-
     }
 
     public function teacherStudents()
     {
-        return $this->belongsToMany('App\User','students_teachers','teacher_id','student_id')
+        return $this->belongsToMany(User::class,'students_teachers','teacher_id','student_id')
                                     ->withPivot('ranking', 'favorite');
+    }
 
+    public function studentLessons()
+    {
+        return $this->hasMany(Classes::class,'student_id','id');
+    }
+
+    public function teacherLessons()
+    {
+        return $this->hasMany(Classes::class,'teacher_id','id');
     }
 
     /**

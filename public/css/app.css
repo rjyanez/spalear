@@ -39477,3 +39477,39 @@ table.calendar-table tr td.booked:hover {
           transform: scale(1.3);
 }
 
+.notification .mark {
+  position: absolute;
+  top: -0.4rem;
+  left: -0.4rem;
+  will-change: auto;
+}
+
+.notification:hover .mark {
+  background: aqua !important;
+  animation: slide-tl 0.5s cubic-bezier(0.55, 0.055, 0.675, 0.19) infinite alternate-reverse both;
+}
+
+@-webkit-keyframes slide-tl {
+  0% {
+    -webkit-transform: translateY(0) translateX(0);
+    transform: translateY(0) translateX(0);
+  }
+
+  100% {
+    -webkit-transform: translateY(-100px) translateX(-100px);
+    transform: translateY(-100px) translateX(-100px);
+  }
+}
+
+@keyframes slide-tl {
+  0% {
+    -webkit-transform: translateY(0) translateX(0);
+    transform: translateY(0) translateX(0);
+  }
+
+  100% {
+    -webkit-transform: translateY(-100px) translateX(-100px);
+    transform: translateY(-100px) translateX(-100px);
+  }
+}
+

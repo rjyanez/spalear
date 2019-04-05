@@ -21,9 +21,10 @@ class CodesMetaTableSeeder extends Seeder
     {
     	$values = [];
     	$data  	= [
-    		'rol'		=>	$this->rolesMeta(),
-            'lesson'	=>	$this->lessonsMeta(),
-            'level'     =>  $this->levelsMeta(),
+    		'rol'    =>	$this->rolesMeta  (),
+            'lesson' =>	$this->lessonsMeta(),
+            'status' => $this->statusMeta (),
+            'level'  => $this->levelsMeta (),
     	];
     	foreach ($data as $type => $options) {
     		foreach ($options as $key => $value) {
@@ -62,6 +63,17 @@ class CodesMetaTableSeeder extends Seeder
             'MED' => 'Medium',
     		'ADV' => 'Advanced',            
     	];
+    }
+
+    public function statusMeta()
+    {
+        return [
+            'ACT'=>'Active'  ,
+            'PEN'=>'Pending' ,
+            'CAN'=>'Canceled',
+            'FIN'=>'Finished',
+            'BLO'=>'Blocked' 
+        ];
     }
 
 }

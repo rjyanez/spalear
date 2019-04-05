@@ -36,6 +36,7 @@
 	                        <span class="nav-link-inner--text">{{ link.title }}</span>
 	                    </router-link>
 	                </li>
+					<notification />
 	            </ul>
 	        </div>
 	    </div>
@@ -43,8 +44,13 @@
 </template>
 <script>
 
+import notification from './../../components/notification'
+
 export default {
 	name: 'navbar',
+	components: {
+		notification
+	},
 	data(){
 		return {
 			links:{

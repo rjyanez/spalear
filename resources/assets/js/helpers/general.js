@@ -105,3 +105,7 @@ export function datesFrontendFormater(time, key = null){
   }
   return {date, year, month, week, day, hour, min}
 }
+
+export function datesBackendFormater(time){
+  return `${time.year}-${time.month}-${time.day} ${time.hour}:${time.min}:00`
+}

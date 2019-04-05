@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Mail;
-use App\Mail\MessageMail;
+use App\Notifications\NewMessage;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Http\Request;
 use App\Transformers\Json;
 use App\User;
@@ -176,13 +177,11 @@ class TeacherController extends Controller
 
 	public function message(Request $request)
 	{
-		$issuer     =  User::whereId($request->input('user'))->first();
-		$content 		= [
-			'user' => User::whereId($request->input('teacher'))->first(),
-			'message'	=> $request->input('message'),
-		];
-		Mail::to(env('MAIL_USERNAME'))
-						->send(new MessageMail($issuer, $content));
+		$student = User::whereId($request->input('user' ))->first();
+		$teacher = User::whereId($request->input('teacher'))->first();
+
+		Notification::route('mail', env('MAIL_USERNAME'))
+      ->notify(new NewMessage($student, $teacher, $request->input('message')));		
 
 		return response()->json(Json::response(null,"Message sent successfully"), 200);
 	}

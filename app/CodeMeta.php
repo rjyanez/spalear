@@ -17,8 +17,23 @@ class CodeMeta extends Model
 
     }
 
+    public function classesStatus()
+    {
+        return $this->hasMany(Classes::class, 'key', 'status_code');
+    }
+
+    public function classesTypes()
+    {
+        return $this->hasMany(Classes::class, 'key', 'type_code');
+    }
+
     public function users()
     {
         return $this->hasMany(User::class, 'key', 'rol_code');
+    }
+
+    public function lessons()
+    {
+        return $this->hasMany(Classes::class, 'key', 'level_code');
     }
 }

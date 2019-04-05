@@ -202,3 +202,28 @@ table.calendar-table {
     transform: scale(1.3);
   }
 }
+
+.notification {
+  .mark {  
+    position: absolute;
+    top: -0.4rem;
+    left: -0.4rem;
+    will-change: auto;
+  }
+  &:hover .mark
+  {
+    background: aqua !important;
+    animation: slide-tl 0.5s cubic-bezier(0.550, 0.055, 0.675, 0.190) infinite alternate-reverse both;
+  }
+}
+
+@keyframes slide-tl {
+  0% {
+    -webkit-transform: translateY(0) translateX(0);
+    transform: translateY(0) translateX(0);
+}
+100% {
+    -webkit-transform: translateY(-100px) translateX(-100px);
+    transform: translateY(-100px) translateX(-100px);
+}
+}
