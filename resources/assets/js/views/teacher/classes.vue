@@ -21,7 +21,7 @@
     <li class="nav-item text-center">
       <a 
         class="nav-link rounded-circle" 
-        :class="{'disabled text-muted' : (step < 2)}"
+        :class="{'disabled bg-light text-muted' : (step < 2)}"
         :aria-disabled="(step < 2)? 'true' : 'false'"
         id="step-type-tab" 
         data-toggle="pill" 
@@ -38,7 +38,7 @@
       <a 
         class="nav-link rounded-circle" 
         id="step-lesson-tab"
-        :class="{'disabled text-muted' : (step < 3)}"
+        :class="{'disabled bg-light text-muted' : (step < 3)}"
         :aria-disabled="(step < 3)? 'true' : 'false'" 
         data-toggle="pill" 
         href="#step-lesson" 
@@ -61,6 +61,7 @@
           isEdit="true"
           :byShift="(hours.length > 5)"
           :hours="hours"
+          :timeDlockedDates="teacher.bookedDates"
           :timeAllowedDates="teacher.timeSchedule"
           :timeSelectedDates="timeSelectedDates"
           @timeSelectedDate="setTimeSelectedDates($event) "       
@@ -183,6 +184,8 @@ export default {
         data.push(datesBackendFormater(this.timeSelectedDates[i]))       
       }     
 
+      this.loading = true
+
       this.$store.dispatch("sendPost", { 
         url: `/api/class/`, 
         data: addJsonToFormData({
@@ -194,13 +197,26 @@ export default {
         }), 
         auth: true 
       }).then(res => {
+        this.loading = false
         if (res) {       
           this.$toasted.success(res.message)
+          this.type = ''
+          this.lesson = {}
+          this.timeSelectedDates = []
+          this.$emit('scheduleClass')
         } else {
           this.$toasted.error("Something went wrong, please try again.")
         }
-      });
-     
+      })
+      .catch(error => {
+        this.loading = false
+        this.$toasted.error("Something went wrong, please try again.")          
+      });     
+    }
+  },
+  watch: {
+    valid(value){
+      if(value) this.$toasted.info("You can now schedule your class.")  
     }
   }
 }

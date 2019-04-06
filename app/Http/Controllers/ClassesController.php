@@ -13,7 +13,7 @@ class ClassesController extends Controller
 {
 	public function store(Request $request)
 	{
-		try {
+		// try {
 			$student = $request->input('student');
 			$teacher = $request->input('teacher');
 			$lesson  = $request->input('lesson');
@@ -36,12 +36,11 @@ class ClassesController extends Controller
 				$class->teacher->notify(new NewClass($class));	
 
 
-				return response()->json(Json::response(null, 'Class Schedule Successfully!'), 200);
-
 			endforeach;
-		} catch (\Throwable $th) {
-			return response()->json(null, 401);
-		}
+			return response()->json(Json::response(null, 'Class Schedule Successfully!'), 200);
+		// } catch (\Throwable $th) {
+		// 	return response()->json(null, 401);
+		// }
 	}
 
 	public function create($data)

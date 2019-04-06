@@ -88,6 +88,7 @@ export default {
       this.$store.dispatch('sendGet', { url:`/api/teacher/${this.teacher.id}`, auth: true}).then(res => {
         if(res.data.teacher) this.teacher = res.data.teacher
         if(res.data.teacher.timeSchedule) this.teacher.timeSchedule = formatDateToDataBase(res.data.teacher.timeSchedule)
+        if(res.data.teacher.bookedDates)  this.teacher.bookedDates  = formatDateToDataBase(res.data.teacher.bookedDates)
       })
     }
   }

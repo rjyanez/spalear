@@ -69,9 +69,13 @@ export function formatDateToDataBase(time){
   let val = []
 
   for (let i in time) {
-    for(let j in time[i]){
-      if(typeof time[i][j] === 'string'){
-        val.push(datesFrontendFormater(time[i][j], i))
+    if(typeof time[i] === 'string') {
+      val.push(datesFrontendFormater(time[i]))
+    } else {
+      for(let j in time[i]){
+        if(typeof time[i][j] === 'string'){
+          val.push(datesFrontendFormater(time[i][j], i))
+        }
       }
     }
   }
@@ -107,5 +111,5 @@ export function datesFrontendFormater(time, key = null){
 }
 
 export function datesBackendFormater(time){
-  return `${time.year}-${time.month}-${time.day} ${time.hour}:${time.min}:00`
+  return `${time.year}-${1 + parseInt(time.month)}-${time.day} ${time.hour}:${time.min}:00`
 }

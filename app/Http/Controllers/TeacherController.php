@@ -84,7 +84,7 @@ class TeacherController extends Controller
 
 		$teacher = User::whereId($id)
 			->where('rol_code', 'TE')
-			->with(['rol', 'timeZone', 'country', 'timeSchedule', 'teacherStudents'])
+			->with(['rol', 'timeZone', 'country', 'timeSchedule', 'teacherStudents','teacherLessons'])
 			->get()
 			->map(function ($item) use ($auth) {
 				return [
@@ -98,14 +98,15 @@ class TeacherController extends Controller
 					'country'     => $item->country->name,
 					'timeZone'    => $item->timeZone->name,
 					'favorite'    => $item->teacherStudents
-						->contains(function ($value, $key) use ($auth) {
-							return ($value->id == $auth && $value->pivot->favorite);
-						}),
-					'ranking'     => round($item->teacherStudents->avg('pivot.ranking')),
-					'timeSchedule' => $item->timeSchedule->groupBy('week')
-						->map(function ($day) {
-							return $day->pluck('hour');
-						})
+										->contains(function ($value, $key) use ($auth) {
+											return ($value->id == $auth && $value->pivot->favorite);
+										}),
+					'ranking'	  => round($item->teacherStudents->avg('pivot.ranking')),
+					'timeSchedule'=> $item->timeSchedule->groupBy('week')
+										->map(function ($day) {
+											return $day->pluck('hour');
+										}),
+				    'bookedDates'=> $item->teacherLessons->pluck('date')
 				];
 			})
 			->first();
