@@ -19,7 +19,7 @@
               <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
                 <div class="d-flex justify-content-between">
                   <label class="btn btn-sm btn-success float-right" :class="{ disabled: isEdit }">
-                    {{ rol }}
+                    {{ roles | listArrray(lists.roles) }}
                   </label>
                   <label v-show="isEdit" class="btn btn-sm btn-default float-left" for="avatar">
                     Change
@@ -157,24 +157,24 @@
                     </span>
                   </div>
                   <div class="form-group" v-if="isRole('AD') && (id !== currentUser.id || action !== 'update')">
-                    <label class="form-control-label" for="rol_code">Role</label>
-                    <input v-if="!isEdit" type="text" readonly class="form-control" :value="rol" />
+                    <label class="form-control-label" for="roles">Role</label>
+                    <input v-if="!isEdit" type="text" readonly class="form-control" :value="roles | listArrray(lists.roles)" />
                     <template v-if="(id !== currentUser.id || action === 'create') && isEdit">
                       <div class="d-flex  justify-content-between mt-2">
                         <div class="custom-control custom-switch" v-for="(name, value) in lists.roles" :key="value">
-                          <input type="radio" name="rol_code" :value="value" v-model="rol_code" class="custom-control-input" :id="`role-${value}`" />
+                          <input type="checkbox" name="roles" :value="value" v-model="roles" class="custom-control-input" :id="`role-${value}`" />
                           <label class="custom-control-label" :for="`role-${value}`">{{ name }}</label>
                         </div>
                       </div>
-                      <span v-show="errors.has('rol_code')" class="invalid-feedback d-block" role="alert">
-                        <strong>{{ errors.first("rol_code") }}</strong>
+                      <span v-show="errors.has('roles')" class="invalid-feedback d-block" role="alert">
+                        <strong>{{ errors.first("roles") }}</strong>
                       </span>
                     </template>
                   </div>
 
                 </div>
                 <userTeacher 
-                  v-if="rol_code === 'TE'" 
+                  v-if="roles.includes('TE')" 
                   :isEdit="isEdit" 
                   :timeSchedule="timeSchedule" 
                   @timeSelectedDate="setTimeSchedule($event)
@@ -238,6 +238,11 @@ export default {
       return action;
     }
   },
+  filters: {
+    listArrray(val, list){
+      return val.map((el)=>(list[el])).join(' | ')
+    }
+  },
   data() {
     return {
       loading: false,
@@ -250,8 +255,7 @@ export default {
       time_zone_id: 418,
       avatar: `no-img.png`,
       description: null,
-      rol_code: "AD",
-      rol: "Admin",
+      roles: ['AD'],
       timeSchedule: {},
       lists: { countries: [], timeZones: [], roles: [] },
       routes: {
@@ -344,8 +348,7 @@ export default {
       this.timeZone = "America/Caracas";
       this.avatar = `no-img.png`;
       this.description = null;
-      this.rol_code = "AD";
-      this.rol = "Admin";
+      this.roles = ["AD"];
       this.timeSchedule = {};
 
 
@@ -360,7 +363,10 @@ export default {
       this.loading = true;
       this.$store.dispatch("sendPost", { 
         url: this.getAction, 
-        data: addJsonToFormData({ time_schedule: JSON.stringify(this.timeSchedule) },formData(this.$refs.form)), 
+        data: addJsonToFormData({ 
+          time_schedule: JSON.stringify(this.timeSchedule), 
+          rolcodes: this.roles
+        },formData(this.$refs.form)), 
         auth: true 
       }).then(res => {
         if (res) {
@@ -392,9 +398,6 @@ export default {
     time_zone_id(val){
       this.timeZone = this.lists.timeZones[this.country_code][val]
     },
-    rol_code(val){
-      this.rol = this.lists.roles[val]
-    }
   }
 };
 </script>

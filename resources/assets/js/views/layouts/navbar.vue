@@ -30,13 +30,19 @@
 	            </div>
 	            <!-- Navbar items -->
 	            <ul :class="{'navbar-nav ml-auto': true, 'align-items-center d-none d-md-flex': isLoggedIn}">
-	                <li class="nav-item" v-for="link in links[(isLoggedIn)? 'auth' : 'guest' ]" :key="link.code">
-	                    <router-link class="nav-link nav-link-icon" :to="link.url">
-	                        <i :class="link.icon" ></i>
-	                        <span class="nav-link-inner--text">{{ link.title }}</span>
-	                    </router-link>
-	                </li>
-					<notification />
+	                <template v-for="link in links[(isLoggedIn)? 'auth' : 'guest' ]">
+		                <nav-dropdown v-if="link.childs.length" :key="link.code" :link="link"/>
+		                <li v-else :key="link.code" class="nav-item" >
+		                    <router-link class="nav-link nav-link-icon" :to="link.url">
+		                        <i :class="link.icon" ></i>
+		                        <span class="nav-link-inner--text">{{ link.title }}</span>
+		                    </router-link>
+		                </li>	                	
+	                </template>
+	                <template v-if="isLoggedIn">
+						<notification />
+						<nav-user-avatar />	                	
+	                </template>
 	            </ul>
 	        </div>
 	    </div>
@@ -45,19 +51,23 @@
 <script>
 
 import notification from './../../components/notification'
+import navDropdown from './navDropdown'
+import navUserAvatar from './navUserAvatar'
 
 export default {
 	name: 'navbar',
 	components: {
-		notification
+		notification,
+		navDropdown,
+		navUserAvatar
 	},
 	data(){
 		return {
 			links:{
 				auth :[],
 				guest : [
-					{code:'register', title:'Register', url:'/signup',icon:'fas fa-user-circle'},
-					{code:'login', title:'Login', url:'/login',icon:'fas fa-key'}
+					{code:'register', title:'Register', url:'/signup',icon:'fas fa-user-circle', childs: []},
+					{code:'login', title:'Login', url:'/login',icon:'fas fa-key', childs: []}
 				]
 			}
 		}
@@ -75,7 +85,8 @@ export default {
 	},
 	methods: {
 		updateAuthLinks(){
-			this.$store.dispatch('sendGet', { url:`/api/function/primary/${this.currentUser.rol_code}`, auth: true})
+			const roles = this.currentUser.roles.map((item)=> (item.key))
+			this.$store.dispatch('sendGet', { url:`/api/function/primary/${roles}`, auth: true})
 			.then(res => {
 				if(res) this.links.auth = JSON.parse(res.data.funtions)        
 			})

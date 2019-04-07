@@ -18,15 +18,14 @@ class UserController extends Controller
 
 	public function list()
 	{
-		$users = User::with(['rol', 'timeZone', 'country'])
+		$users = User::with(['roles', 'timeZone', 'country'])
 			->get()
 			->map(function ($item) {
 				return [
 					'id' => $item->id,
 					'name' => $item->name,
 					'email' => $item->email,
-					'rol_code' => $item->rol->key,
-					'rol' => $item->rol->value,
+					'roles' => $item->roles->pluck('value'),
 					'country' => $item->country->name,
 					'timeZone' => $item->timeZone->name
 				];
@@ -45,9 +44,9 @@ class UserController extends Controller
 			'country_code' => $request->input('country_code'),
 			'time_zone_id' => $request->input('time_zone_id'),
 			'description'  => $request->input('description'),
-			'rol_code'     => $request->input('rol_code'),
 		]);
 		if ($user->save()) {
+			$user->roles()->sync(explode(',', $request->input('rolcodes')));
 			if ($request->hasFile('avatar')) {
 				$user->avatar = $this->saveAvatar($request->file('avatar'), $user->id);
 				$user->save();
@@ -64,7 +63,7 @@ class UserController extends Controller
 	{
 		$user = $this->getUserById($id);
 
-		$roles = CodeMeta::where('type', 'rol')->where('key', '!=', 'ST')->pluck('value', 'key');
+		$roles = CodeMeta::where('type', 'rol')->pluck('value', 'key');
 		$countries = Country::with(['timeZones'])->pluck('name', 'code');
 		$timeZones = TimeZone::select('id', DB::raw("name ||' '||gmt_offset as name"), 'country_code')
 			->get()
@@ -87,8 +86,8 @@ class UserController extends Controller
 		$user->country_code = $request->input('country_code');
 		$user->time_zone_id = $request->input('time_zone_id');
 		$user->description = $request->input('description');
-		$user->rol_code = ($request->input('rol_code')) ? $request->input('rol_code') : $user->rol_code;
 		if ($user->save()) {
+			$user->roles()->sync(explode(',', $request->input('rolcodes')));
 			if ($request->hasFile('avatar')) {
 				$user->avatar = $this->saveAvatar($request->file('avatar'), $user->id);;
 				$user->save();
@@ -99,7 +98,7 @@ class UserController extends Controller
 
 			return response()->json(Json::response(compact('user'), 'Successfully updated user!'), 200);
 		} else {
-			return response()->json(null, 401);
+			return response()->json($request->input('roles'), 401);
 		}
 	}
 
@@ -107,7 +106,7 @@ class UserController extends Controller
 	{
 		return User::whereId($id)
 			->with([
-				'rol', 
+				'roles', 
 				'timeZone', 
 				'country', 
 				'timeSchedule',
@@ -124,12 +123,14 @@ class UserController extends Controller
 						'email' => $item->email,
 						'avatar' => $item->avatar,
 						'description' => $item->description,
-						'rol_code' => $item->rol_code,
-						'rol' => $item->rol->value,
+						'roles' => $item->roles->pluck('key'),
 						'country_code' => $item->country_code,
 						'country' => $item->country->name,
 						'time_zone_id' => $item->time_zone_id,
 						'timeZone' => $item->timeZone->name,
+						'classes'	=> $item->studentLessons->filter(function ($value, $key) {
+							    return ($value->status_code == 'PEN');
+							}),
 						'timeSchedule' => $item->timeSchedule
 							->groupBy('week')
 							->map(function ($day) {

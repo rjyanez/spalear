@@ -15,7 +15,7 @@ export default {
       return state.currentUser;
     },
     isRole(state) {
-      return (code) => state.currentUser.rol_code.toUpperCase() === code.toUpperCase();
+      return (code) => state.currentUser.roles.map(el => el.key).includes(code.toUpperCase())
     }
   },
   mutations: {

@@ -22,7 +22,7 @@
                 <div class="form-group mb-0">
                   <div class="input-group input-group-alternative shadow ">
                     <select class="custom-select form-control"v-model="filter">
-                        <option v-for="(val,code) in filterOptions" :value="code">{{val}}</option>
+                        <option v-for="(val,code) in filterOptions" :value="val">{{val}}</option>
                     </select>
                   </div>
                 </div>
@@ -42,7 +42,7 @@
                 <tr>
                   <th scope="col" @click="sort('name')">Fullname<i class="fas fa-sort-alpha-down float-right"></i></th>
                   <th scope="col" @click="sort('email')">Email<i class="fas fa-sort-alpha-down float-right"></i></th>
-                  <th scope="col">Rol</th>
+                  <th scope="col">Roles</th>
                   <th scope="col">Country</th>
                   <th scope="col">Time Zone</th>
                   <th scope="col"></th>
@@ -52,7 +52,19 @@
                 <tr v-for="(item, index) in (sortedActivity, filteredList)" :key="index">
                   <td>{{ item.name }}</td>
                   <td>{{ item.email }}</td>
-                  <td>{{ item.rol }}</td>
+                  <td>
+                    <div class="avatar-group">
+                        <samp
+                          v-for="rol in item.roles"
+                          :class="`avatar avatar-sm ${rol.toLowerCase()}`"
+                          data-toggle="tooltip" 
+                          :title="rol"
+                          role="button"
+                        >
+                          <i class="rounded-circle">{{rol.substring(0,2).toUpperCase()}}</i>
+                        </samp>
+                    </div>
+                  </td>
                   <td>{{ item.country }}</td>
                   <td>{{ item.timeZone }}</td>
                   <td class="text-right">
@@ -100,8 +112,7 @@ export default {
   return {
     users: [],
     filterOptions: [],
-    filterName: 'rol_code',
-    filter: 'ST',
+    filter: 'Student',
     currentSort:'name',
     currentSortDir:'asc',
     search: '',
@@ -143,10 +154,10 @@ export default {
     let list = this.users.filter((data) => {
       let email = data.email.toLowerCase().match(this.search.toLowerCase());
       let name = data.name.toLowerCase().match(this.search.toLowerCase());
-      let rol = data.rol.toLowerCase().match(this.search.toLowerCase());
+      let rol = data.roles.includes(this.search.toLowerCase()) ;
       let country = data.country.toLowerCase().match(this.search.toLowerCase());
-      let timeZone = data.timeZone.toLowerCase().match(this.search.toLowerCase());    
-      let filter = data[this.filterName].toLowerCase().match(this.filter.toLowerCase())    
+      let timeZone = data.timeZone.toLowerCase().match(this.search.toLowerCase());
+      let filter = data.roles.includes(this.filter);    
       return ((email || name || rol || timeZone || country) && filter);
     });
 

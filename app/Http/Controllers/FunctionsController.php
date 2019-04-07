@@ -8,13 +8,24 @@ use App\Transformers\Json;
 
 class FunctionsController extends Controller
 {
-    public function primaryMenu($role){
-        $funtions = Functions::select('code', 'title', 'icon', 'url')
+    public function primaryMenu($roles){
+        $roles = explode(',', $roles);
+        $funtions = Functions::select('code', 'title', 'icon', 'url','parent_name')
                             ->whereNull('parent_name')
                             ->where('menu', 1)
                             ->orderBy('order', 'asc')
-                            ->whereHas('roles',function ($q) use ($role) {
-                                $q->where('rol_code', $role);
+                            ->with('childs')
+                            ->whereHas('roles',function ($q) use ($roles) {
+                                $q->whereIn('rol_code', $roles);
+                            })
+                            ->doesntHave('childs')
+                            ->orWhereHas('childs', function($query) use ($roles) {
+                                return $query->select('code', 'title', 'icon', 'url','parent_name')
+                                        ->where('menu', 1)
+                                        ->orderBy('order', 'asc')
+                                        ->whereHas('roles',function ($q) use ($roles) {
+                                            $q->whereIn('rol_code', $roles);
+                                        });
                             })
                             ->get()
                             ->toJson();

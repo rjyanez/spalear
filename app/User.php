@@ -44,6 +44,12 @@ class User extends Authenticatable implements JWTSubject
         return $this->belongsTo(CodeMeta::class, 'rol_code');
     }
 
+    public function roles()
+    {
+        return $this->belongsToMany(CodeMeta::class,'users_roles','user_id','rol_code');
+    }
+
+
     public function timeZone()
     {
         return $this->belongsTo(TimeZone::class, 'time_zone_id');

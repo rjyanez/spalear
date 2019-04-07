@@ -41,13 +41,13 @@ class AuthController extends Controller
         }
 
         if($token){
-            $user = Auth::user();
+            $user =  Auth::user();
             $user->online = true;
             $user->save();
             
             return response()->json(Json::response([
                     'access_token' => $token,
-                    'user' => Auth::user() 
+                    'user' =>$this->requestUser()
                 ],'Login success, welcome back!'));
         }
     }
@@ -77,13 +77,13 @@ class AuthController extends Controller
         }
         return response()->json(Json::response([                
                 'access_token' => $token,
-                'user' => Auth::user() 
+                'user' => $this->requestUser()
             ]));
     }
 
     public function user(Request $request)
     {
-        return response()->json($request->user());
+        return response()->json($this->requestUser());
     }
 
     public function create()
@@ -112,11 +112,14 @@ class AuthController extends Controller
             'password'     => Hash::make ($request->password),
             'country_code' => $request->country_code,
             'time_zone_id' => $request->time_zone_id,
-            'rol_code'     => 'ST',
         ]);
-
         $user->save();
+        $user->roles()->attach('ST');
         return response()->json([
             'message' => 'Successfully created user!'], 201);
+    }
+
+    public function requestUser(){
+        return User::whereId(Auth::user()->id)->with('roles')->first();
     }
 }

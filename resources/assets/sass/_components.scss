@@ -11,6 +11,24 @@
   transform: translateX(-10%);
 }
 
+.admin 
+{
+  @extend .bg-primary;
+}
+.scheduler
+{
+  @extend .bg-default;
+}
+.student
+{
+  @extend .bg-info;
+}
+.teacher
+{
+  @extend .bg-success;
+}
+
+
 table.calendar-table {
   @extend .table;
   @extend .align-items-center; 
@@ -205,25 +223,26 @@ table.calendar-table {
 
 .notification {
   .mark {  
+    transform: scale(.7);
     position: absolute;
-    top: -0.4rem;
-    left: -0.4rem;
+    top: -0.2rem;
+    left: -0.2rem;
     will-change: auto;
   }
-  &:hover .mark
+  &.full .fa-bell
   {
-    background: aqua !important;
+    transform-origin: top center;
     animation: slide-tl 0.5s cubic-bezier(0.550, 0.055, 0.675, 0.190) infinite alternate-reverse both;
   }
 }
 
 @keyframes slide-tl {
-  0% {
-    -webkit-transform: translateY(0) translateX(0);
-    transform: translateY(0) translateX(0);
-}
-100% {
-    -webkit-transform: translateY(-100px) translateX(-100px);
-    transform: translateY(-100px) translateX(-100px);
-}
+  0% { transform: rotate(0); }
+  15% { transform: rotate(25deg); }
+  25% { transform: rotate(-25deg); }
+  45% { transform: rotate(10deg); }
+  55% { transform: rotate(-10deg); }
+  75% { transform: rotate(5deg); }
+  85% { transform: rotate(-5deg); }
+  100% { transform: rotate(0); }
 }

@@ -25,13 +25,13 @@ export function initialize(store, router) {
   router.beforeEach((to, from, next) => {
     const currentUser = store.state.currentUser;
     const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
-    const deniedRoles = to.matched.some(record => (record.meta.deniedRoles)? record.meta.deniedRoles.includes(currentUser.rol_code) : false)
+    // const deniedRoles = to.matched.some(record => (record.meta.deniedRoles)? record.meta.deniedRoles.includes(currentUser.rol_code) : false)
     if(requiresAuth && !currentUser) {
       next('/');
     } else if(to.path == '/login' && currentUser) {
       next('/dashboard');
-    } else if(deniedRoles){
-        next('/');
+    // } else if(deniedRoles){
+    //     next('/');
     } else {    
       next();
     }

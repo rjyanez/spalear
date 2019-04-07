@@ -1,13 +1,13 @@
 <template>
 	<div>
-		<transition name="slide-fade">
+<!-- 		<transition name="slide-fade">
 			<sidebar v-if="isLoggedIn && sidebar"/>
-		</transition>
+		</transition> -->
 		<div class="main-content">		
 			<navbar>
-				<template v-slot:toggle v-if="isLoggedIn">
+<!-- 				<template v-slot:toggle v-if="isLoggedIn">
 					<closeMenu @toggle="sidebar = !sidebar" :open="sidebar" />
-				</template>
+				</template> -->
 			</navbar>
 			<router-view />
 		</div>

@@ -17,14 +17,18 @@ class StudensTeachersSeeder extends Seeder
 
         $data = [];
         
-        $teachers = DB::table('users')->select('id')
-                                        ->where('rol_code', 'TE')
-                                        ->get();
-        $students = DB::table('users')->select('id')
-                                        ->where(function ($query) {
-                                            $query->where('rol_code', 'ST')
-                                            ->orWhere('email','admin@admin.com');
-                                        })->get();
+        $teachers = App\User::select('id')
+                            ->whereHas('roles',function ($q){
+                                $q->where('key', 'TE');
+                            })
+                            ->get();
+        $students = App\User::select('id')
+                                ->where(function ($query) {
+                                    $query->whereHas('roles',function ($q){
+                                        $q->where('key', 'ST');
+                                    })
+                                    ->orWhere('email','admin@admin.com');
+                                })->get();
 
 
         foreach ($teachers as $key => $value) {

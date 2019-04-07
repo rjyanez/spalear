@@ -20,10 +20,7 @@ class NotificationController extends Controller
     public function markAsRead($id)
     {
         $user = User::find($id);
-        if($user->unreadNotifications->markAsRead()){            
-            return response()->json(Json::response(compact('notifications')), 200);
-        } else {
-            return response()->json(null, 401);
-        }
+        $user->unreadNotifications->markAsRead();            
+        return response()->json(Json::response(null,'the notifications were marked as read'), 200);
     }   
 }

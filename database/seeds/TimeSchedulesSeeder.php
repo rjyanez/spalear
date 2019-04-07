@@ -14,7 +14,10 @@ class TimeSchedulesSeeder extends Seeder
     {
         DB::statement('ALTER SEQUENCE time_schedules_id_seq RESTART WITH 1'); 
         
-        $teachers = DB::table('users')->select('id')->where('rol_code', 'TE')->get();
+        $teachers = App\User::select('id')
+                            ->whereHas('roles',function ($q){
+                                $q->where('key', 'TE');
+                            })->get();
         $data = [];
         $min = [0,30];
 

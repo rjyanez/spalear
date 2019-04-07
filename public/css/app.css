@@ -13808,14 +13808,19 @@ a.close.disabled {
   vertical-align: text-top !important;
 }
 
-.bg-primary {
+.bg-primary,
+.admin {
   background-color: #3490dc !important;
 }
 
 a.bg-primary:hover,
+a.admin:hover,
 a.bg-primary:focus,
+a.admin:focus,
 button.bg-primary:hover,
-button.bg-primary:focus {
+button.admin:hover,
+button.bg-primary:focus,
+button.admin:focus {
   background-color: #2176bd !important;
 }
 
@@ -13830,25 +13835,35 @@ button.bg-secondary:focus {
   background-color: #545b62 !important;
 }
 
-.bg-success {
+.bg-success,
+.teacher {
   background-color: #38c172 !important;
 }
 
 a.bg-success:hover,
+a.teacher:hover,
 a.bg-success:focus,
+a.teacher:focus,
 button.bg-success:hover,
-button.bg-success:focus {
+button.teacher:hover,
+button.bg-success:focus,
+button.teacher:focus {
   background-color: #2d995b !important;
 }
 
-.bg-info {
+.bg-info,
+.student {
   background-color: #6cb2eb !important;
 }
 
 a.bg-info:hover,
+a.student:hover,
 a.bg-info:focus,
+a.student:focus,
 button.bg-info:hover,
-button.bg-info:focus {
+button.student:hover,
+button.bg-info:focus,
+button.student:focus {
   background-color: #3f9ae5 !important;
 }
 
@@ -25797,14 +25812,19 @@ button.close {
   vertical-align: text-top !important;
 }
 
-.bg-primary {
+.bg-primary,
+.admin {
   background-color: #5e72e4 !important;
 }
 
 a.bg-primary:hover,
+a.admin:hover,
 a.bg-primary:focus,
+a.admin:focus,
 button.bg-primary:hover,
-button.bg-primary:focus {
+button.admin:hover,
+button.bg-primary:focus,
+button.admin:focus {
   background-color: #324cdd !important;
 }
 
@@ -25819,25 +25839,35 @@ button.bg-secondary:focus {
   background-color: #d2e3ee !important;
 }
 
-.bg-success {
+.bg-success,
+.teacher {
   background-color: #2dce89 !important;
 }
 
 a.bg-success:hover,
+a.teacher:hover,
 a.bg-success:focus,
+a.teacher:focus,
 button.bg-success:hover,
-button.bg-success:focus {
+button.teacher:hover,
+button.bg-success:focus,
+button.teacher:focus {
   background-color: #24a46d !important;
 }
 
-.bg-info {
+.bg-info,
+.student {
   background-color: #11cdef !important;
 }
 
 a.bg-info:hover,
+a.student:hover,
 a.bg-info:focus,
+a.student:focus,
 button.bg-info:hover,
-button.bg-info:focus {
+button.student:hover,
+button.bg-info:focus,
+button.student:focus {
   background-color: #0da5c0 !important;
 }
 
@@ -25885,14 +25915,19 @@ button.bg-dark:focus {
   background-color: #0a0c0d !important;
 }
 
-.bg-default {
+.bg-default,
+.scheduler {
   background-color: #172b4d !important;
 }
 
 a.bg-default:hover,
+a.scheduler:hover,
 a.bg-default:focus,
+a.scheduler:focus,
 button.bg-default:hover,
-button.bg-default:focus {
+button.scheduler:hover,
+button.bg-default:focus,
+button.scheduler:focus {
   background-color: #0b1526 !important;
 }
 
@@ -39261,23 +39296,23 @@ html:not([dir='rtl']) .noUi-horizontal .noUi-handle {
 }
 
 .toasted.info {
-  border-color: #7889e8 !important;
-  background-color: #7889e8 !important;
+  border-color: #6cb2eb !important;
+  background-color: #6cb2eb !important;
 }
 
 .toasted.success {
-  border-color: #4fd69c !important;
-  background-color: #4fd69c !important;
+  border-color: #38c172 !important;
+  background-color: #38c172 !important;
 }
 
 .toasted.error {
-  border-color: #f75676 !important;
-  background-color: #f75676 !important;
+  border-color: #e3342f !important;
+  background-color: #e3342f !important;
 }
 
 .toasted.default {
-  border-color: #3c4d69 !important;
-  background-color: #3c4d69 !important;
+  border-color: #6c757d !important;
+  background-color: #6c757d !important;
 }
 
 .slide-fade-enter-active {
@@ -39478,38 +39513,101 @@ table.calendar-table tr td.booked:hover {
 }
 
 .notification .mark {
+  -webkit-transform: scale(0.7);
+          transform: scale(0.7);
   position: absolute;
-  top: -0.4rem;
-  left: -0.4rem;
+  top: -0.2rem;
+  left: -0.2rem;
   will-change: auto;
 }
 
-.notification:hover .mark {
-  background: aqua !important;
+.notification.full .fa-bell {
+  -webkit-transform-origin: top center;
+          transform-origin: top center;
   animation: slide-tl 0.5s cubic-bezier(0.55, 0.055, 0.675, 0.19) infinite alternate-reverse both;
 }
 
 @-webkit-keyframes slide-tl {
   0% {
-    -webkit-transform: translateY(0) translateX(0);
-    transform: translateY(0) translateX(0);
+    -webkit-transform: rotate(0);
+            transform: rotate(0);
+  }
+
+  15% {
+    -webkit-transform: rotate(25deg);
+            transform: rotate(25deg);
+  }
+
+  25% {
+    -webkit-transform: rotate(-25deg);
+            transform: rotate(-25deg);
+  }
+
+  45% {
+    -webkit-transform: rotate(10deg);
+            transform: rotate(10deg);
+  }
+
+  55% {
+    -webkit-transform: rotate(-10deg);
+            transform: rotate(-10deg);
+  }
+
+  75% {
+    -webkit-transform: rotate(5deg);
+            transform: rotate(5deg);
+  }
+
+  85% {
+    -webkit-transform: rotate(-5deg);
+            transform: rotate(-5deg);
   }
 
   100% {
-    -webkit-transform: translateY(-100px) translateX(-100px);
-    transform: translateY(-100px) translateX(-100px);
+    -webkit-transform: rotate(0);
+            transform: rotate(0);
   }
 }
 
 @keyframes slide-tl {
   0% {
-    -webkit-transform: translateY(0) translateX(0);
-    transform: translateY(0) translateX(0);
+    -webkit-transform: rotate(0);
+            transform: rotate(0);
+  }
+
+  15% {
+    -webkit-transform: rotate(25deg);
+            transform: rotate(25deg);
+  }
+
+  25% {
+    -webkit-transform: rotate(-25deg);
+            transform: rotate(-25deg);
+  }
+
+  45% {
+    -webkit-transform: rotate(10deg);
+            transform: rotate(10deg);
+  }
+
+  55% {
+    -webkit-transform: rotate(-10deg);
+            transform: rotate(-10deg);
+  }
+
+  75% {
+    -webkit-transform: rotate(5deg);
+            transform: rotate(5deg);
+  }
+
+  85% {
+    -webkit-transform: rotate(-5deg);
+            transform: rotate(-5deg);
   }
 
   100% {
-    -webkit-transform: translateY(-100px) translateX(-100px);
-    transform: translateY(-100px) translateX(-100px);
+    -webkit-transform: rotate(0);
+            transform: rotate(0);
   }
 }
 

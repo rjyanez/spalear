@@ -17,6 +17,12 @@ class CodeMeta extends Model
 
     }
 
+    public function users()
+    {
+        return $this->belongsToMany(User::class,'users_roles','rol_code','user_id');
+
+    }
+
     public function classesStatus()
     {
         return $this->hasMany(Classes::class, 'key', 'status_code');
@@ -27,10 +33,10 @@ class CodeMeta extends Model
         return $this->hasMany(Classes::class, 'key', 'type_code');
     }
 
-    public function users()
-    {
-        return $this->hasMany(User::class, 'key', 'rol_code');
-    }
+    // public function users()
+    // {
+    //     return $this->hasMany(User::class, 'key', 'rol_code');
+    // }
 
     public function lessons()
     {

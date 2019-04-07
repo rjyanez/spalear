@@ -53,10 +53,8 @@ class NewClass extends Notification
         return [
             'subject' =>'New Class',
             'message' => sprintf(
-                '%s has scheduled a class %s, %s for the %s',
+                '%s has scheduled a class for the %s',
                  $this->class->student->name,
-                 $this->class->type->value,
-                 (!empty($this->class->lesson)) ? "Lesson {$this->class->lesson->name} of the {$this->class->lesson->level->value} level," : "" ,
                  $this->class->date
             )
         ];

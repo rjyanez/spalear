@@ -1,16 +1,16 @@
 <template>
   <div>
-    <header-empty/>
+    <header-auth/>
   </div>
 </template>
 <script>
-import headerEmpty from '../views/layouts/headers/empty.vue'
+import headerAuth from '../views/layouts/headers/auth.vue'
 import calendar from '../components/calendar.vue'
 
 export default {
   name: 'dashboard',
   components: {
-    headerEmpty
+    headerAuth
   }
 }
 </script>

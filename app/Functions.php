@@ -21,9 +21,14 @@ class Functions extends Model
 
     }
 
-    public function childFunctions()
+    public function childs()
     {
-        return $this->hasMany('App\Functions','parent_name','code');
+        return $this->hasMany(Functions::class,'parent_name','code');
 
+    }
+
+    public function parent()
+    {
+        return $this->belongsTo(Functions::class, 'parent_name');
     }
 }

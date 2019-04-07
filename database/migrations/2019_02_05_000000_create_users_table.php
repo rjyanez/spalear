@@ -23,7 +23,7 @@ class CreateUsersTable extends Migration
             $table->unsignedInteger('time_zone_id');
             $table->string('avatar')->default('no-img.png');
             $table->text('description')->nullable();
-            $table->string('rol_code',2);
+            // $table->string('rol_code',2);
             $table->boolean('online')->default(false);
             $table->rememberToken();
             $table->softDeletes();
@@ -31,7 +31,7 @@ class CreateUsersTable extends Migration
 
             $table->foreign('country_code')->references('code')->on('countries');
             $table->foreign('time_zone_id')->references('id')->on('time_zones');
-            $table->foreign('rol_code')->references('key')->on('codes_meta');
+            // $table->foreign('rol_code')->references('key')->on('codes_meta');
 
         });
     }

@@ -6,7 +6,8 @@
   <ul class="nav nav-pills nav-pills-circle d-flex justify-content-center" id="step" role="tablist">
     <li class="nav-item text-center">
       <a 
-        class="nav-link rounded-circle active" 
+        ref="stepTimeTab"
+        class="nav-link rounded-circle" 
         id="step-time-tab" 
         data-toggle="pill" 
         href="#step-time" 
@@ -174,6 +175,12 @@ export default {
 
       (!find)? this.timeSelectedDates.push(event) : this.timeSelectedDates.splice(index,1)
     },
+    setInfoEmpty(){
+      console.log('setInfoEmpty')
+      this.type = ''
+      this.lesson = {}
+      this.timeSelectedDates = []
+    },
     submit(){
       let data = [],
       student=  this.currentUser.id,
@@ -198,12 +205,11 @@ export default {
         auth: true 
       }).then(res => {
         this.loading = false
-        if (res) {       
-          this.$toasted.success(res.message)
-          this.type = ''
-          this.lesson = {}
-          this.timeSelectedDates = []
+        if (res) {  
+          this.$refs.stepTimeTab.click()      
+          this.setInfoEmpty()
           this.$emit('scheduleClass')
+          this.$toasted.success(res.message)
         } else {
           this.$toasted.error("Something went wrong, please try again.")
         }

@@ -25,22 +25,28 @@ class UsersTableSeeder extends Seeder
             'password'=>    Hash::make('123456'), //123456
             'country_code'=>'VE',
             'time_zone_id'=>418,
-            'rol_code'=>'AD', //Administrador
+            // 'rol_code'=>'AD', //Administrador
         ]);
-
-        $user->setMeta([
-            'level' => $levels[rand(0,2)]
-        ]);
-
+        $user->setMeta(['level' => $levels[rand(0,2)]]);
         $user->save();
+        $user->roles()->attach('AD');
+        $this->createUsers();
 
-        factory(App\User::class, 50)->create()->each(function ($user) use ($levels){
-            if($user->rol_code == 'ST'){
-                $user->setMeta([
-                    'level' => $levels[rand(0,2)]
-                ]);
+    }
+
+    public function createUsers(){
+
+        factory(App\User::class, 50)->create();
+        $levels = ['BAS','MED','ADV'];
+        $roles = ['AD','SC','TE','ST'];
+
+        App\User::all()->each(function ($user) use ($roles, $levels) {
+            $rol = $roles[rand(0,3)];
+            $user->roles()->attach($rol);
+            if($rol = 'ST'){
+                $user->setMeta(['level' => $levels[rand(0,2)]]);
                 $user->save();
             }
-        });;
+        });
     }
 }

@@ -17,7 +17,7 @@ class TeacherController extends Controller
 
 		$teachers = User::where('rol_code', 'TE')
 			->where('online', true)
-			->with(['rol', 'timeZone', 'country', 'timeSchedule', 'teacherStudents'])
+			->with(['roles', 'timeZone', 'country', 'timeSchedule', 'teacherStudents'])
 			->get()
 			->map(function ($item) use ($auth) {
 				return [
@@ -25,7 +25,7 @@ class TeacherController extends Controller
 					'name'        => $item->name,
 					'email'       => $item->email,
 					'avatar'      => $item->avatar,
-					'rol'         => $item->rol->key,
+					'roles'       => $item->roles,
 					'online'      => $item->online,
 					'country'     => $item->country->name,
 					'timeZone'    => $item->timeZone->name,
@@ -48,7 +48,7 @@ class TeacherController extends Controller
 		$auth = $request->user()->id;
 
 		$teachers = User::where('rol_code', 'TE')
-			->with(['rol', 'timeZone', 'country', 'timeSchedule', 'teacherStudents'])
+			->with(['roles', 'timeZone', 'country', 'timeSchedule', 'teacherStudents'])
 			->whereHas('teacherStudents', function ($query)  use ($auth) {
 				$query->where('student_id', $auth)
 					->where('favorite', true);
@@ -60,7 +60,7 @@ class TeacherController extends Controller
 					'name'        => $item->name,
 					'email'       => $item->email,
 					'avatar'      => $item->avatar,
-					'rol'         => $item->rol->key,
+					'roles'       => $item->roles,
 					'online'      => $item->online,
 					'country'     => $item->country->name,
 					'timeZone'    => $item->timeZone->name,
@@ -84,7 +84,7 @@ class TeacherController extends Controller
 
 		$teacher = User::whereId($id)
 			->where('rol_code', 'TE')
-			->with(['rol', 'timeZone', 'country', 'timeSchedule', 'teacherStudents','teacherLessons'])
+			->with(['roles', 'timeZone', 'country', 'timeSchedule', 'teacherStudents','teacherLessons'])
 			->get()
 			->map(function ($item) use ($auth) {
 				return [
@@ -93,7 +93,7 @@ class TeacherController extends Controller
 					'email'       => $item->email,
 					'avatar'      => $item->avatar,
 					'description' => $item->description,
-					'rol'         => $item->rol->key,
+					'roles'       => $item->roles,
 					'online'      => $item->online,
 					'country'     => $item->country->name,
 					'timeZone'    => $item->timeZone->name,

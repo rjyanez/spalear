@@ -9,24 +9,24 @@
     width: 25vw !important;
     &.info
     {
-        border-color: #7889e8 !important; 
-        background-color: #7889e8 !important;
+        border-color: $info !important; 
+        background-color: $info !important;
     }
     
     &.success
     {
-        border-color: #4fd69c !important; 
-        background-color: #4fd69c !important;
+        border-color: $success !important; 
+        background-color: $success !important;
     }
     &.error
     {
-        border-color: #f75676 !important; 
-        background-color: #f75676 !important;
+        border-color: $danger !important; 
+        background-color: $danger !important;
     }
     
     &.default
     {
-        border-color: #3c4d69 !important; 
-        background-color: #3c4d69 !important;
+        border-color: $secondary !important; 
+        background-color:  $secondary !important;
     }
   }
