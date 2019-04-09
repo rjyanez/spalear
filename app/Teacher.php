@@ -16,7 +16,7 @@ class Teacher extends User
 
     public function lessons()
     {
-        return $this->hasMany(Classes::class,'teacher_id','id');
+        return $this->hasMany(Meeting::class,'teacher_id','id');
     }
 
 }

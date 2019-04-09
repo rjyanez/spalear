@@ -26,8 +26,8 @@
             type="button"
             @click="setSelect(item,index)"
             :class="{
-              'icon icon-shape rounded-circle shadow btn': true, 
-              'btn-secondary':index !== select, 
+              'icon icon-shape rounded-circle btn': true, 
+              'btn-outline-secondary':index !== select, 
               'btn-success': index === select 
             }"
           >

@@ -4,17 +4,18 @@ namespace App;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 
-class Classes extends Model
+class Meeting extends Model
 {
     use SoftDeletes;
 
     protected $dates = ['deleted_at'];
-    protected $table = 'classes';
+    protected $table = 'meetings';
 
     protected $fillable =   [
         'id',
         'status_code', 
         'type_code', 
+        'url',
         'student_id', 
         'teacher_id',
         'lesson_id',

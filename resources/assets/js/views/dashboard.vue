@@ -1,16 +1,22 @@
 <template>
   <div>
-    <header-auth/>
+    <user-dashboard v-if="isRole('ST')"/>
   </div>
 </template>
 <script>
 import headerAuth from '../views/layouts/headers/auth.vue'
-import calendar from '../components/calendar.vue'
+import userDashboard from './user/dashboard'
 
 export default {
   name: 'dashboard',
   components: {
-    headerAuth
+    headerAuth,
+    userDashboard
+  },
+  methods: {
+    isRole(role) {
+      return this.$store.getters.isRole(role);
+    },
   }
 }
 </script>

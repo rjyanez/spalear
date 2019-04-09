@@ -38,7 +38,7 @@
         </div>
         <div class="card-body p-0">
           <div class="row">
-            <div class="col-xl-4" v-for="(item, index) in (sortedActivity, filteredList)" :key="index">
+            <div class="col-xl-3" v-for="(item, index) in (sortedActivity, filteredList)" :key="index">
               <teacher 
                 :index="index" 
                 :teacher="item" 
@@ -91,7 +91,7 @@ export default {
       currentSortDir:'desc',
       search: '',
       searchSelection: '',
-      pageSize: 6,
+      pageSize: 8,
       currentPage: 1,
       total: 0,
       modal: {
@@ -155,7 +155,7 @@ export default {
       let list = this.teachers.filter((data) => {
         let email = data.email.toLowerCase().match(this.search.toLowerCase());
         let name = data.name.toLowerCase().match(this.search.toLowerCase());
-        let rol = data.rol.toLowerCase().match(this.search.toLowerCase());
+        let rol = data.roles.includes(this.search.toLowerCase()) ;
         let country = data.country.toLowerCase().match(this.search.toLowerCase());
         let timeZone = data.timeZone.toLowerCase().match(this.search.toLowerCase());        
         return email || name || rol || timeZone || country;

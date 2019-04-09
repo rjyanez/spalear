@@ -106,12 +106,12 @@ class UserController extends Controller
 	{
 		return User::whereId($id)
 			->with([
-				'roles', 
-				'timeZone', 
-				'country', 
+				'roles',
+				'timeZone',
+				'country',
 				'timeSchedule',
-				'studentLessons' => function ($query) {
-					return $query;
+				'studentMeetings' => function ($query) {
+					return $query->orderBy('date','asc');
 				}
 			])
 			->get()
@@ -128,9 +128,19 @@ class UserController extends Controller
 						'country' => $item->country->name,
 						'time_zone_id' => $item->time_zone_id,
 						'timeZone' => $item->timeZone->name,
-						'classes'	=> $item->studentLessons->filter(function ($value, $key) {
-							    return ($value->status_code == 'PEN');
-							}),
+						'meetings'	=> $item->studentMeetings->take(5)
+							->map(function($value, $key){
+								return [
+									'id'      => $value->id,
+									'url'	=> $value->url,
+									'date'    => $value->date,
+									'teacher' => $value->teacher,
+									'type'    => $value->type->value,
+									'lesson'  => ($value->lesson)? $value->lesson->name : 'N/A',
+									'level'   => ($value->lesson)? $value->lesson->level->value : 'N/A'
+								];
+							})
+							->toArray(),
 						'timeSchedule' => $item->timeSchedule
 							->groupBy('week')
 							->map(function ($day) {

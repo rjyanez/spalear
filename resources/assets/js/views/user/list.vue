@@ -68,7 +68,7 @@
                   <td>{{ item.country }}</td>
                   <td>{{ item.timeZone }}</td>
                   <td class="text-right">
-                    <router-link class="btn btn-sm btn-icon-only text-light" :to="`/user/${item.id}`">
+                    <router-link class="btn btn-sm btn-icon-only text-light" :to="`/user/setting/${item.id}`">
                       <i class="fas fa-ellipsis-v"></i>
                     </router-link>
                   </td>

@@ -100,7 +100,10 @@ export default {
         isFormValid() {
         let valid =  Object.keys(this.fields).filter(key => this.fields[key].valid);
           return valid.length === Object.keys(this.fields).length ;
-        }
+        },
+        isLoggedIn() {
+            return this.$store.getters.isLoggedIn;
+        }	
     }
 }
 </script>

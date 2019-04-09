@@ -26,8 +26,7 @@ class StudensTeachersSeeder extends Seeder
                                 ->where(function ($query) {
                                     $query->whereHas('roles',function ($q){
                                         $q->where('key', 'ST');
-                                    })
-                                    ->orWhere('email','admin@admin.com');
+                                    });
                                 })->get();
 
 

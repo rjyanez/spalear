@@ -1,0 +1,47 @@
+label[role="buttom"]
+{
+  cursor: pointer;
+}
+
+.admin 
+{
+  @extend .bg-primary;
+}
+.scheduler
+{
+  @extend .bg-default;
+}
+.student
+{
+  @extend .bg-info;
+}
+.teacher
+{
+  @extend .bg-success;
+}
+
+.badge-conversational
+{
+  @extend .badge-primary;
+}
+.badge-gramatical
+{
+  @extend .badge-success;
+}
+
+.badge-basic
+{
+  @extend .badge-info;
+}
+.badge-medium
+{
+  @extend .badge-primary;
+}
+.badge-advanced
+{
+  @extend .badge-warning;
+}
+
+.card-hover:hover{
+  background: $light !important;
+}

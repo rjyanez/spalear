@@ -2,9 +2,10 @@ import Home from './views/home.vue';
 import Login from './views/auth/login.vue';
 import Signup from './views/auth/signup.vue';
 import Dashboard from './views/dashboard';
+import Meeting from './views/meeting/meeting'
 import UserList from './views/user/list';
 import User from './views/user/user';
-import UserProfile from './views/user/profile';
+import UserProgress from './views/user/progress.vue'
 import TeacherList from './views/teacher/list'
 import TeacherProfile from './views/teacher/profile'
 
@@ -54,30 +55,38 @@ export const routes = [
             },
             {
                 path: 'setting',
-                name: 'user.setting',
-                component: User
-            },
-            {
-                path: 'profile',
-                component: {
+                component:  {
                     template: '<router-view/>',
-                },                
+                },
                 children: [
                     {
                         path: '/',
-                        name: 'user.profile',
-                        component: UserProfile
-                    },                
+                        name: 'user.setting',
+                        component: User
+                    },
                     {
                         path: ':id',
-                        component: UserProfile
-                    },
+                        component: User
+                    }
                 ]
             },
             {
-                path: ':id',
-                component: User
-            }
+                path: 'progress',
+                component:  {
+                    template: '<router-view/>',
+                },
+                children: [
+                    {
+                        path: '/',
+                        name: 'user.progress',
+                        component: UserProgress
+                    },
+                    {
+                        path: ':id',
+                        component: UserProgress
+                    }
+                ]
+            },
         ]
     },
     {
@@ -113,6 +122,20 @@ export const routes = [
                 path: ':id',
                 name: 'teachers.name',
                 component: TeacherProfile 
+            }
+        ]
+    },
+    {
+        path: 'meeting',
+        name: 'meeting',
+        component: {
+            template: '<router-view/>',
+        },
+        children: [
+            {
+                path: ':id',
+                name: 'meeting.show',
+                component: Meeting 
             }
         ]
     },

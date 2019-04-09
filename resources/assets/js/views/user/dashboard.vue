@@ -1,7 +1,7 @@
 <template>
   <div>
     <header-user name=""/>
-    <div class="container-fluid mt--7">
+    <div class="container mt--7">
       <div class="card card-profile shadow">
         <div class="px-4">
           <div class="row justify-content-center">
@@ -33,8 +33,10 @@
             </div>
           </div>
           <div class="mt-5 py-5 border-top text-center">
-            <agenda :list="classList" class="mx-8"/>
-            
+            <h2 class="text-primary text-uppercase">
+              Your next classes
+            </h2>
+            <meetings-list @searchUser="searchUser" :list="user.meetings" class="mx-5"/>            
           </div>
         </div>
       </div>  
@@ -43,44 +45,29 @@
 </template>
 <script>
 import headerUser from './header'
-import agenda from './../lesson/agenda'
+import meetingsList from './../meeting/list'
 
 export default {
   components: {
     headerUser,
-    agenda
+    meetingsList
   },
   data(){
     return {
       user: {
         id: parseInt(this.$router.currentRoute.params.id) || this.$store.getters.currentUser.id
-      },
-      classList: [
-        {
-          date: "2019/03/24 8:30:00",
-          type: "CO",
-          type_name: "Conversational",
-          teacher : {
-            name: "Nombre del Profesor",
-            avatar: "no-img.png",
-          },
-        },
-        {
-          date: "2019/03/24 8:30:00",
-          type: "GR",
-          type_name: "Gramatical",
-          teacher : {
-            name: "Nombre del Profesor",
-            avatar: "no-img.png",
-          }
-        }
-      ]      
+      }    
     }
   },
   mounted(){
-    this.$store.dispatch('sendGet', { url:`/api/user/${this.user.id}`, auth: true}).then(res => {
-      if(res.data.user) this.user = res.data.user
-    })
+    this.searchUser()
+  },
+  methods:{
+    searchUser(){
+      this.$store.dispatch('sendGet', { url:`/api/user/${this.user.id}`, auth: true}).then(res => {
+        if(res.data.user) this.user = res.data.user
+      })
+    }
   }
 }
 </script>

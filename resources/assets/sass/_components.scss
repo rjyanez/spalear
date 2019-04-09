@@ -11,24 +11,6 @@
   transform: translateX(-10%);
 }
 
-.admin 
-{
-  @extend .bg-primary;
-}
-.scheduler
-{
-  @extend .bg-default;
-}
-.student
-{
-  @extend .bg-info;
-}
-.teacher
-{
-  @extend .bg-success;
-}
-
-
 table.calendar-table {
   @extend .table;
   @extend .align-items-center; 

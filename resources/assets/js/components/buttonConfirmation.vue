@@ -1,10 +1,14 @@
 <template>
   <button
     type="button"
-    :class="[ css, stepsComplete? 'confirmation__button--complete' : '' ]"
+    data-toggle="tooltip" 
+    data-placement="top" 
+    :title="currentMessage.text"
+    :class="[ css, stepsComplete? 'confirmation__button--complete' : '', currentMessage.class ]"
     :disabled='stepsComplete'
     v-on:click='incrementStep()'>
-      {{ currentMessage }}
+    <i v-if="currentMessage.icon" :class="currentMessage.icon"></i>
+    <template v-else>{{ currentMessage.text }}</template>    
   </button>
 </template>
 

@@ -15,7 +15,9 @@ class TeacherController extends Controller
 	{
 		$auth = $request->user()->id;
 
-		$teachers = User::where('rol_code', 'TE')
+		$teachers = User::whereHas('roles', function ($q) {
+			$q->where('key', 'TE');
+		})
 			->where('online', true)
 			->with(['roles', 'timeZone', 'country', 'timeSchedule', 'teacherStudents'])
 			->get()
@@ -25,10 +27,11 @@ class TeacherController extends Controller
 					'name'        => $item->name,
 					'email'       => $item->email,
 					'avatar'      => $item->avatar,
-					'roles'       => $item->roles,
+					'roles'       => $item->roles->pluck('value'),
 					'online'      => $item->online,
 					'country'     => $item->country->name,
 					'timeZone'    => $item->timeZone->name,
+					'teacherStudents' => $item->teacherStudents,
 					'favorite'    => $item->teacherStudents
 						->contains(function ($value, $key) use ($auth) {
 							return ($value->id == $auth && $value->pivot->favorite);
@@ -47,7 +50,9 @@ class TeacherController extends Controller
 	{
 		$auth = $request->user()->id;
 
-		$teachers = User::where('rol_code', 'TE')
+		$teachers = User::whereHas('roles', function ($q) {
+			$q->where('key', 'TE');
+		})
 			->with(['roles', 'timeZone', 'country', 'timeSchedule', 'teacherStudents'])
 			->whereHas('teacherStudents', function ($query)  use ($auth) {
 				$query->where('student_id', $auth)
@@ -83,8 +88,10 @@ class TeacherController extends Controller
 		$auth = $request->user()->id;
 
 		$teacher = User::whereId($id)
-			->where('rol_code', 'TE')
-			->with(['roles', 'timeZone', 'country', 'timeSchedule', 'teacherStudents','teacherLessons'])
+			->whereHas('roles', function ($q) {
+				$q->where('key', 'TE');
+			})
+			->with(['roles', 'timeZone', 'country', 'timeSchedule', 'teacherStudents', 'teacherMeetings'])
 			->get()
 			->map(function ($item) use ($auth) {
 				return [
@@ -98,15 +105,15 @@ class TeacherController extends Controller
 					'country'     => $item->country->name,
 					'timeZone'    => $item->timeZone->name,
 					'favorite'    => $item->teacherStudents
-										->contains(function ($value, $key) use ($auth) {
-											return ($value->id == $auth && $value->pivot->favorite);
-										}),
+						->contains(function ($value, $key) use ($auth) {
+							return ($value->id == $auth && $value->pivot->favorite);
+						}),
 					'ranking'	  => round($item->teacherStudents->avg('pivot.ranking')),
-					'timeSchedule'=> $item->timeSchedule->groupBy('week')
-										->map(function ($day) {
-											return $day->pluck('hour');
-										}),
-				    'bookedDates'=> $item->teacherLessons->pluck('date')
+					'timeSchedule' => $item->timeSchedule->groupBy('week')
+						->map(function ($day) {
+							return $day->pluck('hour');
+						}),
+					'bookedDates' => $item->teacherMeetings->pluck('date')
 				];
 			})
 			->first();
@@ -118,28 +125,30 @@ class TeacherController extends Controller
 
 	public function favorite(Request $request)
 	{
-		$id       = $request->input('teacher' );
-		$auth     = $request->input('user'    );
+		$id       = $request->input('teacher');
+		$auth     = $request->input('user');
 		$favorite = $request->input('favorite');
-		
+
 		$teacher = User::whereId($id)
-			->where('rol_code', 'TE')
+			->whereHas('roles', function ($q) {
+				$q->where('key', 'TE');
+			})
 			->with(['teacherStudents'])
-			->first();			
-			
+			->first();
+
 		try {
 			$exist = $teacher->teacherStudents->contains(function ($value, $key) use ($auth) {
 				return ($value->id == $auth);
-			});	
-			if(empty($exist)){				
+			});
+			if (empty($exist)) {
 				$teacher->teacherStudents()->attach($auth, ['favorite' => $favorite]);
 			} else {
-				$teacher->teacherStudents()->updateExistingPivot($auth, ['favorite' => $favorite]);		
+				$teacher->teacherStudents()->updateExistingPivot($auth, ['favorite' => $favorite]);
 			}
 
 			return response()->json(Json::response(
 				null,
-				($favorite == 'true' ) ? "Successfully added to favorites!" : "Successfully removed to favorites!"
+				($favorite == 'true') ? "Successfully added to favorites!" : "Successfully removed to favorites!"
 			), 200);
 		} catch (\Throwable $th) {
 			return response()->json(null, 401);
@@ -148,23 +157,25 @@ class TeacherController extends Controller
 
 	public function ranking(Request $request)
 	{
-		$id       = $request->input('teacher' );
-		$auth     = $request->input('user'    );
+		$id       = $request->input('teacher');
+		$auth     = $request->input('user');
 		$ranking  = $request->input('ranking');
-		
+
 		$teacher = User::whereId($id)
-			->where('rol_code', 'TE')
+			->whereHas('roles', function ($q) {
+				$q->where('key', 'TE');
+			})
 			->with(['teacherStudents'])
-			->first();			
-			
+			->first();
+
 		try {
 			$exist = $teacher->teacherStudents->contains(function ($value, $key) use ($auth) {
 				return ($value->id == $auth);
-			});	
-			if(empty($exist)){				
+			});
+			if (empty($exist)) {
 				$teacher->teacherStudents()->attach($auth, ['ranking' => $ranking]);
 			} else {
-				$teacher->teacherStudents()->updateExistingPivot($auth, ['ranking' => $ranking]);		
+				$teacher->teacherStudents()->updateExistingPivot($auth, ['ranking' => $ranking]);
 			}
 
 			return response()->json(Json::response(
@@ -178,12 +189,12 @@ class TeacherController extends Controller
 
 	public function message(Request $request)
 	{
-		$student = User::whereId($request->input('user' ))->first();
+		$student = User::whereId($request->input('user'))->first();
 		$teacher = User::whereId($request->input('teacher'))->first();
 
 		Notification::route('mail', env('MAIL_USERNAME'))
-      ->notify(new NewMessage($student, $teacher, $request->input('message')));		
+			->notify(new NewMessage($student, $teacher, $request->input('message')));
 
-		return response()->json(Json::response(null,"Message sent successfully"), 200);
+		return response()->json(Json::response(null, "Message sent successfully"), 200);
 	}
 }

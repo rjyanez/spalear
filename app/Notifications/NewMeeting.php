@@ -2,18 +2,18 @@
 
 namespace App\Notifications;
 
-use App\Classes;
+use App\Meeting;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class NewClass extends Notification
+class NewMeeting extends Notification
 {
     use Queueable;
 
 
-    public function __construct(Classes $class)
+    public function __construct(Meeting $class)
     {
         $this->class = $class;
     }

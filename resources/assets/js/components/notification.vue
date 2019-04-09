@@ -19,7 +19,8 @@
         <h6 class="text-overflow m-0">Notifications</h6>
       </div> 
       <a 
-        v-for="item in notifications"
+        v-for="(item, i) in notifications"
+        :key="i"
         class="dropdown-item border-bottom" 
       >
         <div class="row">
@@ -57,7 +58,7 @@ export default {
     }
   },
   mounted(){
-    setInterval(this.searchNotifications(), 120000)
+    this.searchNotifications()
   },
   filters: {
     dateDiff(val){
@@ -91,9 +92,11 @@ export default {
   },
   methods: {
     searchNotifications(){
-      this.$store.dispatch('sendGet', { url:`/api/notification/unread/${this.currentUser.id}`, auth: true}).then(res => {
-        if(res.data.notifications) this.notifications = res.data.notifications
-      })
+      setInterval(() => {
+        this.$store.dispatch('sendGet', { url:`/api/notification/unread/${this.currentUser.id}`, auth: true}).then(res => {
+          if(res.data.notifications) this.notifications = res.data.notifications
+        })
+      }, 120000)
     },
     markAsRead(){
       this.$store.dispatch('sendGet', { url:`/api/notification/mark/${this.currentUser.id}`, auth: true})

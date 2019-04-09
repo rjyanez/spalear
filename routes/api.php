@@ -44,8 +44,9 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::get('{level}'  , 'LessonsController@list');
     });   
     
-    Route::group(['prefix' => 'class'], function() {
-        Route::post('/'  , 'ClassesController@store');
+    Route::group(['prefix' => 'meeting'], function() {
+        Route::post  ('/'            , 'MeetingController@store'  );
+        Route::delete('destroy/{id}' , 'MeetingController@destroy');
     });  
     
     Route::group(['prefix' => 'notification'], function() {

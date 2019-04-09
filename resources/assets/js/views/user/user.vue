@@ -3,10 +3,10 @@
     <header-user :name="name" />
     <form enctype="multipart/form-data" @submit.prevent="submit" autocomplete="off" ref="form">
       <input name="_method" type="hidden" :value="getMethod" />
-      <div class="container-fluid mt--7">
+      <div class="container mt--7">
         <div class="row">
           <div class="col-xl-4 order-xl-2 mb-5 mb-xl-0">
-            <div class="card card-profile shadow">
+            <div class="card card-profile h-100 shadow">
               <div class="row justify-content-center">
                 <div class="col-lg-3 order-lg-2">
                   <div class="card-profile-image">
@@ -17,13 +17,23 @@
                 </div>
               </div>
               <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
-                <div class="d-flex justify-content-between">
-                  <label class="btn btn-sm btn-success float-right" :class="{ disabled: isEdit }">
-                    {{ roles | listArrray(lists.roles) }}
-                  </label>
-                  <label v-show="isEdit" class="btn btn-sm btn-default float-left" for="avatar">
-                    Change
-                  </label>
+                <div class="d-flex justify-content-between w-rem-13 mx-auto">
+                   <div class="avatar-group float-right">
+                      <samp
+                          v-for="rol in rolesListArrray"
+                          :class="`avatar avatar-sm ${rol.toLowerCase()}`"
+                          data-toggle="tooltip" 
+                          :title="rol"
+                          role="button"
+                        >
+                          <i class="rounded-circle">{{rol.substring(0,2).toUpperCase()}}</i>
+                        </samp>
+                   </div>
+                   <div class="avatar-group float-right">
+                    <label v-show="isEdit" data-toggle="tooltip"  title="Change" class="avatar avatar-sm bg-default rounded-circle float-left" role="buttom" for="avatar">
+                      <i class="fas fa-camera-retro"></i>
+                    </label>
+                   </div>
                 </div>
               </div>
               <div class="card-body pt-0 pt-md-4 h-100">
@@ -236,6 +246,9 @@ export default {
         if (this.routes[this.action]["param"]) action = action.replace("-", this.id);
       }
       return action;
+    },
+    rolesListArrray(){
+      return this.roles.map((el)=>(this.lists.roles[el]))
     }
   },
   filters: {
@@ -374,7 +387,7 @@ export default {
           if (this.action === "destroy") {
             this.$router.push({ path: `/user/setting` });
           } else if (this.action === "create") {
-            this.$router.push({ path: `/user/${res.data.user.id}` });
+            this.$router.push({ path: `/user/setting/${res.data.user.id}` });
             this.old = res.data.user;
             this.setInfo(res.data.user);
           } else if (this.action === "update") {

@@ -176,7 +176,6 @@ export default {
       (!find)? this.timeSelectedDates.push(event) : this.timeSelectedDates.splice(index,1)
     },
     setInfoEmpty(){
-      console.log('setInfoEmpty')
       this.type = ''
       this.lesson = {}
       this.timeSelectedDates = []
@@ -194,7 +193,7 @@ export default {
       this.loading = true
 
       this.$store.dispatch("sendPost", { 
-        url: `/api/class/`, 
+        url: `/api/meeting/`, 
         data: addJsonToFormData({
           student,
           teacher,

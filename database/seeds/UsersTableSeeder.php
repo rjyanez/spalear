@@ -29,7 +29,7 @@ class UsersTableSeeder extends Seeder
         ]);
         $user->setMeta(['level' => $levels[rand(0,2)]]);
         $user->save();
-        $user->roles()->attach('AD');
+        $user->roles()->sync(['AD','SC','TE','ST']);
         $this->createUsers();
 
     }
@@ -40,7 +40,7 @@ class UsersTableSeeder extends Seeder
         $levels = ['BAS','MED','ADV'];
         $roles = ['AD','SC','TE','ST'];
 
-        App\User::all()->each(function ($user) use ($roles, $levels) {
+        App\User::where('email','!=','admin@admin.com')->each(function ($user) use ($roles, $levels) {
             $rol = $roles[rand(0,3)];
             $user->roles()->attach($rol);
             if($rol = 'ST'){

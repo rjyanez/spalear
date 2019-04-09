@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateClassesTable extends Migration
+class CreateMeetingsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,15 @@ class CreateClassesTable extends Migration
      */
     public function up()
     {
-        Schema::create('classes', function (Blueprint $table) {
+        Schema::create('meetings', function (Blueprint $table) {
 
             $table->increments('id');
             $table->unsignedInteger('lesson_id')->nullable();
             $table->unsignedInteger('teacher_id');
-            $table->unsignedInteger('student_id');
+            $table->unsignedInteger('student_id');            
             $table->string('type_code', 3)->default('GR');
             $table->string('status_code', 3)->default('PEN');
+            $table->text('url')->nullable();
             $table->dateTime('date');
             $table->softDeletes();
             $table->timestamps();
@@ -40,6 +41,6 @@ class CreateClassesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('classes');
+        Schema::dropIfExists('meetings');
     }
 }

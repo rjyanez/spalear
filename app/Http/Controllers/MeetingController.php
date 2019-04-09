@@ -5,15 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Notifications\Notification;
 use Illuminate\Http\Request;
 use App\Transformers\Json;
-use App\Classes;
+use App\Meeting;
 use App\User;
-use App\Notifications\NewClass;
+use App\Notifications\NewMeeting;
 
-class ClassesController extends Controller
+class MeetingController extends Controller
 {
 	public function store(Request $request)
 	{
-		// try {
+		try {
 			$student = $request->input('student');
 			$teacher = $request->input('teacher');
 			$lesson  = $request->input('lesson');
@@ -29,23 +29,23 @@ class ClassesController extends Controller
 				];
 
 				$save = $this->create($data);
-				$class = Classes::whereId($save->id)
+				$class = Meeting::whereId($save->id)
 						->with(['status', 'type', 'student', 'teacher'])
 						->first();	
 				
-				$class->teacher->notify(new NewClass($class));	
+				$class->teacher->notify(new NewMeeting($class));	
 
 
 			endforeach;
 			return response()->json(Json::response(null, 'Class Schedule Successfully!'), 200);
-		// } catch (\Throwable $th) {
-		// 	return response()->json(null, 401);
-		// }
+		} catch (\Throwable $th) {
+			return response()->json(null, 401);
+		}
 	}
 
 	public function create($data)
 	{
-		$class = new Classes([
+		$class = new Meeting([
 			'student_id' => $data['student'],
 			'teacher_id' => $data['teacher'],
 			'type_code'  => $data['type'],
@@ -53,5 +53,16 @@ class ClassesController extends Controller
 			'date'       => $data['date']
 		]);
 		return ($class->save()) ? $class : false;
+	}
+
+	public function destroy($id)
+	{
+		try {
+			$class = Meeting::find($id);
+			$class->delete();
+			return response()->json(Json::response(null, 'Successfully destroied class!'), 200);
+		} catch (\Throwable $th) {
+			return response()->json(null, 401);
+		}
 	}
 }

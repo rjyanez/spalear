@@ -5705,7 +5705,7 @@ License - nucleoapp.com/license/
 @font-face {
   font-family: 'NucleoIcons';
   src: url(/fonts/nucleo-icons.eot?c1733565b32b585676302d4233c39da8);
-  src: url(/fonts/nucleo-icons.eot?c1733565b32b585676302d4233c39da8) format("embedded-opentype"), url(/fonts/nucleo-icons.woff2?426439788ec5ba772cdf94057f6f4659) format("woff2"), url(/fonts/nucleo-icons.woff?2569aaea6eaaf8cd210db7f2fa016743) format("woff"), url(/fonts/nucleo-icons.ttf?f82ec6ba2dc4181db2af35c499462840) format("truetype"), url(/fonts/nucleo-icons.svg?46abbc4a676739dbd61f8a305cb63fd8) format("svg");
+  src: url(/fonts/nucleo-icons.eot?c1733565b32b585676302d4233c39da8) format("embedded-opentype"), url(/fonts/nucleo-icons.woff2?426439788ec5ba772cdf94057f6f4659) format("woff2"), url(/fonts/nucleo-icons.woff?2569aaea6eaaf8cd210db7f2fa016743) format("woff"), url(/fonts/nucleo-icons.ttf?f82ec6ba2dc4181db2af35c499462840) format("truetype"), url(/fonts/nucleo-icons.svg?0b8a30b10cbe7708d5f3a4b007c1d665) format("svg");
   font-weight: normal;
   font-style: normal;
 }
@@ -12117,19 +12117,29 @@ table.calendar-table tr th.title div button .badge {
   border-radius: 10rem;
 }
 
-.badge-primary {
+.badge-primary,
+.badge-conversational,
+.badge-medium {
   color: #fff;
   background-color: #3490dc;
 }
 
 a.badge-primary:hover,
-a.badge-primary:focus {
+a.badge-conversational:hover,
+a.badge-medium:hover,
+a.badge-primary:focus,
+a.badge-conversational:focus,
+a.badge-medium:focus {
   color: #fff;
   background-color: #2176bd;
 }
 
 a.badge-primary:focus,
-a.badge-primary.focus {
+a.badge-conversational:focus,
+a.badge-medium:focus,
+a.badge-primary.focus,
+a.focus.badge-conversational,
+a.focus.badge-medium {
   outline: 0;
   -webkit-box-shadow: 0 0 0 0.2rem rgba(52, 144, 220, 0.5);
           box-shadow: 0 0 0 0.2rem rgba(52, 144, 220, 0.5);
@@ -12153,55 +12163,70 @@ a.badge-secondary.focus {
           box-shadow: 0 0 0 0.2rem rgba(108, 117, 125, 0.5);
 }
 
-.badge-success {
+.badge-success,
+.badge-gramatical {
   color: #fff;
   background-color: #38c172;
 }
 
 a.badge-success:hover,
-a.badge-success:focus {
+a.badge-gramatical:hover,
+a.badge-success:focus,
+a.badge-gramatical:focus {
   color: #fff;
   background-color: #2d995b;
 }
 
 a.badge-success:focus,
-a.badge-success.focus {
+a.badge-gramatical:focus,
+a.badge-success.focus,
+a.focus.badge-gramatical {
   outline: 0;
   -webkit-box-shadow: 0 0 0 0.2rem rgba(56, 193, 114, 0.5);
           box-shadow: 0 0 0 0.2rem rgba(56, 193, 114, 0.5);
 }
 
-.badge-info {
+.badge-info,
+.badge-basic {
   color: #212529;
   background-color: #6cb2eb;
 }
 
 a.badge-info:hover,
-a.badge-info:focus {
+a.badge-basic:hover,
+a.badge-info:focus,
+a.badge-basic:focus {
   color: #212529;
   background-color: #3f9ae5;
 }
 
 a.badge-info:focus,
-a.badge-info.focus {
+a.badge-basic:focus,
+a.badge-info.focus,
+a.focus.badge-basic {
   outline: 0;
   -webkit-box-shadow: 0 0 0 0.2rem rgba(108, 178, 235, 0.5);
           box-shadow: 0 0 0 0.2rem rgba(108, 178, 235, 0.5);
 }
 
-.badge-warning {
+.badge-warning,
+.badge-advanced {
   color: #212529;
   background-color: #ffed4a;
 }
 
 a.badge-warning:hover,
-a.badge-warning:focus {
+a.badge-advanced:hover,
+a.badge-warning:focus,
+a.badge-advanced:focus {
   color: #212529;
   background-color: #ffe817;
 }
 
 a.badge-warning:focus,
-a.badge-warning.focus {
+a.badge-advanced:focus,
+a.badge-warning.focus,
+a.focus.badge-advanced {
   outline: 0;
   -webkit-box-shadow: 0 0 0 0.2rem rgba(255, 237, 74, 0.5);
           box-shadow: 0 0 0 0.2rem rgba(255, 237, 74, 0.5);
@@ -24229,13 +24254,19 @@ table.calendar-table tr th.title div button .badge {
   border-radius: 10rem;
 }
 
-.badge-primary {
+.badge-primary,
+.badge-conversational,
+.badge-medium {
   color: #2643e9;
   background-color: rgba(203, 210, 246, 0.5);
 }
 
 .badge-primary[href]:hover,
-.badge-primary[href]:focus {
+.badge-conversational[href]:hover,
+.badge-medium[href]:hover,
+.badge-primary[href]:focus,
+.badge-conversational[href]:focus,
+.badge-medium[href]:focus {
   text-decoration: none;
   color: #fff;
   background-color: #324cdd;
@@ -24253,37 +24284,46 @@ table.calendar-table tr th.title div button .badge {
   background-color: #d2e3ee;
 }
 
-.badge-success {
+.badge-success,
+.badge-gramatical {
   color: #1aae6f;
   background-color: rgba(147, 231, 195, 0.5);
 }
 
 .badge-success[href]:hover,
-.badge-success[href]:focus {
+.badge-gramatical[href]:hover,
+.badge-success[href]:focus,
+.badge-gramatical[href]:focus {
   text-decoration: none;
   color: #fff;
   background-color: #24a46d;
 }
 
-.badge-info {
+.badge-info,
+.badge-basic {
   color: #03acca;
   background-color: rgba(136, 230, 247, 0.5);
 }
 
 .badge-info[href]:hover,
-.badge-info[href]:focus {
+.badge-basic[href]:hover,
+.badge-info[href]:focus,
+.badge-basic[href]:focus {
   text-decoration: none;
   color: #fff;
   background-color: #0da5c0;
 }
 
-.badge-warning {
+.badge-warning,
+.badge-advanced {
   color: #ff3709;
   background-color: rgba(254, 201, 189, 0.5);
 }
 
 .badge-warning[href]:hover,
-.badge-warning[href]:focus {
+.badge-advanced[href]:hover,
+.badge-warning[href]:focus,
+.badge-advanced[href]:focus {
   text-decoration: none;
   color: #fff;
   background-color: #fa3a0e;
@@ -39283,6 +39323,14 @@ html:not([dir='rtl']) .noUi-horizontal .noUi-handle {
 
 .modal-bg {
   background: rgba(52, 58, 64, 0.8);
+}
+
+label[role="buttom"] {
+  cursor: pointer;
+}
+
+.card-hover:hover {
+  background: #f8f9fa !important;
 }
 
 .toasted {

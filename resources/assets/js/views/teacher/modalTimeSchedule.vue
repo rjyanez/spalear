@@ -3,7 +3,7 @@
     <template v-slot:header>
       <div class="avatar-group mr-1 d-inline-block">
         <a href="#" class="avatar avatar-sm" data-toggle="tooltip" :data-original-title="options.teacher.name">
-          <img :alt="options.teacher.name" :src="`/uploads/avatar/${options.teacher.avatar}`" class="rounded-circle">
+          <img :alt="options.teacher.name" :src="`/uploads/avatar/${options.teacher.avatar}`" class="rounded-circle avatar-sm">
         </a>
       </div>
       <h2 class="modal-title mt-2">{{options.teacher.name}} Time Schedule </h2>

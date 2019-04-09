@@ -20,7 +20,7 @@ class Lesson extends Model
 
     public function userLessons()
     {
-        return $this->hasMany(Classes::class,'lesson_id','id');
+        return $this->hasMany(Meeting::class,'lesson_id','id');
     }
 
 }
