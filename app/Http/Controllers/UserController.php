@@ -6,6 +6,7 @@ use App\User;
 use App\Country;
 use App\TimeSchedule;
 use App\TimeZone;
+use App\Meeting;
 use App\CodeMeta;
 use App\Transformers\Json;
 use Illuminate\Support\Facades\DB;
@@ -78,6 +79,28 @@ class UserController extends Controller
 		);
 	}
 
+	public function progress($id)
+	{
+		$meetings = Meeting::where('student_id', $id)
+			->where('status_code', 'FIN')
+			->get();
+
+		$progress = [
+			'teachers' 				=> $meetings->pluck('teacher_id')->unique()->count(),
+			'conversational' 	=> $meetings->filter(function ($item, $key) {
+															return $item->lesson->type->key === 'CN';
+														})->count(),
+			'grammatical' 		=> $meetings->filter(function ($item, $key) {
+															return $item->lesson->type->key === 'GR';
+														})->count(),
+		];
+
+		return response()->json(
+			Json::response(compact('progress')),
+			200
+		);
+	}
+
 	public function update(Request $request, $id)
 	{
 		$user = User::find($id);
@@ -111,7 +134,7 @@ class UserController extends Controller
 				'country',
 				'timeSchedule',
 				'studentMeetings' => function ($query) {
-					return $query->orderBy('date','asc');
+					return $query->orderBy('date', 'asc');
 				}
 			])
 			->get()
@@ -129,15 +152,15 @@ class UserController extends Controller
 						'time_zone_id' => $item->time_zone_id,
 						'timeZone' => $item->timeZone->name,
 						'meetings'	=> $item->studentMeetings->take(5)
-							->map(function($value, $key){
+							->map(function ($value, $key) {
 								return [
 									'id'      => $value->id,
 									'url'	=> $value->url,
 									'date'    => $value->date,
 									'teacher' => $value->teacher,
 									'type'    => $value->type->value,
-									'lesson'  => ($value->lesson)? $value->lesson->name : 'N/A',
-									'level'   => ($value->lesson)? $value->lesson->level->value : 'N/A'
+									'lesson'  => ($value->lesson) ? $value->lesson->name : 'N/A',
+									'level'   => ($value->lesson) ? $value->lesson->level->value : 'N/A'
 								];
 							})
 							->toArray(),

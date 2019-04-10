@@ -93,12 +93,13 @@
 
 <script>
 import {datesBackendFormater, addJsonToFormData} from './../../helpers/general'
+import {createMeeting} from './../../sevices/zoom'
 import calendar from './../../components/calendar'
 import lessons  from './../../components/lessons'
 import buttonSubmit from './../../components/buttonSubmit'
 
 export default {
-  name: 'classes',
+  name: 'meeting-save',
   components: {
     calendar,
     buttonSubmit,
@@ -187,36 +188,49 @@ export default {
       lesson = (this.lesson.hasOwnProperty('id'))? this.lesson.id : '',
       type   =  this.type;
       for (const i in this.timeSelectedDates) {
-        data.push(datesBackendFormater(this.timeSelectedDates[i]))       
+        let date = datesBackendFormater(this.timeSelectedDates[i])
+        
+        let meeting = createMeeting('',date)
+        .then((res) => {
+          console.log('RES',res)
+        }).catch((err)=>{
+          console.log('ERR', err)
+        })
+        
+        // data.push({
+        //   createMeeting
+        //   date: datesBackendFormater(this.timeSelectedDates[i])
+        // })       
       }     
+    
+    //   this.loading = true
 
-      this.loading = true
-
-      this.$store.dispatch("sendPost", { 
-        url: `/api/meeting/`, 
-        data: addJsonToFormData({
-          student,
-          teacher,
-          lesson,
-          type,
-          data: JSON.stringify(data)
-        }), 
-        auth: true 
-      }).then(res => {
-        this.loading = false
-        if (res) {  
-          this.$refs.stepTimeTab.click()      
-          this.setInfoEmpty()
-          this.$emit('scheduleClass')
-          this.$toasted.success(res.message)
-        } else {
-          this.$toasted.error("Something went wrong, please try again.")
-        }
-      })
-      .catch(error => {
-        this.loading = false
-        this.$toasted.error("Something went wrong, please try again.")          
-      });     
+    //   this.$store.dispatch("sendPost", { 
+    //     url: `/api/meeting/`, 
+    //     data: addJsonToFormData({
+    //       student,
+    //       teacher,
+    //       lesson,
+    //       type,
+    //       data: JSON.stringify(data)
+    //     }), 
+    //     auth: true 
+    //   }).then(res => {
+    //     this.loading = false
+    //     if (res) {  
+    //       this.$refs.stepTimeTab.click()      
+    //       this.setInfoEmpty()
+    //       this.$emit('scheduleClass')
+    //       this.$toasted.success(res.message)
+    //     } else {
+    //       this.$toasted.error("Something went wrong, please try again.")
+    //     }
+    //   })
+    //   .catch(error => {
+    //     this.loading = false
+    //     this.$toasted.error("Something went wrong, please try again.")          
+    //   });     
+    // }
     }
   },
   watch: {

@@ -22,10 +22,10 @@ class FunctionsRolesTableSeeder extends Seeder
             [ 'function_code' => 'account' , 'rol_code' => 'TE' ],
             [ 'function_code' => 'account' , 'rol_code' => 'ST' ],
 
-            [ 'function_code' => 'user.progress' , 'rol_code' => 'AD' ],
-            [ 'function_code' => 'user.progress' , 'rol_code' => 'SC' ],
-            [ 'function_code' => 'user.progress' , 'rol_code' => 'TE' ],
-            [ 'function_code' => 'user.progress' , 'rol_code' => 'ST' ],
+            // [ 'function_code' => 'user.progress' , 'rol_code' => 'AD' ],
+            // [ 'function_code' => 'user.progress' , 'rol_code' => 'SC' ],
+            // [ 'function_code' => 'user.progress' , 'rol_code' => 'TE' ],
+            // [ 'function_code' => 'user.progress' , 'rol_code' => 'ST' ],
 
             [ 'function_code' => 'user.setting' , 'rol_code' => 'AD' ],
             [ 'function_code' => 'user.setting' , 'rol_code' => 'SC' ],

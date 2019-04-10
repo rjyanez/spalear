@@ -5,7 +5,6 @@ import Dashboard from './views/dashboard';
 import Meeting from './views/meeting/meeting'
 import UserList from './views/user/list';
 import User from './views/user/user';
-import UserProgress from './views/user/progress.vue'
 import TeacherList from './views/teacher/list'
 import TeacherProfile from './views/teacher/profile'
 
@@ -27,11 +26,23 @@ export const routes = [
     },
     {
         path: '/dashboard',
-        name: 'dashboard',
-        component: Dashboard,
         meta: {
             requiresAuth: true
-        }
+        },
+        component:  {
+            template: '<router-view/>',
+        },
+        children: [
+            {
+                path: '/',
+                name: 'dashboard',
+                component: Dashboard
+            },
+            {
+                path: ':id',
+                component: Dashboard
+            }
+        ]
     },
     {
         path: '/user',
@@ -69,24 +80,7 @@ export const routes = [
                         component: User
                     }
                 ]
-            },
-            {
-                path: 'progress',
-                component:  {
-                    template: '<router-view/>',
-                },
-                children: [
-                    {
-                        path: '/',
-                        name: 'user.progress',
-                        component: UserProgress
-                    },
-                    {
-                        path: ':id',
-                        component: UserProgress
-                    }
-                ]
-            },
+            }
         ]
     },
     {

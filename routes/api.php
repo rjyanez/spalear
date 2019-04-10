@@ -20,8 +20,10 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::get   ('list'        , 'UserController@list');
         Route::get   ('create'      , 'Auth\AuthController@create');
         Route::get   ('{id}'        , 'UserController@show');
+        Route::get   ('{id}/progress', 'UserController@progress');
         Route::put   ('{id}/update' , 'UserController@update');
         Route::delete('{id}/destroy', 'UserController@destroy'); 
+        
     });
 
     

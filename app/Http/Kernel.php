@@ -19,6 +19,7 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         \App\Http\Middleware\TrustProxies::class,
+        \Barryvdh\Cors\HandleCors::class,
     ];
 
     /**
@@ -60,5 +61,6 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'jwt.auth' => Tymon\JWTAuth\Http\Middleware\Authenticate::class,
         'jwt.refresh' => Tymon\JWTAuth\Http\Middleware\RefreshToken::class,
+        'cors' => \App\Http\Middleware\Cors::class,
     ];
 }

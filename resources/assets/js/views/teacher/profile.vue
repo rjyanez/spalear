@@ -47,7 +47,7 @@
               </i>
             </div>
           </div>
-          <classes 
+          <meeting-save 
             :teacher="teacher" 
             class="mx-9 my-5"
             @scheduleClass="searchTeacher"
@@ -59,7 +59,7 @@
 </template>
 <script>
 import headerTeacher from './header'
-import classes from './classes'
+import meetingSave from './../meeting/save'
 import buttonMessage from './../../components/buttonMessage'
 import buttonFavorite from './../../components/buttonFavorite'
 import stars from './../../components/stars'
@@ -67,7 +67,7 @@ import {formatDateToDataBase} from './../../helpers/general'
 
 export default {
   components: {
-    classes,
+    meetingSave,
     headerTeacher,
     buttonFavorite,
     buttonMessage,

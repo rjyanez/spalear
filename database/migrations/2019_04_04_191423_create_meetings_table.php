@@ -21,7 +21,8 @@ class CreateMeetingsTable extends Migration
             $table->unsignedInteger('student_id');            
             $table->string('type_code', 3)->default('GR');
             $table->string('status_code', 3)->default('PEN');
-            $table->text('url')->nullable();
+            $table->text('host_link')->nullable();
+            $table->text('join_link')->nullable();
             $table->dateTime('date');
             $table->softDeletes();
             $table->timestamps();

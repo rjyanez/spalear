@@ -1,16 +1,54 @@
-export default {
-	ZOOM_API_USER              : 'spaler.suport@gmail.com',
-	ZOOM_API_USER_PASSWORD     : 'spaler.suport123',
-	ZOOM_API_URL               : 'https://api.zoom.us/v2/users/{userId}/meetings',
-	ZOOM_API_REPORT_URL        : 'https://api.zoom.us/v2/report/meetings/{meetingId}/participants',
-	ZOOM_API_ADD_REGISTRANT_URL: 'https://api.zoom.us/v2/meetings/{meetingId}/registrants',
-	ZOOM_API_CREATE_USER_URL   : 'https://api.zoom.us/v2/users',
-	ZOOM_API_METRICS_URL       : 'https://api.zoom.us/v2/metrics/meetings/{meetingId}',
-	ZOOM_API_WEBHOOK_URL       : 'https://api.zoom.us/v2/webhooks',
-	ZOOM_API_KEY               : 'ChJhR3eSrKk45ejuz2axw',
-	ZOOM_API_SECRET            : 'ChJhR3eSrKk45ejuz2axw',
-	ZOOM_IAM_CHAT_HISTORY_TOKEN: null,
-	ZOOM_CLASS_DURATION        : 30,
-	ZOOM_INTERVIEW_DURATION    : 10,
-	LESSON_MINIMUM_DURATION    : 15
+const axios = require('axios');
+
+import env from './../env/zoom'
+import {
+  generate
+} from './jwt'
+
+
+
+export function createMeeting(topic, start_time, timezone = 'UTC', country = null, teacher = null) {
+
+  let splitTime = start_time.split(' '),
+        headers   = {},
+        meeting   = {},
+        token     = generate(env.ZOOM_API_KEY, env.ZOOM_API_SECRET),
+        duration  = env.ZOOM_CLASS_DURATION,
+        zoomUser  = (teacher) ? teacher : env.ZOOM_API_USER,
+        endpoint  = env.ZOOM_API_URL.replace('{userId}', zoomUser);
+
+  start_time = `${splitTime[0]}T${splitTime[1]}Z`
+  meeting = {
+    topic,
+    type: 2,
+    start_time,
+    duration,
+    timezone,
+    settings: {
+      host_video: false,
+      participant_video: true,
+      auto_recording: 'cloud',
+      approval_type: 0,
+      registration_type: 1,
+      join_before_host: false
+    }
+  }
+  headers = {
+    'Authorization': 'Bearer '+ token
+  }
+  console.log(token)
+  return new Promise((resolve, reject) => {
+    axios.get('https://api.zoom.us/v2/users', {
+        crossDomain: true,
+        headers
+      })
+      .then(res => {
+        console.log('RES', res)
+        resolve(res.data)
+      })
+      .catch(error => {
+        console.log('err', error)
+        reject(error)
+      })
+  })
 }
