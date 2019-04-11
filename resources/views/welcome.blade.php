@@ -14,8 +14,8 @@
         <link type="text/css" href="{{ asset('css') }}/app.css" rel="stylesheet">        
     </head>
     <body class="{{ $class ?? '' }}" >
-        <div id="app" class="min-vh-100" :class="{'bg-primary' : !isLoggedIn}">
-            <App />    
+        <div id="app" class="min-vh-100" >
+            <App :class="{'bg-primary' : bgDark, 'min-vh-100': true }" />    
         </div>
         <script src="{{ asset('js') }}/app.js"></script>
     </body>

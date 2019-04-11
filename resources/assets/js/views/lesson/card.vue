@@ -1,6 +1,5 @@
 <template>
-  <div class="accordion" :id="name">
-  <div v-for="(item, index) in list" :key="index" :class="{'card':true, 'border border-success': index === select }">
+  <div :class="{'card':true, 'border border-success': select }">
     <div class="card-header p-1 " :id="`${name}-heading-${index}`">
       <div class="row">
         <div class="col text-left">
@@ -8,27 +7,31 @@
             <button 
               :class="{
                 'btn btn-link ': true, 
-                'text-dark':index !== select, 
-                'text-success': index === select 
+                'text-dark':!select, 
+                'text-success': select 
               }"
               type="button" 
               data-toggle="collapse" 
               :data-target="`#${name}-collapse-${index}`" 
               aria-expanded="false" 
               :aria-controls="`${name}-collapse-${index}`"
+              @click="expand = !expand"
             >
               Lesson {{ item.name }}
+              <i v-if="expand" class="fas fa-angle-up"></i>
+              <i v-else class="fas fa-angle-down"></i>
             </button>
           </h5>            
         </div>
-        <div class="col-auto" v-if="isSelect">
+        <div class="col-auto" >
           <button 
+            v-if="isSelect"
             type="button"
-            @click="setSelect(item,index)"
+            @click="setSelect"
             :class="{
               'icon icon-shape rounded-circle btn': true, 
-              'btn-outline-secondary':index !== select, 
-              'btn-success': index === select 
+              'btn-outline-secondary':!select, 
+              'btn-success':select 
             }"
           >
             <i class="far fa-check-circle"></i>
@@ -36,38 +39,40 @@
         </div>
       </div>
     </div>
-
     <div :id="`${name}-collapse-${index}`" class="collapse" aria-labelledby="headingOne" :data-parent="`#${name}`">
       <div class="card-body text-left">
         {{ item.description }}
       </div>
     </div>
   </div>
-</div>
 </template>
 <script>
 export default {
-  name: 'lessons',
+  name: 'lesson-card',
   props: {
-    name: {
-      type: String,
-      default: 'lessons'
+    name: '',
+    isSelect: {
+      type: Boolean,
+      default: false,
     },
-    list : {
-      type: Array,
-      default: () => []
+    select: {
+      type: Boolean,
+      default: false,
     },
-    isSelect: false,
-  }, 
-  data(){
-    return {
-      select: null,
-    }
+    index: 0,
+    item: {}
   },
   methods: {
-    setSelect(item,index){
-      this.select = index
-      this.$emit('selectLesson',item)
+    setSelect(){
+      this.$emit('setSelect',{ 'item': this.item,'index':this.index})
+    }
+  },
+  data(){
+    return {
+      expand: {
+        type: Boolean,
+        default: false,
+      }
     }
   }
 }

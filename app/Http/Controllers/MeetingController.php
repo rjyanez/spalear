@@ -31,9 +31,9 @@ class MeetingController extends Controller
 				$save = $this->create($data);
 				$class = Meeting::whereId($save->id)
 						->with(['status', 'type', 'student', 'teacher'])
-						->first();	
+						->first();
 				
-				$class->teacher->notify(new NewMeeting($class));	
+				if($class->teacher->notify) $class->teacher->notify(new NewMeeting($class));	
 
 
 			endforeach;

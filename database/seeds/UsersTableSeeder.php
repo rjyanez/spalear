@@ -25,7 +25,6 @@ class UsersTableSeeder extends Seeder
             'password'=>    Hash::make('123456'), //123456
             'country_code'=>'VE',
             'time_zone_id'=>418,
-            // 'rol_code'=>'AD', //Administrador
         ]);
         $user->setMeta(['level' => $levels[rand(0,2)]]);
         $user->save();

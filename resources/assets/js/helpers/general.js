@@ -25,14 +25,15 @@ export function initialize(store, router) {
   router.beforeEach((to, from, next) => {
     const currentUser = store.state.currentUser;
     const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
-    // const deniedRoles = to.matched.some(record => (record.meta.deniedRoles)? record.meta.deniedRoles.includes(currentUser.rol_code) : false)
+    const allowedRoles = (to.meta.allowedRoles && currentUser)? routeAllowedRoles(to, currentUser.roles.map(el=> el.key)) : true
+
     if(requiresAuth && !currentUser) {
       next('/');
     } else if(to.path == '/login' && currentUser) {
       next('/dashboard');
-    // } else if(deniedRoles){
-    //     next('/');
-    } else {    
+    } else if(!allowedRoles){
+      next('/error/403');
+    } else {
       next();
     }
   });
@@ -49,6 +50,11 @@ export function initialize(store, router) {
   if (store.getters.currentUser) {
     setAuthorization(store.getters.currentUser.token);
   }
+}
+
+function routeAllowedRoles(to, roles){
+  const interception = to.meta.allowedRoles.filter(n => roles.includes(n))
+  return (interception.length)? true : false
 }
 
 export function setAuthorization(token) {

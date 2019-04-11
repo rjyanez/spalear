@@ -44,6 +44,7 @@ class UserController extends Controller
 			'password'     => Hash::make('123456'),
 			'country_code' => $request->input('country_code'),
 			'time_zone_id' => $request->input('time_zone_id'),
+			'notify'			 => $request->input('notify')($request->input('notify'))? $request->input('notify') : 0,
 			'description'  => $request->input('description'),
 		]);
 		if ($user->save()) {
@@ -109,6 +110,8 @@ class UserController extends Controller
 		$user->country_code = $request->input('country_code');
 		$user->time_zone_id = $request->input('time_zone_id');
 		$user->description = $request->input('description');
+		$user->notify			 = ($request->input('notify'))? $request->input('notify') : 0;
+
 		if ($user->save()) {
 			$user->roles()->sync(explode(',', $request->input('rolcodes')));
 			if ($request->hasFile('avatar')) {
@@ -146,6 +149,7 @@ class UserController extends Controller
 						'email' => $item->email,
 						'avatar' => $item->avatar,
 						'description' => $item->description,
+						'notify'	=>$item->notify,
 						'roles' => $item->roles->pluck('key'),
 						'country_code' => $item->country_code,
 						'country' => $item->country->name,

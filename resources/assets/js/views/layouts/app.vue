@@ -3,7 +3,7 @@
     <!-- 		<transition name="slide-fade">
 			<sidebar v-if="isLoggedIn && sidebar"/>
     </transition>-->
-    <div class="main-content">
+    <div class="main-content min-vh-100">
       <navbar>
         <!-- 				<template v-slot:toggle v-if="isLoggedIn">
 					<closeMenu @toggle="sidebar = !sidebar" :open="sidebar" />

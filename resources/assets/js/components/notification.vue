@@ -58,7 +58,9 @@ export default {
     }
   },
   mounted(){
-    this.searchNotifications()
+    if(this.currentUser.notify== 'true'){
+      this.searchNotifications()
+    }
   },
   filters: {
     dateDiff(val){

@@ -84,7 +84,7 @@
     </div>
     <div class="tab-pane fade" id="step-lesson" role="tabpanel" aria-labelledby="step-lesson-tab">
       <h3 class="text-muted my-3">Select your lesson</h3>
-      <lessons :list="list.lessons" isSelect="true" @selectLesson="selectLesson($event)"/>
+      <lesson-list :list="list.lessons" isSelect @selectLesson="selectLesson($event)"/>
     </div>
   </div>
   <button-submit :loading="loading" :submit="valid" @submit="submit"/>
@@ -95,7 +95,7 @@
 import {datesBackendFormater, addJsonToFormData} from './../../helpers/general'
 import {createMeeting} from './../../sevices/zoom'
 import calendar from './../../components/calendar'
-import lessons  from './../../components/lessons'
+import lessonList  from './../lesson/list'
 import buttonSubmit from './../../components/buttonSubmit'
 
 export default {
@@ -103,7 +103,7 @@ export default {
   components: {
     calendar,
     buttonSubmit,
-    lessons
+    lessonList
   },
   props: [
     'teacher'

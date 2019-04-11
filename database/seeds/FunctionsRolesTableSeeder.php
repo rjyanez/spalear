@@ -17,41 +17,11 @@ class FunctionsRolesTableSeeder extends Seeder
         // DB::table('functions_roles')->truncate();
 
         DB::table('functions_roles')->insert([
-            [ 'function_code' => 'account' , 'rol_code' => 'AD' ],
-            [ 'function_code' => 'account' , 'rol_code' => 'SC' ],
-            [ 'function_code' => 'account' , 'rol_code' => 'TE' ],
-            [ 'function_code' => 'account' , 'rol_code' => 'ST' ],
-
-            // [ 'function_code' => 'user.progress' , 'rol_code' => 'AD' ],
-            // [ 'function_code' => 'user.progress' , 'rol_code' => 'SC' ],
-            // [ 'function_code' => 'user.progress' , 'rol_code' => 'TE' ],
-            // [ 'function_code' => 'user.progress' , 'rol_code' => 'ST' ],
-
-            [ 'function_code' => 'user.setting' , 'rol_code' => 'AD' ],
-            [ 'function_code' => 'user.setting' , 'rol_code' => 'SC' ],
-            [ 'function_code' => 'user.setting' , 'rol_code' => 'TE' ],
-            [ 'function_code' => 'user.setting' , 'rol_code' => 'ST' ],            
-
             [ 'function_code' => 'user', 'rol_code' => 'AD' ],
             [ 'function_code' => 'user', 'rol_code' => 'SC' ],
-
-            [ 'function_code' => 'teachers', 'rol_code' => 'AD' ],
-            [ 'function_code' => 'teachers', 'rol_code' => 'SC' ],
-            [ 'function_code' => 'teachers', 'rol_code' => 'TE' ],
             [ 'function_code' => 'teachers', 'rol_code' => 'ST' ],
-
-            [ 'function_code' => 'teachers.all', 'rol_code' => 'AD' ],
-            [ 'function_code' => 'teachers.all', 'rol_code' => 'SC' ],
-            [ 'function_code' => 'teachers.all', 'rol_code' => 'TE' ],
-            [ 'function_code' => 'teachers.all', 'rol_code' => 'ST' ],
-
-            [ 'function_code' => 'teachers.favorite', 'rol_code' => 'AD' ],
-            [ 'function_code' => 'teachers.favorite', 'rol_code' => 'SC' ],
-            [ 'function_code' => 'teachers.favorite', 'rol_code' => 'TE' ],
             [ 'function_code' => 'teachers.favorite', 'rol_code' => 'ST' ],
-
-            // [ 'function_code' => 'lessons' , 'rol_code' => 'AD' ],
-            // [ 'function_code' => 'basic'   , 'rol_code' => 'AD' ],
+            [ 'function_code' => 'lessons' , 'rol_code' => 'ST' ]
         ]);
     }
 }

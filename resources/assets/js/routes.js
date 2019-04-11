@@ -1,12 +1,14 @@
-import Home from './views/home.vue';
-import Login from './views/auth/login.vue';
-import Signup from './views/auth/signup.vue';
-import Dashboard from './views/dashboard';
-import Meeting from './views/meeting/meeting'
-import UserList from './views/user/list';
-import User from './views/user/user';
-import TeacherList from './views/teacher/list'
+import Errors         from './views/error.vue'
+import Home           from './views/home.vue'
+import Login          from './views/auth/login.vue'
+import Signup         from './views/auth/signup.vue'
+import Dashboard      from './views/dashboard'
+import Meeting        from './views/meeting/meeting'
+import UserList       from './views/user/list'
+import User           from './views/user/user'
+import TeacherList    from './views/teacher/list'
 import TeacherProfile from './views/teacher/profile'
+import Lessons        from './views/lesson/lesson'
 
 export const routes = [
     {
@@ -40,7 +42,10 @@ export const routes = [
             },
             {
                 path: ':id',
-                component: Dashboard
+                component: Dashboard,
+                meta: {
+                    allowedRoles: ['AD','SC']
+                },
             }
         ]
     },
@@ -51,18 +56,23 @@ export const routes = [
         },
         meta: {
             requiresAuth: true,
-            // deniedRoles: ['TE','ST']
         },
         children: [
             {
                 path: '/',
                 name: 'user.list',
-                component: UserList
+                component: UserList,
+                meta: {
+                    allowedRoles: ['AD','SC']
+                },
             },
             {
                 path: 'create',
                 name: 'user.new',
-                component: User
+                component: User,
+                meta: {
+                    allowedRoles: ['AD','SC']
+                },
             },
             {
                 path: 'setting',
@@ -77,7 +87,10 @@ export const routes = [
                     },
                     {
                         path: ':id',
-                        component: User
+                        component: User,
+                        meta: {
+                            allowedRoles: ['AD','SC']
+                        },
                     }
                 ]
             }
@@ -100,6 +113,7 @@ export const routes = [
         },
         meta: {
             requiresAuth: true,
+            allowedRoles: ['ST']
         },
         children: [
             {
@@ -135,12 +149,29 @@ export const routes = [
     },
     {
         path: '/lessons',
-        name: 'lessons',
+        redirect: '/lessons/basic', 
         component: {
             template: '<router-view/>',
         },
         meta: {
-            requiresAuth: true
-        }
-    }
+            requiresAuth: true,
+            allowedRoles: ['ST']
+        },
+        children: [
+            {
+                path: ':code',
+                name: 'lessons',
+                component: Lessons 
+            }
+        ]
+    },
+    {
+        path: '/error/:code',
+        name: 'error',
+        component: Errors
+    },
+    {   
+        path: '*', 
+        redirect: '/error/404' 
+    }, 
 ];

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <user-dashboard v-if="isRole('ST')"/>
+    <user-dashboard/>
   </div>
 </template>
 <script>
@@ -12,11 +12,6 @@ export default {
   components: {
     headerAuth,
     userDashboard
-  },
-  methods: {
-    isRole(role) {
-      return this.$store.getters.isRole(role);
-    },
   }
 }
 </script>

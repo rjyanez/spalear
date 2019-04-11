@@ -1,4 +1,3 @@
-
 require('./bootstrap');
 import Vue from 'vue';
 import VueRouter from 'vue-router';
@@ -7,8 +6,12 @@ import VeeValidate from 'vee-validate';
 import Toasted from 'vue-toasted';
 
 
-import {routes} from './routes';
-import {initialize} from './helpers/general';
+import {
+    routes
+} from './routes';
+import {
+    initialize
+} from './helpers/general';
 import StoreData from './store';
 import App from './views/layouts/app.vue';
 
@@ -33,15 +36,21 @@ const router = new VueRouter({
 initialize(store, router);
 
 const app = new Vue({
-    el: '#app',  
+    el: '#app',
     router,
     store,
     computed: {
+        currentRouteName() {
+            return this.$route.name;
+        },
         isLoggedIn() {
             return this.$store.getters.isLoggedIn;
+        },
+        bgDark() {
+            return !this.isLoggedIn || this.currentRouteName === 'error' || this.currentRouteName === 'home'
         }
     },
     components: {
-       App
+        App
     }
 });
