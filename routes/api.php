@@ -9,6 +9,7 @@ Route::group(['prefix' => 'auth'], function () {
     Route::get ('signup'        , 'Auth\AuthController@create');
     Route::post('password/email', 'Auth\ForgotPasswordController@getResetToken');
     Route::post('password/reset', 'Auth\ResetPasswordController@reset');
+    Route::get ('unique/{email}', 'UserController@unique');                
     Route::get ('logout'        , 'Auth\AuthController@logout')->middleware('auth:api');
     Route::get ('user'          , 'Auth\AuthController@user')->middleware('auth:api');
 });
@@ -23,7 +24,7 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::get   ('{id}/progress', 'UserController@progress');
         Route::put   ('{id}/update' , 'UserController@update');
         Route::delete('{id}/destroy', 'UserController@destroy'); 
-        
+        Route::get   ('unique/{email}' , 'UserController@unique');                
     });
 
     

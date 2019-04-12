@@ -24,7 +24,7 @@
               <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
                 <div class="d-flex justify-content-between w-rem-13 mx-auto">
                   <div class="avatar-group float-right">
-                    <samp
+                    <!-- <samp
                       v-for="rol in rolesListArrray"
                       :class="`avatar avatar-sm ${rol.toLowerCase()}`"
                       data-toggle="tooltip"
@@ -33,7 +33,7 @@
                       role="button"
                     >
                       <i class="rounded-circle">{{rol.substring(0,2).toUpperCase()}}</i>
-                    </samp>
+                    </samp> -->
                   </div>
                   <div class="avatar-group float-right">
                     <label
@@ -120,7 +120,7 @@
                       type="email"
                       name="email"
                       id="email"
-                      v-validate="'required|email'"
+                      v-validate="'required|email|unique'"
                       v-model="email"
                       placeholder="E-Mail Address"
                       :class="{ 'form-control ': true, 'is-invalid': errors.has('email') }"
@@ -386,6 +386,21 @@ export default {
       },
       action: "show"
     };
+  },
+  created(){
+    this.$validator.extend('unique', {
+        getMessage: field => `The ${field} has already been taken.`,
+        validate: value => (
+          new Promise(resolve => {
+            this.$store.dispatch("sendGet", { url: `/api/user/unique/${value}`, auth: true })
+            .then(res => {
+              resolve({
+                valid: (this.action === 'create')? res.data: true
+              })
+            })
+          })
+        )
+    })
   },
   mounted() {
     if (this.$router.currentRoute.name === "user.new") {

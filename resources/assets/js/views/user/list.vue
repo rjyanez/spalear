@@ -1,7 +1,7 @@
 <template>
   <div>
     <header-user name="Users List"/>
-    <div class="container-fluid mt--7">
+    <div class="container mt--7">
       <div class="card shadow">
         <div class="card-header border-0">
           <div class="row align-items-center">

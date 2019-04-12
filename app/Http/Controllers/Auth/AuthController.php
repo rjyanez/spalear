@@ -1,7 +1,6 @@
 <?php
 namespace App\Http\Controllers\Auth;
 
-use App\Rol;
 use App\Country;
 use App\TimeZone;
 use App\User;
@@ -88,7 +87,6 @@ class AuthController extends Controller
 
     public function create()
     {  
-      $roles = Rol::where('code', '!=', 'ST')->pluck('name', 'code');
       $countries = Country::with(['timeZones'])->pluck('name', 'code');
       $timeZones = TimeZone::select('id', DB::raw("name ||' '||gmt_offset as name"), 'country_code')
             ->get()
@@ -96,7 +94,7 @@ class AuthController extends Controller
             ->map(function ($item, $key) {
               return $item->pluck('name', 'id');
             });
-      return response()->json(Json::response(compact('countries', 'timeZones', 'roles')), 200);
+      return response()->json(Json::response(compact('countries', 'timeZones')), 200);
     }
 
     public function signup(Request $request)
@@ -113,6 +111,7 @@ class AuthController extends Controller
             'country_code' => $request->country_code,
             'time_zone_id' => $request->time_zone_id,
         ]);
+        $user->setMeta('level','BAS');
         $user->save();
         $user->roles()->attach('ST');
         return response()->json([

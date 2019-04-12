@@ -1,7 +1,7 @@
 <template>
   <div>
     <header-teacher name=""/>
-    <div class="container-fluid mt--7">
+    <div class="container mt--7">
       <div class="card card-profile shadow">
         <div class="px-4">
           <div class="row justify-content-center">

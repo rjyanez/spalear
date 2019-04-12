@@ -23,7 +23,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fas fa-envelope"></i></span>
                                     </div>
-                                    <input v-validate="'required|email'" v-model="email" class="form-control" :class="{'is-invalid' : errors.has('email')}" placeholder="Email" type="email" name="email" value="" required>
+                                    <input v-validate="'required|email|unique'" v-model="email" class="form-control" :class="{'is-invalid' : errors.has('email')}" placeholder="Email" type="email" name="email" value="" required>
                                 </div>
                                 <span v-show="errors.has('email')"  class="invalid-feedback d-block" role="alert">
                                     <strong>{{ errors.first('email') }}</strong>
@@ -113,6 +113,21 @@ export default {
         time_zone_id: 418,
         lists: { countries: [], timeZones: []},
       }
+    },
+    created(){
+        this.$validator.extend('unique', {
+            getMessage: field => `The ${field} has already been taken.`,
+            validate: value => (
+            new Promise(resolve => {
+                this.$store.dispatch("sendGet", { url: `/api/auth/unique/${value}`, auth: false })
+                .then(res => {
+                    resolve({
+                        valid: res.data
+                    })
+                })
+            })
+            )
+        })
     },
     mounted(){
       this.$store.dispatch('sendGet', { url:`/api/auth/signup`}).then(res => {

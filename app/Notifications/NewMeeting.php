@@ -30,7 +30,7 @@ class NewMeeting extends Notification
         $subject = sprintf('%s: You\'ve got a new class from %s!', config('app.name'), $this->class->student->name);
         $greeting = sprintf('Hello %s!', $notifiable->name);
         $message = sprintf(
-            'The student strong>%s</strong> has scheduled a class <strong>%s</strong>, %s for the <strong>%s</strong>',
+            'The student <strong>%s</strong> has scheduled a class <strong>%s</strong>, %s for the <strong>%s</strong>',
              $this->class->student->name,
              $this->class->type->value,
              (!empty($this->class->lesson)) ? "selecting Lesson <strong>{$this->class->lesson->name}</strong> of the <strong>{$this->class->lesson->level->value}</strong> level," : "" ,

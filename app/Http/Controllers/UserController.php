@@ -8,6 +8,7 @@ use App\TimeSchedule;
 use App\TimeZone;
 use App\Meeting;
 use App\CodeMeta;
+use App\Notifications\NewUser;
 use App\Transformers\Json;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -38,23 +39,29 @@ class UserController extends Controller
 
 	public function store(Request $request)
 	{
+		$password = str_random(8);
+
 		$user = new User([
 			'name'         => $request->input('name'),
 			'email'        => $request->input('email'),
-			'password'     => Hash::make('123456'),
+			'password'     => Hash::make($password),
 			'country_code' => $request->input('country_code'),
 			'time_zone_id' => $request->input('time_zone_id'),
-			'notify'			 => $request->input('notify')($request->input('notify'))? $request->input('notify') : 0,
+			'notify'			 => ($request->input('notify')) ? $request->input('notify') : 0,
 			'description'  => $request->input('description'),
 		]);
-		if ($user->save()) {
-			$user->roles()->sync(explode(',', $request->input('rolcodes')));
-			if ($request->hasFile('avatar')) {
-				$user->avatar = $this->saveAvatar($request->file('avatar'), $user->id);
-				$user->save();
-			}
-			if ($user->rol_code == 'TE') $this->saveTimeSchedule(json_decode($request->input('time_schedule')),  $user->id);
+		if ($user->save()) 
+		{
+			$roles = explode(',', $request->input('rolcodes'));
+			if ($request->hasFile('avatar')) $user->avatar = $this->saveAvatar($request->file('avatar'), $user->id);
+			if (in_array('TE', $roles)) $this->saveTimeSchedule(json_decode($request->input('time_schedule')),  $user->id);
+			if (in_array('ST', $roles) && $user->getMeta('level')) $user->setMeta('level','BAS');
+			$user->roles()->sync($roles);
+			
+			$user->save();
+			$user->notify(new NewUser($password));
 			$user = $this->getUserById($user->id);
+
 			return response()->json(Json::response(compact('user'), 'Successfully created user!'), 200);
 		} else {
 			return response()->json(null, 401);
@@ -89,11 +96,11 @@ class UserController extends Controller
 		$progress = [
 			'teachers' 				=> $meetings->pluck('teacher_id')->unique()->count(),
 			'conversational' 	=> $meetings->filter(function ($item, $key) {
-															return $item->lesson->type->key === 'CN';
-														})->count(),
+				return $item->lesson->type->key === 'CN';
+			})->count(),
 			'grammatical' 		=> $meetings->filter(function ($item, $key) {
-															return $item->lesson->type->key === 'GR';
-														})->count(),
+				return $item->lesson->type->key === 'GR';
+			})->count(),
 		];
 
 		return response()->json(
@@ -110,16 +117,17 @@ class UserController extends Controller
 		$user->country_code = $request->input('country_code');
 		$user->time_zone_id = $request->input('time_zone_id');
 		$user->description = $request->input('description');
-		$user->notify			 = ($request->input('notify'))? $request->input('notify') : 0;
+		$user->notify			 = ($request->input('notify')) ? $request->input('notify') : 0;
 
 		if ($user->save()) {
-			$user->roles()->sync(explode(',', $request->input('rolcodes')));
-			if ($request->hasFile('avatar')) {
-				$user->avatar = $this->saveAvatar($request->file('avatar'), $user->id);;
-				$user->save();
-			}
-			if ($user->rol_code == 'TE') $this->saveTimeSchedule(json_decode($request->input('time_schedule')),  $user->id);
+			$roles = explode(',', $request->input('rolcodes'));
 
+			if ($request->hasFile('avatar')) $user->avatar = $this->saveAvatar($request->file('avatar'), $user->id);
+			if (in_array('TE', $roles)) $this->saveTimeSchedule(json_decode($request->input('time_schedule')),  $user->id);
+			if (in_array('ST', $roles) && $user->getMeta('level')) $user->setMeta('level','BAS');
+			$user->roles()->sync($roles);
+			
+			$user->save();
 			$user = $this->getUserById($id);
 
 			return response()->json(Json::response(compact('user'), 'Successfully updated user!'), 200);
@@ -149,7 +157,7 @@ class UserController extends Controller
 						'email' => $item->email,
 						'avatar' => $item->avatar,
 						'description' => $item->description,
-						'notify'	=>$item->notify,
+						'notify'	=> $item->notify,
 						'roles' => $item->roles->pluck('key'),
 						'country_code' => $item->country_code,
 						'country' => $item->country->name,
@@ -212,5 +220,11 @@ class UserController extends Controller
 			endforeach;
 			TimeSchedule::insert($data);
 		endif;
+	}
+
+	public function unique($email)
+	{
+		$user = User::where('email', $email)->first();
+		return response()->json(Json::response(empty($user), null), 200);
 	}
 }
