@@ -132,7 +132,7 @@ class UserController extends Controller
 
 			return response()->json(Json::response(compact('user'), 'Successfully updated user!'), 200);
 		} else {
-			return response()->json($request->input('roles'), 401);
+			return response()->json(null, 401);
 		}
 	}
 

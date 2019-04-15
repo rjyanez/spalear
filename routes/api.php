@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'auth'], function () {
     Route::post('login'         , 'Auth\AuthController@login');
@@ -14,19 +14,28 @@ Route::group(['prefix' => 'auth'], function () {
     Route::get ('user'          , 'Auth\AuthController@user')->middleware('auth:api');
 });
 
+Route::group(['prefix' => 'password'], function() {
+    Route::put('reset'   , 'PasswordController@reset');
+    Route::post('forgot' , 'PasswordController@forgot');
+    Route::post('current', 'PasswordController@current');    
+    Route::post('validate', 'PasswordController@validateReminderToken');
+    
+});
+
 Route::group(['middleware' => 'auth:api'], function () {
     
     Route::group(['prefix' => 'user'], function() {
-        Route::post  ('/'           , 'UserController@store');
-        Route::get   ('list'        , 'UserController@list');
-        Route::get   ('create'      , 'Auth\AuthController@create');
-        Route::get   ('{id}'        , 'UserController@show');
-        Route::get   ('{id}/progress', 'UserController@progress');
-        Route::put   ('{id}/update' , 'UserController@update');
-        Route::delete('{id}/destroy', 'UserController@destroy'); 
-        Route::get   ('unique/{email}' , 'UserController@unique');                
+        Route::post  ('/'              , 'UserController@store'      );
+        Route::get   ('list'           , 'UserController@list'       );
+        Route::get   ('create'         , 'Auth\AuthController@create');
+        Route::get   ('{id}'           , 'UserController@show'       );
+        Route::get   ('{id}/progress'  , 'UserController@progress'   );
+        Route::put   ('{id}/update'    , 'UserController@update'     );
+        Route::delete('{id}/destroy'   , 'UserController@destroy'    );
+        Route::get   ('unique/{email}' , 'UserController@unique'     );                
     });
 
+      
     
     Route::group(['prefix' => 'teacher'], function() {
         Route::get ('list'         , 'TeacherController@list');

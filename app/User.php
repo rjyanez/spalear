@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Notifications\Notifiable;
+use App\Notifications\MailResetPasswordNotification;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -16,9 +17,9 @@ class User extends Authenticatable implements JWTSubject
         'deleted_at'
     ];
     protected $fillable =   [
-        'id', 
-        'name', 
-        'email', 
+        'id',
+        'name',
+        'email',
         'password',
         'country_code',
         'time_zone_id',
@@ -28,11 +29,11 @@ class User extends Authenticatable implements JWTSubject
         'online',
     ];
     protected $hidden =     [
-        'password', 
+        'password',
         'remember_token'
     ];
 
-    protected $metaTable =  'users_meta'; 
+    protected $metaTable =  'users_meta';
 
     public function country()
     {
@@ -46,7 +47,7 @@ class User extends Authenticatable implements JWTSubject
 
     public function roles()
     {
-        return $this->belongsToMany(CodeMeta::class,'users_roles','user_id','rol_code');
+        return $this->belongsToMany(CodeMeta::class, 'users_roles', 'user_id', 'rol_code');
     }
 
 
@@ -62,24 +63,24 @@ class User extends Authenticatable implements JWTSubject
 
     public function studentTeachers()
     {
-        return $this->belongsToMany(User::class,'students_teachers','student_id','teacher_id')
-                                    ->withPivot('ranking', 'favorite');
+        return $this->belongsToMany(User::class, 'students_teachers', 'student_id', 'teacher_id')
+            ->withPivot('ranking', 'favorite');
     }
-    
+
     public function studentMeetings()
     {
-        return $this->hasMany(Meeting::class,'student_id','id');
+        return $this->hasMany(Meeting::class, 'student_id', 'id');
     }
-    
+
     public function teacherStudents()
     {
-        return $this->belongsToMany(User::class,'students_teachers','teacher_id','student_id')
-                                    ->withPivot('ranking', 'favorite');
+        return $this->belongsToMany(User::class, 'students_teachers', 'teacher_id', 'student_id')
+            ->withPivot('ranking', 'favorite');
     }
-    
+
     public function teacherMeetings()
     {
-        return $this->hasMany(Meeting::class,'teacher_id','id');
+        return $this->hasMany(Meeting::class, 'teacher_id', 'id');
     }
 
     /**
@@ -98,5 +99,4 @@ class User extends Authenticatable implements JWTSubject
     {
         return [];
     }
-
 }

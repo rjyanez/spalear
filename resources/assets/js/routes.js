@@ -1,6 +1,8 @@
 import Errors         from './views/error.vue'
 import Home           from './views/home.vue'
 import Login          from './views/auth/login.vue'
+import PasswordForgot from './views/auth/password/forgot'
+import PasswordReset   from './views/auth/password/reset'
 import Signup         from './views/auth/signup.vue'
 import Dashboard      from './views/dashboard'
 import Meeting        from './views/meeting/meeting'
@@ -25,6 +27,25 @@ export const routes = [
         path: '/signup',
         name: 'signup',
         component: Signup
+    },
+    {
+        path: '/password',
+        name: 'password',
+        component:  {
+            template: '<router-view/>',
+        },
+        children: [
+            {
+                path: 'forgot',
+                name: 'password.forgot',
+                component: PasswordForgot
+            },
+            {
+                path: 'reset/:token',
+                name: 'password.reset',
+                component: PasswordReset,
+            }
+        ]
     },
     {
         path: '/dashboard',
@@ -73,6 +94,11 @@ export const routes = [
                 meta: {
                     allowedRoles: ['AD','SC']
                 },
+            },
+            {
+                path: 'password',
+                name: 'user.password',
+                component: PasswordReset,
             },
             {
                 path: 'setting',
