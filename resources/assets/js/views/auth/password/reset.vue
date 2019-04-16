@@ -5,11 +5,12 @@
     <div class="container mt--8 pb-5">
       <div class="row justify-content-center">
         <div class="col-lg-5 col-md-7">
-          <div class="card shadow border-0" :class="{'bg-secondary':isLoggedIn}">
+          <div class="card shadow border-0" :class="{'bg-secondary':!isLoggedIn}">
             <div class="card-body px-lg-5 py-lg-5">
               <form role="form" @submit.prevent="submit" ref="form">
                 <input name="_method" type="hidden" value="PUT">
                 <div v-if="isLoggedIn" class="form-group">
+                  <label  v-if="isLoggedIn" for="currentPassword" class="form-control-label">Current Password</label>
                   <div class="input-group">
                     <div class="input-group-prepend">
                       <span class="input-group-text">
@@ -36,6 +37,7 @@
                   </span>
                 </div>
                 <div class="form-group">
+                  <label  v-if="isLoggedIn" for="password" class="form-control-label">New Password</label>
                   <div class="input-group">
                     <div class="input-group-prepend">
                       <span class="input-group-text">
@@ -63,6 +65,7 @@
                   </span>
                 </div>
                 <div class="form-group">
+                  <label  v-if="isLoggedIn" for="confirmation" class="form-control-label">Confirm Password</label>
                   <div class="input-group">
                     <div class="input-group-prepend">
                       <span class="input-group-text">

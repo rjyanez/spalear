@@ -29,6 +29,7 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::get   ('list'           , 'UserController@list'       );
         Route::get   ('create'         , 'Auth\AuthController@create');
         Route::get   ('{id}'           , 'UserController@show'       );
+        Route::get   ('{id}/roles'  , 'UserController@roles'   );
         Route::get   ('{id}/progress'  , 'UserController@progress'   );
         Route::put   ('{id}/update'    , 'UserController@update'     );
         Route::delete('{id}/destroy'   , 'UserController@destroy'    );
@@ -43,7 +44,9 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::post('message'      , 'TeacherController@message');
         Route::post('favorite'     , 'TeacherController@favorite');
         Route::post('ranking'      , 'TeacherController@ranking');        
+        Route::get ('{id}/dashboard', 'TeacherController@dashboard');
         Route::get ('{id}'         , 'TeacherController@show');
+        
     });
 
     

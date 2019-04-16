@@ -4,8 +4,8 @@
       <div class="row">
         <div class="col  d-flex flex-column align-items-start justify-content-center">
           <img
-            :src="`/uploads/avatar/${item.teacher.avatar}`"
-            :title="item.teacher.name"
+            :src="`/uploads/avatar/${item.user.avatar}`"
+            :title="item.user.name"
             class="mr-3 rounded-circle align-self-start"
             style="width: 5rem; height: 5rem;"
             data-toggle="tooltip"
@@ -13,8 +13,8 @@
           >
         </div>
         <div class="col d-flex flex-column align-items-start justify-content-center">
-          <span class="text-muted">Teacher</span>
-          <p class="h4">{{ item.teacher.name }}</p>
+          <span class="text-muted">{{ item.relation.toUpperCase() }}</span>
+          <p class="h4">{{ item.user.name }}</p>
         </div>
         <div class="col d-flex flex-column align-items-start justify-content-center">
           <span class="text-muted">Type</span>

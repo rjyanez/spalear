@@ -116,14 +116,13 @@ export default {
 		sessiosExpired({
 			commit,
 			state
-		}){
+		}){			
 			return new Promise((resolve, reject) => {
 				if(state.isLoggedIn){
 					const session = new Date(state.currentUser.session),
 					now = new Date(),
 					diff = now.getTime() - session.getTime();
 					if(Math.round(Math.trunc(diff / 60)  / 1000) >= 360){	
-						console.log('ya paso el tiempo')				
 						resolve()						
 					}
 					reject()

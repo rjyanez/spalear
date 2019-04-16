@@ -25,6 +25,7 @@ class CodesMetaTableSeeder extends Seeder
             'lesson' =>	$this->lessonsMeta(),
             'status' => $this->statusMeta (),
             'level'  => $this->levelsMeta (),
+            'sort'   => $this->sortMeta()
     	];
     	foreach ($data as $type => $options) {
     		foreach ($options as $key => $value) {
@@ -73,6 +74,14 @@ class CodesMetaTableSeeder extends Seeder
             'CAN'=>'Canceled',
             'FIN'=>'Finished',
             'BLO'=>'Blocked' 
+        ];
+    }
+
+    public function sortMeta()
+    {
+        return [
+            'POS'=>'Positive',
+            'NEU'=>'Neutral'
         ];
     }
 

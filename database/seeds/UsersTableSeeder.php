@@ -26,7 +26,8 @@ class UsersTableSeeder extends Seeder
             'country_code'=>'VE',
             'time_zone_id'=>418,
         ]);
-        $user->setMeta(['level' => $levels[rand(0,2)]]);
+        if(!$user->level) $user->level = 'BAS';
+        if(!$user->sort) $user->sort = 'NEU';
         $user->save();
         $user->roles()->sync(['AD','SC','TE','ST']);
         $this->createUsers();
@@ -43,7 +44,8 @@ class UsersTableSeeder extends Seeder
             $rol = $roles[rand(0,3)];
             $user->roles()->attach($rol);
             if($rol = 'ST'){
-                $user->setMeta(['level' => $levels[rand(0,2)]]);
+                if(!$user->level) $user->level =  $levels[rand(0,2)];
+				if(!$user->sort) $user->sort = 'NEU';
                 $user->save();
             }
         });

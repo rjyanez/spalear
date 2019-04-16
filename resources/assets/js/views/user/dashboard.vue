@@ -1,7 +1,6 @@
 <template>
-  <div v-if="show">
-    <header-user name/>
-    <div class="container mt--7">
+
+    <div class="container mb-3">
       <div class="card card-profile shadow">
         <div class="px-4">
           <div class="row justify-content-center">
@@ -61,15 +60,12 @@
         </div>
       </div>
     </div>
-  </div>
 </template>
 <script>
-import headerUser from "./header";
 import meetingsList from "./../meeting/list";
 
 export default {
   components: {
-    headerUser,
     meetingsList
   },
   data() {
@@ -84,11 +80,6 @@ export default {
   mounted() {
     if (parseInt(this.$router.currentRoute.params.id) === this.$store.getters.currentUser.id) this.$router.push(`/dashboard`);
     this.searchUser();
-  },
-  computed: {
-    show(){
-			return (this.user.hasOwnProperty('roles'))? this.user.roles.includes('ST') : true
-    }
   },
   methods: {
     redirectTeachers(){

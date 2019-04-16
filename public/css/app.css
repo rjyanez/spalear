@@ -27797,6 +27797,7 @@ table.calendar-table {
 }
 
 .mt--7,
+.dashboard > div:nth-child(2),
 .my--7 {
   margin-top: -6rem !important;
 }

@@ -123,6 +123,46 @@ class TeacherController extends Controller
 		);
 	}
 
+	public function dashboard(Request $request, $id)
+	{
+		$teacher = User::whereId($id)
+			->with(['roles', 'timeSchedule', 'teacherMeetings'])
+			->whereHas('roles', function ($q) {
+				$q->where('key', 'TE');
+			})
+			->get()
+			->map(function ($item) {
+				return [
+					'id'          => $item->id,
+					'roles'       => $item->roles,
+					'bookedDates' => $item->teacherMeetings->pluck('date'),
+					'timeSchedule' => $item->timeSchedule->groupBy('week')
+						->map(function ($day) {
+							return $day->pluck('hour');
+						}),
+					'meetings'	=> $item->teacherMeetings->take(5)
+						->map(function ($value, $key) {
+							return [
+								'id'      => $value->id,
+								'url'	=> $value->url,
+								'date'    => $value->date,
+								'user	' => $value->student,
+								'relation' => 'student',
+								'type'    => $value->type->value,
+								'lesson'  => ($value->lesson) ? $value->lesson->name : 'N/A',
+								'level'   => ($value->lesson) ? $value->lesson->level->value : 'N/A'
+							];
+						})
+						->toArray(),
+				];
+			})
+			->first();
+		return response()->json(
+			Json::response(compact('teacher')),
+			200
+		);
+	}
+
 	public function favorite(Request $request)
 	{
 		$id       = $request->input('teacher');

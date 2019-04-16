@@ -25,29 +25,31 @@ export default {
     return {
       sidebar: true
     };
-	},
-	mounted(){
-		this.sessionExpired()
-	},
+  },
+  mounted() {
+    this.sessionExpired();
+    setInterval(() => {
+      this.sessionExpired();
+    }, 3600000);
+  },
   computed: {
-		isLoggedIn() {
-			return this.$store.getters.isLoggedIn;
-		}	
-	},
-	methods: {
-		sessionExpired(){
-			setInterval( () => {
-				if(this.isLoggedIn) {
-					this.$store.dispatch('sessiosExpired').then((res) => {
-								this.$store.commit('logout')
-								this.$router.push('/')		           
-								this.$toasted.error('Your session has expired.')		         
-						})
-						.catch((error) => {
-						});
-				}
-			}, 3600000)
-		}
-	}
+    isLoggedIn() {
+      return this.$store.getters.isLoggedIn;
+    }
+  },
+  methods: {
+    sessionExpired() {
+      if (this.isLoggedIn) {
+        this.$store
+          .dispatch("sessiosExpired")
+          .then(res => {
+            this.$store.commit("logout");
+            this.$router.push("/");
+            this.$toasted.error("Your session has expired.");
+          })
+          .catch(error => {});
+      }
+    }
+  }
 };
 </script>

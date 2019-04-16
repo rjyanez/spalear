@@ -110,8 +110,9 @@ class AuthController extends Controller
             'password'     => Hash::make ($request->password),
             'country_code' => $request->country_code,
             'time_zone_id' => $request->time_zone_id,
+            'level'        => 'BAS',
+            'sort'         => 'NEU'
         ]);
-        $user->setMeta('level','BAS');
         $user->save();
         $user->roles()->attach('ST');
         return response()->json([

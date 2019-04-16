@@ -50,20 +50,22 @@ class UserController extends Controller
 			'notify'			 => ($request->input('notify')) ? $request->input('notify') : 0,
 			'description'  => $request->input('description'),
 		]);
-		if ($user->save()) 
-		{
-			$roles = explode(',', $request->input('rolcodes'));
-			if ($request->hasFile('avatar')) $user->avatar = $this->saveAvatar($request->file('avatar'), $user->id);
-			if (in_array('TE', $roles)) $this->saveTimeSchedule(json_decode($request->input('time_schedule')),  $user->id);
-			if (in_array('ST', $roles) && $user->getMeta('level')) $user->setMeta('level','BAS');
-			$user->roles()->sync($roles);
-			
-			$user->save();
-			$user->notify(new NewUser($password));
-			$user = $this->getUserById($user->id);
+		if ($user->save()) {
+				$roles = explode(',', $request->input('rolcodes'));
+				if ($request->hasFile('avatar')) $user->avatar = $this->saveAvatar($request->file('avatar'), $user->id);
+				if (in_array('TE', $roles)) $this->saveTimeSchedule(json_decode($request->input('time_schedule')),  $user->id);
+				if (in_array('ST', $roles)) {
+					if (!$user->level) $user->level = 'BAS';
+					if (!$user->sort) $user->sort = 'NEU';
+				}
+				$user->roles()->sync($roles);
 
-			return response()->json(Json::response(compact('user'), 'Successfully created user!'), 200);
-		} else {
+				$user->save();
+				$user->notify(new NewUser($password));
+				$user = $this->getUserById($user->id);
+
+				return response()->json(Json::response(compact('user'), 'Successfully created user!'), 200);
+			} else {
 			return response()->json(null, 401);
 		}
 	}
@@ -86,6 +88,17 @@ class UserController extends Controller
 			200
 		);
 	}
+
+	public function roles($id)
+	{
+		$roles = User::whereId($id)->with(['roles'])->first()->roles->pluck('key');
+
+		return response()->json(
+			Json::response(compact('roles')),
+			200
+		);
+	}
+
 
 	public function progress($id)
 	{
@@ -124,9 +137,12 @@ class UserController extends Controller
 
 			if ($request->hasFile('avatar')) $user->avatar = $this->saveAvatar($request->file('avatar'), $user->id);
 			if (in_array('TE', $roles)) $this->saveTimeSchedule(json_decode($request->input('time_schedule')),  $user->id);
-			if (in_array('ST', $roles) && $user->getMeta('level')) $user->setMeta('level','BAS');
+			if (in_array('ST', $roles)) {
+				if (!$user->level) $user->level = 'BAS';
+				if (!$user->sort) $user->sort = 'NEU';
+			}
 			$user->roles()->sync($roles);
-			
+
 			$user->save();
 			$user = $this->getUserById($id);
 
@@ -169,7 +185,8 @@ class UserController extends Controller
 									'id'      => $value->id,
 									'url'	=> $value->url,
 									'date'    => $value->date,
-									'teacher' => $value->teacher,
+									'user' => $value->teacher,
+									'relation' => 'teacher',
 									'type'    => $value->type->value,
 									'lesson'  => ($value->lesson) ? $value->lesson->name : 'N/A',
 									'level'   => ($value->lesson) ? $value->lesson->level->value : 'N/A'
