@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Notification;
 use Illuminate\Http\Request;
 use App\Transformers\Json;
 use App\User;
+use Illuminate\Support\Carbon;
+
 
 class TeacherController extends Controller
 {
@@ -86,6 +88,7 @@ class TeacherController extends Controller
 	public function show(Request $request, $id)
 	{
 		$auth = $request->user()->id;
+		$now = Carbon::now();
 
 		$teacher = User::whereId($id)
 			->whereHas('roles', function ($q) {
@@ -93,7 +96,7 @@ class TeacherController extends Controller
 			})
 			->with(['roles', 'timeZone', 'country', 'timeSchedule', 'teacherStudents', 'teacherMeetings'])
 			->get()
-			->map(function ($item) use ($auth) {
+			->map(function ($item) use ($auth, $now) {
 				return [
 					'id'          => $item->id,
 					'name'        => $item->name,
@@ -113,7 +116,9 @@ class TeacherController extends Controller
 						->map(function ($day) {
 							return $day->pluck('hour');
 						}),
-					'bookedDates' => $item->teacherMeetings->pluck('date')
+					'bookedDates' => $item->teacherMeetings->filter(function($item) use ($now){
+						return $item->date >= $now;
+					})->pluck('date')
 				];
 			})
 			->first();
@@ -125,17 +130,20 @@ class TeacherController extends Controller
 
 	public function dashboard(Request $request, $id)
 	{
+		$now = Carbon::now();
 		$teacher = User::whereId($id)
 			->with(['roles', 'timeSchedule', 'teacherMeetings'])
 			->whereHas('roles', function ($q) {
 				$q->where('key', 'TE');
 			})
 			->get()
-			->map(function ($item) {
+			->map(function ($item) use ($now) {
 				return [
 					'id'          => $item->id,
 					'roles'       => $item->roles,
-					'bookedDates' => $item->teacherMeetings->pluck('date'),
+					'bookedDates' => $item->teacherMeetings->filter(function($item, $now){
+						return $item->date >= $now;
+					})->pluck('date'),
 					'timeSchedule' => $item->timeSchedule->groupBy('week')
 						->map(function ($day) {
 							return $day->pluck('hour');
@@ -146,11 +154,11 @@ class TeacherController extends Controller
 								'id'      => $value->id,
 								'url'	=> $value->url,
 								'date'    => $value->date,
-								'user	' => $value->student,
-								'relation' => 'student',
+								'student' => $value->student,
+								'teacher' => $value->teacher,
 								'type'    => $value->type->value,
-								'lesson'  => ($value->lesson) ? $value->lesson->name : 'N/A',
-								'level'   => ($value->lesson) ? $value->lesson->level->value : 'N/A'
+								'lesson'  => ($value->lesson) ? $value->lesson->name : false,
+								'level'   => ($value->lesson) ? $value->lesson->level->value : false
 							];
 						})
 						->toArray(),

@@ -1,15 +1,32 @@
 <template>
-  <button
-    type="button"
-    data-toggle="tooltip" 
-    data-placement="top" 
-    :title="currentMessage.text"
-    :class="[ css, stepsComplete? 'confirmation__button--complete' : '', currentMessage.class ]"
-    :disabled='stepsComplete'
-    v-on:click='incrementStep()'>
-    <i v-if="currentMessage.icon" :class="currentMessage.icon"></i>
-    <template v-else>{{ currentMessage.text }}</template>    
-  </button>
+  <div>
+    <template v-if="currentMessage.confirmation">
+      <button
+        v-for="button in currentMessage.options"
+        type="button"
+        data-toggle="tooltip" 
+        data-placement="top" 
+        :title="button.text"
+        :class="[ css, stepsComplete? 'confirmation__button--complete' : '', button.class ]"
+        :disabled='stepsComplete'
+        v-on:click='(button.accept)? incrementStep() : reset()'>
+        <i v-if="button.icon" :class="button.icon"></i>
+        <template v-else>{{ button.text }}</template>    
+      </button>      
+    </template>
+    <button
+      v-else
+      type="button"
+      data-toggle="tooltip" 
+      data-placement="top" 
+      :title="currentMessage.text"
+      :class="[ css, stepsComplete? 'confirmation__button--complete' : '', currentMessage.class ]"
+      :disabled='stepsComplete'
+      v-on:click='incrementStep()'>
+      <i v-if="currentMessage.icon" :class="currentMessage.icon"></i>
+      <template v-else>{{ currentMessage.text }}</template>    
+    </button>
+  </div>
 </template>
 
 <script>

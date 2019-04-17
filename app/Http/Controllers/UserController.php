@@ -185,11 +185,11 @@ class UserController extends Controller
 									'id'      => $value->id,
 									'url'	=> $value->url,
 									'date'    => $value->date,
-									'user' => $value->teacher,
-									'relation' => 'teacher',
+									'student	' => $value->student,
+									'teacher' => $value->teacher,
 									'type'    => $value->type->value,
-									'lesson'  => ($value->lesson) ? $value->lesson->name : 'N/A',
-									'level'   => ($value->lesson) ? $value->lesson->level->value : 'N/A'
+									'lesson'  => ($value->lesson) ? $value->lesson->name : false,
+									'level'   => ($value->lesson) ? $value->lesson->level->value : false
 								];
 							})
 							->toArray(),

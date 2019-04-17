@@ -1,23 +1,35 @@
 <template>
-  <div class="container  mb-3">
+  <div class="container mb-3">
     <div class="card card-profile shadow">
       <div class="row">
-        <div class="col">
-          <div class=" py-5 border-right text-center">
+        <div class="col pr-0">
+          <div class=" py-5 text-center">
             <meetings-list title="Your Next Classes" :list="teacher.meetings" class="mx-5"/>
           </div>
         </div>
-        <div class="col"></div>
+        <div class="col pl-0">
+          <calendar
+            minToday="true"
+            class="m-2 mr-4 py-5"
+            :byShift="(hours.length > 5)"
+            :hours="hours"
+            :timeDlockedDates="bookedDates"
+            :timeAllowedDates="timeSchedule"     
+          />          
+        </div>
       </div>
     </div>  
   </div>    
 </template>
 <script>
 import meetingsList from "./../meeting/list";
+import calendar from './../../components/calendar'
+import {formatDateToDataBase} from './../../helpers/general'
 
 export default {
   components: {
-    meetingsList
+    meetingsList,
+    calendar
   },
   data() {
     return {
@@ -33,9 +45,23 @@ export default {
     this.searchTeacher();
   },
   computed: {
-    show(){
-			return (this.teacher.hasOwnProperty('roles'))? this.teacher.roles.includes('TE') : true
-    }
+    hours(){
+      if (this.timeSchedule){
+        let hours = [], values =this.timeSchedule.map(el => el.hour)
+        for (const key in values) {
+          if(!hours.includes(values[key])) hours.push(values[key])
+        }
+        return hours 
+      } else { 
+        return [[0,24]] 
+      }
+    },
+    timeSchedule(){
+      return formatDateToDataBase(this.teacher.timeSchedule)
+    }, 
+    bookedDates(){
+      return formatDateToDataBase(this.teacher.bookedDates)
+    } 
   },
   methods: {
     searchTeacher() {

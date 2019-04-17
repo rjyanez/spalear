@@ -20,13 +20,19 @@
   <buttonConfirmation
     v-on:confirmation-success="submitFrom"
     :messages="[
-      {icon: false , text: 'Destroy User', class: 'btn-danger'},
-      {icon: false , text: 'Are you sure?', class: 'btn-warning'},
-      {icon: false , text: 'Ok!', class: 'btn-success'}                           
+      {confirmation: false, icon: false , text: 'Destroy User', class: 'btn-danger'},
+      {
+        confirmation: true,
+        options: [
+          {icon: false , text: 'Yes', class: ' btn-outline-warning', accept: true},
+          {icon: false , text: 'Not', class: ' btn-warning', accept: false},                  
+        ]
+      },
+      {confirmation: false, icon: false , text: 'Ok!', class: 'btn-success'}                           
     ]"
     v-if="action === 'destroy'"
     :disabled="loading"
-    :class="{ 'float-right btn   mt-4': true, disabled: loading }"
+    :css="{ 'float-right btn   mt-4': true, disabled: loading }"
   />
 </div>  
 </template>
