@@ -1,15 +1,16 @@
-import Errors         from './views/error.vue'
-import Home           from './views/home.vue'
-import Login          from './views/auth/login.vue'
+import Errors         from './views/error'
+import Home           from './views/home'
+import Login          from './views/auth/login'
 import PasswordForgot from './views/auth/password/forgot'
-import PasswordReset   from './views/auth/password/reset'
-import Signup         from './views/auth/signup.vue'
+import PasswordReset  from './views/auth/password/reset'
+import Signup         from './views/auth/signup'
 import Dashboard      from './views/dashboard'
 import Meeting        from './views/meeting/meeting'
 import UserList       from './views/user/list'
 import User           from './views/user/user'
 import TeacherList    from './views/teacher/list'
 import TeacherProfile from './views/teacher/profile'
+import SudentProfile  from './views/student/profile'
 import Lessons        from './views/lesson/lesson'
 
 export const routes = [
@@ -156,6 +157,25 @@ export const routes = [
                 path: ':id',
                 name: 'teachers.name',
                 component: TeacherProfile 
+            }
+        ]
+    },
+    {
+        path: '/students',
+        name: 'students',
+        // redirect: '/teachers/all',
+        component: {
+            template: '<router-view/>',
+        },
+        meta: {
+            requiresAuth: true,
+            allowedRoles: ['TE','SC','AD']
+        },
+        children: [
+            {
+                path: ':id',
+                name: 'students.profile',
+                component: SudentProfile 
             }
         ]
     },

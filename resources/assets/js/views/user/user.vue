@@ -24,16 +24,16 @@
               <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
                 <div class="d-flex justify-content-between w-rem-13 mx-auto">
                   <div class="avatar-group float-right">
-                    <!-- <samp
+                    <samp
                       v-for="rol in rolesListArrray"
-                      :class="`avatar avatar-sm ${rol.toLowerCase()}`"
+                      :class="`avatar avatar-sm ${lowerCase(rol)}`"
                       data-toggle="tooltip"
                       :title="rol"
                       :key="rol"
                       role="button"
                     >
                       <i class="rounded-circle">{{rol.substring(0,2).toUpperCase()}}</i>
-                    </samp> -->
+                    </samp>
                   </div>
                   <div class="avatar-group float-right">
                     <label
@@ -429,6 +429,10 @@ export default {
     }
   },
   methods: {
+    lowerCase(value){
+      return value.toLowerCase()
+
+    },
     isRole(role) {
       return this.$store.getters.isRole(role);
     },

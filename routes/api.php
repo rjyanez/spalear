@@ -49,6 +49,12 @@ Route::group(['middleware' => 'auth:api'], function () {
         
     });
 
+    Route::group(['prefix' => 'student'], function() {
+        Route::post('message', 'StudentController@message');
+        Route::post('sort', 'StudentController@sort');
+        Route::post('level', 'StudentController@level');
+        Route::get ('{id}'   , 'StudentController@show');        
+    });
     
     Route::group(['prefix' => 'function'], function() {
         Route::get('primary/{rol}'  , 'FunctionsController@primaryMenu');

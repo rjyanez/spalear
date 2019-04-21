@@ -72,8 +72,13 @@ table.calendar-table {
   z-index: $zindex-dropdown;  
 }
 
-.dashboard > div:nth-child(2) {
-  @extend .mt--7;
+.dashboard > div{
+  &.container {
+    @extend .mt-3;
+  }
+  &:nth-child(2) {
+    @extend .mt--7;
+  }
 }
 
 

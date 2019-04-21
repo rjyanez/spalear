@@ -11,7 +11,12 @@
   <div class="media-body">
     <div class="row">
        <div class="col text-left">
-        <a class="mt-0" href="">{{(isTeacher)? item.student.name : item.teacher.name}}</a>
+        <router-link
+          class="mt-0 d-block"
+          :to="(isTeacher)? `students/${item.student.id}` : `teachers/${item.teacher.id}`"
+        >
+          {{(isTeacher)? item.student.name : item.teacher.name}}
+        </router-link>
         <small class="d-block text-muted" v-if="isTeacher">{{item.student.email}}</small>
         <p v-if="item.lesson" class="mt-1 mb-0">Lesson {{ item.lesson }} </p>
         <span :class="['badge', 'badge-pill', 'text-uppercase', `badge-${toLowerCase(item.type)}`]">
@@ -39,7 +44,7 @@
             <i class="far fa-play-circle"></i>
           </router-link>
           <buttonConfirmation
-            v-if="!isTeacher"
+            v-if="isCurrent"
             v-on:confirmation-success="meetingDelete"
             :messages="[
                 { confirmation: false, icon: 'far fa-times-circle' , text: '', class: 'btn-outline-danger'},
@@ -52,7 +57,7 @@
                 },
                 { confirmation: false, icon: false , text: 'Ok!', class: 'btn-success text-sm'}                           
               ]"
-            css="btn icon icon-shape icon-sm rounded-circle"
+            css="btn icon icon-shape icon-sm"
           />
         </div>
       </div>
@@ -90,6 +95,9 @@ export default {
     },
     isTeacher(){
       return this.currentUserId == this.item.teacher.id
+    },
+    isCurrent(){
+      return this.currentUserId == this.$store.getters.currentUser.id
     }
   },
   filters: {

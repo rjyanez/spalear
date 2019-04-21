@@ -22,13 +22,13 @@ class FunctionsTableSeeder extends Seeder
 
             [ 'code' => 'teachers'          , 'title' => 'Teachers'          , 'url' => '/teachers'          , 'icon' => 'fas fa-graduation-cap'          , 'parent_name' => null       , 'order' => 1 , 'menu' => true],
             [ 'code' => 'teachers.all'      , 'title' => 'All Teachers'      , 'url' => '/teachers/all'      , 'icon' => 'fas fa-user-graduate text-teal' , 'parent_name' => 'teachers' , 'order' => 0 , 'menu' => true],
-            [ 'code' => 'teachers.favorite' , 'title' => 'Favorite Teachers' , 'url' => '/teachers/favorite' , 'icon' => 'fas fa-star-half-alt text-blue' , 'parent_name' => 'teachers' , 'order' => 1 , 'menu' => true],
+            [ 'code' => 'teachers.favorite' , 'title' => 'Favorite Teachers' , 'url' => '/teachers/favorite' , 'icon' => 'fas fa-heart text-blue' , 'parent_name' => 'teachers' , 'order' => 1 , 'menu' => true],
             
 
             [ 'code' => 'lessons'          , 'title' => 'Lessons'  , 'url' => '/lessons'          , 'icon' => 'fas fa-pencil-ruler'           , 'parent_name' => null      , 'order' => 2 , 'menu' => true],
-            [ 'code' => 'lessons.basic'    , 'title' => 'Basic'    , 'url' => '/lessons/basic'    , 'icon' => 'fas fa-pencil-alt text-teal'   , 'parent_name' => 'lessons' , 'order' => 0 , 'menu' => true],
-            [ 'code' => 'lessons.medium'   , 'title' => 'Medium'   , 'url' => '/lessons/medium'   , 'icon' => 'fas fa-pencil-alt text-blue'   , 'parent_name' => 'lessons' , 'order' => 1 , 'menu' => true],
-            [ 'code' => 'lessons.advanced' , 'title' => 'Advanced' , 'url' => '/lessons/advanced' , 'icon' => 'fas fa-pencil-alt text-orange' , 'parent_name' => 'lessons' , 'order' => 2 , 'menu' => true],
+            [ 'code' => 'lessons.basic'    , 'title' => 'Basic'    , 'url' => '/lessons/basic'    , 'icon' => 'far fa-star text-teal'   , 'parent_name' => 'lessons' , 'order' => 0 , 'menu' => true],
+            [ 'code' => 'lessons.medium'   , 'title' => 'Medium'   , 'url' => '/lessons/medium'   , 'icon' => 'fas fa-star-half text-blue'   , 'parent_name' => 'lessons' , 'order' => 1 , 'menu' => true],
+            [ 'code' => 'lessons.advanced' , 'title' => 'Advanced' , 'url' => '/lessons/advanced' , 'icon' => 'fas fa-star text-orange' , 'parent_name' => 'lessons' , 'order' => 2 , 'menu' => true],
 
             [ 'code' => 'user', 'title' => 'Users', 'url' => '/user', 'icon' => 'fas fa-user-friends', 'parent_name' => null, 'order' => 0, 'menu' => true],
             

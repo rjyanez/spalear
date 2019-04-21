@@ -1,6 +1,6 @@
 <template>
   <div>
-    <template v-if="currentMessage.confirmation">
+    <div class="btn-group" role="group" v-if="currentMessage.confirmation">
       <button
         v-for="button in currentMessage.options"
         type="button"
@@ -13,7 +13,7 @@
         <i v-if="button.icon" :class="button.icon"></i>
         <template v-else>{{ button.text }}</template>    
       </button>      
-    </template>
+    </div>
     <button
       v-else
       type="button"

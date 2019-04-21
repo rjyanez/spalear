@@ -15640,6 +15640,7 @@ table.calendar-table {
 }
 
 .mt-3,
+.dashboard > div.container,
 .my-3 {
   margin-top: 1rem !important;
 }
@@ -27677,6 +27678,7 @@ table.calendar-table {
 }
 
 .mt-3,
+.dashboard > div.container,
 .my-3 {
   margin-top: 1rem !important;
 }
@@ -39330,7 +39332,7 @@ html:not([dir='rtl']) .noUi-horizontal .noUi-handle {
   background: #eeeeee;
 }
 
-label[role="buttom"] {
+*[role="buttom"] {
   cursor: pointer;
 }
 

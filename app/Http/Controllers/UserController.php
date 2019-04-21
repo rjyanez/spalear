@@ -99,29 +99,6 @@ class UserController extends Controller
 		);
 	}
 
-
-	public function progress($id)
-	{
-		$meetings = Meeting::where('student_id', $id)
-			->where('status_code', 'FIN')
-			->get();
-
-		$progress = [
-			'teachers' 				=> $meetings->pluck('teacher_id')->unique()->count(),
-			'conversational' 	=> $meetings->filter(function ($item, $key) {
-				return $item->lesson->type->key === 'CN';
-			})->count(),
-			'grammatical' 		=> $meetings->filter(function ($item, $key) {
-				return $item->lesson->type->key === 'GR';
-			})->count(),
-		];
-
-		return response()->json(
-			Json::response(compact('progress')),
-			200
-		);
-	}
-
 	public function update(Request $request, $id)
 	{
 		$user = User::find($id);
@@ -159,10 +136,7 @@ class UserController extends Controller
 				'roles',
 				'timeZone',
 				'country',
-				'timeSchedule',
-				'studentMeetings' => function ($query) {
-					return $query->orderBy('date', 'asc');
-				}
+				'timeSchedule'
 			])
 			->get()
 			->map(
@@ -179,20 +153,6 @@ class UserController extends Controller
 						'country' => $item->country->name,
 						'time_zone_id' => $item->time_zone_id,
 						'timeZone' => $item->timeZone->name,
-						'meetings'	=> $item->studentMeetings->take(5)
-							->map(function ($value, $key) {
-								return [
-									'id'      => $value->id,
-									'url'	=> $value->url,
-									'date'    => $value->date,
-									'student	' => $value->student,
-									'teacher' => $value->teacher,
-									'type'    => $value->type->value,
-									'lesson'  => ($value->lesson) ? $value->lesson->name : false,
-									'level'   => ($value->lesson) ? $value->lesson->level->value : false
-								];
-							})
-							->toArray(),
 						'timeSchedule' => $item->timeSchedule
 							->groupBy('week')
 							->map(function ($day) {

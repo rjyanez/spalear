@@ -1,20 +1,20 @@
 <template>
   <div class="dashboard">
     <header-auth background="dashboard-cover.jpg" name=""  description=""/>
-    <user-dashboard v-if="roles.includes('ST')"/>
+    <student-dashboard v-if="roles.includes('ST')" :header="false"/>
     <teacher-dashboard  v-if="roles.includes('TE')"/>
   </div>
 </template>
 <script>
 import headerAuth from '../views/layouts/headers/auth.vue'
-import userDashboard from './user/dashboard'
+import studentDashboard from './student/profile'
 import teacherDashboard from './teacher/dashboard'
 
 export default {
   name: 'dashboard',
   components: {
     headerAuth,
-    userDashboard,
+    studentDashboard,
     teacherDashboard
   },
   data() {
