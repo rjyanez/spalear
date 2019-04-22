@@ -237,8 +237,8 @@ class TeacherController extends Controller
 
 	public function message(Request $request)
 	{
-		$student = User::whereId($request->input('user'))->first();
-		$teacher = User::whereId($request->input('teacher'))->first();
+		$student = User::whereId($request->input('from'))->first();
+		$teacher = User::whereId($request->input('to'))->first();
 
 		Notification::route('mail', env('MAIL_USERNAME'))
 			->notify(new NewMessage($student, $teacher, $request->input('message')));

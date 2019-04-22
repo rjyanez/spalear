@@ -13,7 +13,7 @@
        <div class="col text-left">
         <router-link
           class="mt-0 d-block"
-          :to="(isTeacher)? `students/${item.student.id}` : `teachers/${item.teacher.id}`"
+          :to="(isTeacher)? `student/${item.student.id}` : `teacher/${item.teacher.id}`"
         >
           {{(isTeacher)? item.student.name : item.teacher.name}}
         </router-link>
@@ -44,7 +44,7 @@
             <i class="far fa-play-circle"></i>
           </router-link>
           <buttonConfirmation
-            v-if="isCurrent"
+            v-if="isStudent"
             v-on:confirmation-success="meetingDelete"
             :messages="[
                 { confirmation: false, icon: 'far fa-times-circle' , text: '', class: 'btn-outline-danger'},
@@ -57,7 +57,7 @@
                 },
                 { confirmation: false, icon: false , text: 'Ok!', class: 'btn-success text-sm'}                           
               ]"
-            css="btn icon icon-shape icon-sm"
+            css="btn icon icon-shape icon-sm p-o"
           />
         </div>
       </div>
@@ -90,14 +90,11 @@ export default {
     date() {
       return datesFrontendFormater(this.item.date);
     },
-    currentUserId(){
-      return parseInt(this.$route.params.id) || this.$store.getters.currentUser.id
-    },
     isTeacher(){
-      return this.currentUserId == this.item.teacher.id
+      return this.$store.getters.currentUser.id == this.item.teacher.id
     },
-    isCurrent(){
-      return this.currentUserId == this.$store.getters.currentUser.id
+    isStudent(){
+      return this.$store.getters.currentUser.id == this.item.student.id
     }
   },
   filters: {

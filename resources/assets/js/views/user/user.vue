@@ -32,7 +32,7 @@
                       :key="rol"
                       role="button"
                     >
-                      <i class="rounded-circle">{{rol.substring(0,2).toUpperCase()}}</i>
+                      <i class="rounded-circle">{{rol | rolName}}</i>
                     </samp>
                   </div>
                   <div class="avatar-group float-right">
@@ -346,6 +346,9 @@ export default {
   filters: {
     listArrray(val, list) {
       return val.map(el => list[el]).join(" | ");
+    },
+    rolName(val){
+      return String(val).substring(0,2).toUpperCase()
     }
   },
   data() {
@@ -430,8 +433,7 @@ export default {
   },
   methods: {
     lowerCase(value){
-      return value.toLowerCase()
-
+      return String(value).toLowerCase()
     },
     isRole(role) {
       return this.$store.getters.isRole(role);

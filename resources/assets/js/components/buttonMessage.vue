@@ -27,15 +27,16 @@ export default {
     }
   },
   props: [
-    'teacher'
+    'to',
+    'action'
   ],
   methods: {
     submit(){
       this.$store.dispatch("sendPost", { 
-        url: `/api/teacher/message`, 
+        url: this.action, 
         data: addJsonToFormData({ 
-          user: this.currentUser.id,
-          teacher: this.teacher,
+          from: this.currentUser.id,
+          to: this.to,
           message: this.message
         }), 
         auth: true 
@@ -43,6 +44,7 @@ export default {
         if (res) {
           this.$refs.button.click()         
           this.$toasted.success(res.message)
+          this.$emit('submitMessage')
         } else {
           this.$toasted.error("Something went wrong, please try again.")
         }

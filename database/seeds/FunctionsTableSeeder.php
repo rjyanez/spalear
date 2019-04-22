@@ -20,9 +20,9 @@ class FunctionsTableSeeder extends Seeder
             [ 'code' => 'user.password' , 'title' => 'Password'   , 'url' => '/user/password' , 'icon' => 'fas fa-key text-blue' , 'parent_name' => 'account' , 'order' => 1 , 'menu' => true],
             
 
-            [ 'code' => 'teachers'          , 'title' => 'Teachers'          , 'url' => '/teachers'          , 'icon' => 'fas fa-graduation-cap'          , 'parent_name' => null       , 'order' => 1 , 'menu' => true],
-            [ 'code' => 'teachers.all'      , 'title' => 'All Teachers'      , 'url' => '/teachers/all'      , 'icon' => 'fas fa-user-graduate text-teal' , 'parent_name' => 'teachers' , 'order' => 0 , 'menu' => true],
-            [ 'code' => 'teachers.favorite' , 'title' => 'Favorite Teachers' , 'url' => '/teachers/favorite' , 'icon' => 'fas fa-heart text-blue' , 'parent_name' => 'teachers' , 'order' => 1 , 'menu' => true],
+            [ 'code' => 'teacher'          , 'title' => 'Teachers'          , 'url' => '/teacher'          , 'icon' => 'fas fa-graduation-cap'          , 'parent_name' => null       , 'order' => 1 , 'menu' => true],
+            [ 'code' => 'teacher.all'      , 'title' => 'All Teachers'      , 'url' => '/teacher/all'      , 'icon' => 'fas fa-user-graduate text-teal' , 'parent_name' => 'teacher' , 'order' => 0 , 'menu' => true],
+            [ 'code' => 'teacher.favorite' , 'title' => 'Favorite Teacher' , 'url' => '/teacher/favorite' , 'icon' => 'fas fa-heart text-blue' , 'parent_name' => 'teacher' , 'order' => 1 , 'menu' => true],
             
 
             [ 'code' => 'lessons'          , 'title' => 'Lessons'  , 'url' => '/lessons'          , 'icon' => 'fas fa-pencil-ruler'           , 'parent_name' => null      , 'order' => 2 , 'menu' => true],

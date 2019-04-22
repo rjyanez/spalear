@@ -61,7 +61,7 @@ export default {
     },
     redirectTeachers(){
       this.$toasted.info('To schedule a class you must first select a teacher.')
-      this.$router.push({ path: `/teachers/all` });
+      this.$router.push({ path: `/teacher/all` });
     },
   },
   watch:{

@@ -2,11 +2,14 @@
   background: $body-bg;
 }
 
-*[role="buttom"]
+[role$="button"]
 {
   cursor: pointer;
 }
 
+.max-vh-65 {
+  max-height: 65vh !important;
+}
 .admin 
 {
   @extend .bg-primary;

@@ -50,7 +50,6 @@ class User extends Authenticatable implements JWTSubject
         return $this->belongsToMany(CodeMeta::class, 'users_roles', 'user_id', 'rol_code');
     }
 
-
     public function timeZone()
     {
         return $this->belongsTo(TimeZone::class, 'time_zone_id');
@@ -59,6 +58,18 @@ class User extends Authenticatable implements JWTSubject
     public function timeSchedule()
     {
         return $this->hasMany(TimeSchedule::class, 'user_id', 'id');
+    }
+
+    public function receivedMessages()
+    {
+        return $this->belongsToMany(User::class, 'messages', 'to_id', 'from_id')
+            ->withPivot('id', 'message', 'created_at');
+    }
+
+    public function sentMessages()
+    {
+        return $this->belongsToMany(User::class, 'messages', 'from_id', 'to_id')
+            ->withPivot('id', 'message', 'created_at');
     }
 
     public function studentTeachers()
@@ -83,18 +94,11 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(Meeting::class, 'teacher_id', 'id');
     }
 
-    /**
-     * Get the identifier that will be stored in the subject claim of the JWT.
-     * @return mixed
-     */
     public function getJWTIdentifier()
     {
         return $this->getKey();
     }
-    /**
-     * Return a key value array, containing any custom claims to be added to the JWT.
-     * @return array
-     */
+
     public function getJWTCustomClaims()
     {
         return [];

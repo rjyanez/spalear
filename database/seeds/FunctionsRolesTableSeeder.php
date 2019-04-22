@@ -19,8 +19,8 @@ class FunctionsRolesTableSeeder extends Seeder
         DB::table('functions_roles')->insert([
             [ 'function_code' => 'user', 'rol_code' => 'AD' ],
             [ 'function_code' => 'user', 'rol_code' => 'SC' ],
-            [ 'function_code' => 'teachers', 'rol_code' => 'ST' ],
-            [ 'function_code' => 'teachers.favorite', 'rol_code' => 'ST' ],
+            [ 'function_code' => 'teacher', 'rol_code' => 'ST' ],
+            [ 'function_code' => 'teacher.favorite', 'rol_code' => 'ST' ],
             [ 'function_code' => 'lessons' , 'rol_code' => 'ST' ]
         ]);
     }

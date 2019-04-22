@@ -18,7 +18,7 @@
     </template>
     <template v-slot:footer>
       <button type="button" class="btn btn-secondary" @click="closeModalTime">Close</button>
-      <router-link class="btn btn-primary" :to="`/teachers/${options.teacher.id}`" >Profile</router-link>    
+      <router-link class="btn btn-primary" :to="`/teacher/${options.teacher.id}`" >Profile</router-link>    
     </template>
   </modal>    
 </template>

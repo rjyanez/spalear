@@ -132,9 +132,9 @@ export const routes = [
         }
     },
     {
-        path: '/teachers',
-        name: 'teachers',
-        redirect: '/teachers/all',
+        path: '/teacher',
+        name: 'teacher',
+        redirect: '/teacher/all',
         component: {
             template: '<router-view/>',
         },
@@ -145,25 +145,25 @@ export const routes = [
         children: [
             {
                 path: 'all',
-                name: 'teachers.all',
+                name: 'teacher.all',
                 component: TeacherList
             },
             {
                 path: 'favorite',
-                name: 'teachers.favorite',
+                name: 'teacher.favorite',
                 component: TeacherList
             },
             {
                 path: ':id',
-                name: 'teachers.name',
+                name: 'teacher.name',
                 component: TeacherProfile 
             }
         ]
     },
     {
-        path: '/students',
-        name: 'students',
-        // redirect: '/teachers/all',
+        path: '/student',
+        name: 'student',
+        // redirect: '/teacher/all',
         component: {
             template: '<router-view/>',
         },
@@ -174,7 +174,7 @@ export const routes = [
         children: [
             {
                 path: ':id',
-                name: 'students.profile',
+                name: 'student.profile',
                 component: SudentProfile 
             }
         ]

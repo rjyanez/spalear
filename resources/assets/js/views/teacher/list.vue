@@ -126,7 +126,6 @@ export default {
     },
     refreshTeacher(index, id){
       this.$store.dispatch('sendGet', { url:`/api/teacher/${id}`, auth: true}).then(res => {
-        console.log(res.data.teacher)
             this.$set(this.teachers, index, res.data.teacher)
         })
     },

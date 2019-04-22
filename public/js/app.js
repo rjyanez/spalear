@@ -76320,9 +76320,9 @@ var routes = [{
         requiresAuth: true
     }
 }, {
-    path: '/teachers',
-    name: 'teachers',
-    redirect: '/teachers/all',
+    path: '/teacher',
+    name: 'teacher',
+    redirect: '/teacher/all',
     component: {
         template: '<router-view/>'
     },
@@ -76332,21 +76332,21 @@ var routes = [{
     },
     children: [{
         path: 'all',
-        name: 'teachers.all',
+        name: 'teacher.all',
         component: __WEBPACK_IMPORTED_MODULE_10__views_teacher_list___default.a
     }, {
         path: 'favorite',
-        name: 'teachers.favorite',
+        name: 'teacher.favorite',
         component: __WEBPACK_IMPORTED_MODULE_10__views_teacher_list___default.a
     }, {
         path: ':id',
-        name: 'teachers.name',
+        name: 'teacher.name',
         component: __WEBPACK_IMPORTED_MODULE_11__views_teacher_profile___default.a
     }]
 }, {
-    path: '/students',
-    name: 'students',
-    // redirect: '/teachers/all',
+    path: '/student',
+    name: 'student',
+    // redirect: '/teacher/all',
     component: {
         template: '<router-view/>'
     },
@@ -76356,7 +76356,7 @@ var routes = [{
     },
     children: [{
         path: ':id',
-        name: 'students.profile',
+        name: 'student.profile',
         component: __WEBPACK_IMPORTED_MODULE_12__views_student_profile___default.a
     }]
 }, {
@@ -76729,7 +76729,7 @@ var content = __webpack_require__(140);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(142)("a8db3176", content, false, {});
+var update = __webpack_require__(142)("094070b6", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -76753,7 +76753,7 @@ exports = module.exports = __webpack_require__(141)(false);
 
 
 // module
-exports.push([module.i, "\n.vuejs-countdown li h3 {\r\n  font-size: 4rem;\n}\n.vuejs-countdown li:after {\r\n  content: \":\";\r\n  position: absolute;\r\n  top: 0;\r\n  right: -1rem;\r\n  font-size: 4rem;\n}\n.vuejs-countdown li:last-of-type:after {\r\n  content: \"\";\n}\r\n\r\n", ""]);
+exports.push([module.i, "\n.vuejs-countdown li h3 {\n  font-size: 4rem;\n}\n.vuejs-countdown li:after {\n  content: \":\";\n  position: absolute;\n  top: 0;\n  right: -1rem;\n  font-size: 4rem;\n}\n.vuejs-countdown li:last-of-type:after {\n  content: \"\";\n}\n\n", ""]);
 
 // exports
 
@@ -80013,6 +80013,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_buttonLevel___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__components_buttonLevel__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__meeting_list__ = __webpack_require__(58);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__meeting_list___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__meeting_list__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__messages_list__ = __webpack_require__(398);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__messages_list___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__messages_list__);
 //
 //
 //
@@ -80098,6 +80100,30 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 
 
@@ -80119,7 +80145,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     buttonMessage: __WEBPACK_IMPORTED_MODULE_1__components_buttonMessage___default.a,
     buttonSort: __WEBPACK_IMPORTED_MODULE_2__components_buttonSort___default.a,
     buttonLevel: __WEBPACK_IMPORTED_MODULE_3__components_buttonLevel___default.a,
-    meetingsList: __WEBPACK_IMPORTED_MODULE_4__meeting_list___default.a
+    meetingsList: __WEBPACK_IMPORTED_MODULE_4__meeting_list___default.a,
+    messagesList: __WEBPACK_IMPORTED_MODULE_5__messages_list___default.a
   },
   data: function data() {
     return {
@@ -80143,13 +80170,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       return this.$store.getters.isRole(role);
     },
     redirectTeachers: function redirectTeachers() {
-      this.$toasted.info('To schedule a class you must first select a teacher.');
-      this.$router.push({ path: '/teachers/all' });
+      this.$toasted.info("To schedule a class you must first select a teacher.");
+      this.$router.push({ path: "/teacher/all" });
     },
     searchStudent: function searchStudent() {
       var _this = this;
 
-      this.$store.dispatch('sendGet', { url: '/api/student/' + this.student.id, auth: true }).then(function (res) {
+      this.$store.dispatch("sendGet", {
+        url: "/api/student/" + this.student.id,
+        auth: true
+      }).then(function (res) {
         if (res.data.student) _this.student = res.data.student;
       });
     }
@@ -80192,16 +80222,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     };
   },
 
-  props: ['teacher'],
+  props: ['to', 'action'],
   methods: {
     submit: function submit() {
       var _this = this;
 
       this.$store.dispatch("sendPost", {
-        url: '/api/teacher/message',
+        url: this.action,
         data: Object(__WEBPACK_IMPORTED_MODULE_0__helpers_general__["a" /* addJsonToFormData */])({
-          user: this.currentUser.id,
-          teacher: this.teacher,
+          from: this.currentUser.id,
+          to: this.to,
           message: this.message
         }),
         auth: true
@@ -80209,6 +80239,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         if (res) {
           _this.$refs.button.click();
           _this.$toasted.success(res.message);
+          _this.$emit('submitMessage');
         } else {
           _this.$toasted.error("Something went wrong, please try again.");
         }
@@ -80240,7 +80271,7 @@ var render = function() {
       },
       [
         _c("i", { staticClass: "fas fa-paper-plane" }),
-        _vm._v(" Send Message\r\n  ")
+        _vm._v(" Send Message\n  ")
       ]
     ),
     _vm._v(" "),
@@ -80902,14 +80933,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     date: function date() {
       return Object(__WEBPACK_IMPORTED_MODULE_0__helpers_general__["c" /* datesFrontendFormater */])(this.item.date);
     },
-    currentUserId: function currentUserId() {
-      return parseInt(this.$route.params.id) || this.$store.getters.currentUser.id;
-    },
     isTeacher: function isTeacher() {
-      return this.currentUserId == this.item.teacher.id;
+      return this.$store.getters.currentUser.id == this.item.teacher.id;
     },
-    isCurrent: function isCurrent() {
-      return this.currentUserId == this.$store.getters.currentUser.id;
+    isStudent: function isStudent() {
+      return this.$store.getters.currentUser.id == this.item.student.id;
     }
   },
   filters: {
@@ -81177,19 +81205,19 @@ var render = function() {
                 staticClass: "mt-0 d-block",
                 attrs: {
                   to: _vm.isTeacher
-                    ? "students/" + _vm.item.student.id
-                    : "teachers/" + _vm.item.teacher.id
+                    ? "student/" + _vm.item.student.id
+                    : "teacher/" + _vm.item.teacher.id
                 }
               },
               [
                 _vm._v(
-                  "\r\n          " +
+                  "\n          " +
                     _vm._s(
                       _vm.isTeacher
                         ? _vm.item.student.name
                         : _vm.item.teacher.name
                     ) +
-                    "\r\n        "
+                    "\n        "
                 )
               ]
             ),
@@ -81216,11 +81244,7 @@ var render = function() {
                   "badge-" + _vm.toLowerCase(_vm.item.type)
                 ]
               },
-              [
-                _vm._v(
-                  "\r\n          " + _vm._s(_vm.item.type) + "\r\n        "
-                )
-              ]
+              [_vm._v("\n          " + _vm._s(_vm.item.type) + "\n        ")]
             ),
             _vm._v(" "),
             _vm.item.level
@@ -81236,7 +81260,7 @@ var render = function() {
                   },
                   [
                     _vm._v(
-                      "\r\n          " + _vm._s(_vm.item.level) + "\r\n        "
+                      "\n          " + _vm._s(_vm.item.level) + "\n        "
                     )
                   ]
                 )
@@ -81248,7 +81272,7 @@ var render = function() {
         _c("div", { staticClass: "col text-right" }, [
           _c("small", { staticClass: "text-muted" }, [
             _vm._v(
-              "\r\n          " +
+              "\n          " +
                 _vm._s(
                   _vm.date.year +
                     "/" +
@@ -81256,17 +81280,17 @@ var render = function() {
                     "/" +
                     _vm.date.day
                 ) +
-                "\r\n          "
+                "\n          "
             ),
             _c("br"),
             _vm._v(
-              "\r\n          " +
+              "\n          " +
                 _vm._s(
                   _vm._f("timeConvert")(
                     _vm._f("hourFormat")(_vm.date.hour + ":" + _vm.date.min)
                   )
                 ) +
-                "\r\n        "
+                "\n        "
             )
           ]),
           _vm._v(" "),
@@ -81288,7 +81312,7 @@ var render = function() {
                 [_c("i", { staticClass: "far fa-play-circle" })]
               ),
               _vm._v(" "),
-              _vm.isCurrent
+              _vm.isStudent
                 ? _c("buttonConfirmation", {
                     attrs: {
                       messages: [
@@ -81322,7 +81346,7 @@ var render = function() {
                           class: "btn-success text-sm"
                         }
                       ],
-                      css: "btn icon icon-shape icon-sm"
+                      css: "btn icon icon-shape icon-sm p-o"
                     },
                     on: { "confirmation-success": _vm.meetingDelete }
                   })
@@ -81458,7 +81482,7 @@ var render = function() {
                                   {
                                     staticClass:
                                       "mr-4 float-right btn btn-sm btn-primary",
-                                    attrs: { to: "teachers/favorite" }
+                                    attrs: { to: "teacher/favorite" }
                                   },
                                   [
                                     _c("i", {
@@ -81496,7 +81520,11 @@ var render = function() {
                                 _vm._v(" "),
                                 _c("button-message", {
                                   staticClass: "mr-4",
-                                  attrs: { teacher: _vm.student.id }
+                                  attrs: {
+                                    action: "/api/student/message",
+                                    to: _vm.student.id
+                                  },
+                                  on: { submitMessage: _vm.searchStudent }
                                 })
                               ]
                             : _vm._e()
@@ -81552,45 +81580,45 @@ var render = function() {
               ])
             ]),
             _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "text-center mt-3 pb-4  border-bottom  " },
-              [
-                _c("h2", [_vm._v(_vm._s(_vm.student.name))]),
-                _vm._v(" "),
-                _c("div", { staticClass: "h4 font-weight-300" }, [
-                  _c("i", { staticClass: "ni location_pin mr-2" }, [
-                    _vm._v(
-                      " \n              " +
-                        _vm._s(_vm.student.timeZone) +
-                        " - " +
-                        _vm._s(_vm.student.country) +
-                        "\n            "
-                    )
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", [
-                  _c("i", { staticClass: "ni education_hat mr-2" }, [
-                    _vm._v(
-                      "\n              " +
-                        _vm._s(_vm.student.description) +
-                        "\n            "
-                    )
-                  ])
+            _c("div", { staticClass: "text-center mt-3 pb-4 border-bottom" }, [
+              _c("h2", [_vm._v(_vm._s(_vm.student.name))]),
+              _vm._v(" "),
+              _c("div", { staticClass: "h4 font-weight-300" }, [
+                _c("i", { staticClass: "ni location_pin mr-2" }, [
+                  _vm._v(
+                    _vm._s(_vm.student.timeZone) +
+                      " - " +
+                      _vm._s(_vm.student.country)
+                  )
                 ])
-              ]
-            ),
+              ]),
+              _vm._v(" "),
+              _c("div", [
+                _c("i", { staticClass: "ni education_hat mr-2" }, [
+                  _vm._v(_vm._s(_vm.student.description))
+                ])
+              ])
+            ]),
             _vm._v(" "),
             _c(
               "div",
-              { staticClass: " py-5 border-top text-center" },
+              { staticClass: "py-5 border-top text-center" },
               [
                 _c("meetings-list", {
                   staticClass: "mx-5",
                   attrs: { title: "Next Classes", list: _vm.student.meetings },
                   on: { searchUser: _vm.searchStudent }
-                })
+                }),
+                _vm._v(" "),
+                _vm.isRole("TE")
+                  ? _c("messages-list", {
+                      staticClass: "mx-5",
+                      attrs: {
+                        title: "Last Comments",
+                        list: _vm.student.messages
+                      }
+                    })
+                  : _vm._e()
               ],
               1
             )
@@ -81740,7 +81768,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     searchTeacher: function searchTeacher() {
       var _this = this;
 
-      console.log('lleho aqui');
       this.$store.dispatch("sendGet", { url: '/api/teacher/' + this.teacher.id + '/dashboard', auth: true }).then(function (res) {
         if (res.data.teacher) {
           _this.teacher = res.data.teacher;
@@ -83902,6 +83929,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       return val.map(function (el) {
         return list[el];
       }).join(" | ");
+    },
+    rolName: function rolName(val) {
+      return String(val).substring(0, 2).toUpperCase();
     }
   },
   data: function data() {
@@ -83987,7 +84017,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
   methods: {
     lowerCase: function lowerCase(value) {
-      return value.toLowerCase();
+      return String(value).toLowerCase();
     },
     isRole: function isRole(role) {
       return this.$store.getters.isRole(role);
@@ -84560,7 +84590,7 @@ var render = function() {
                 staticClass: "spinner-grow spinner-grow-sm",
                 attrs: { role: "status", "aria-hidden": "true" }
               }),
-              _vm._v("\r\n    Loading...\r\n  ")
+              _vm._v("\n    Loading...\n  ")
             ]
           )
         : _vm._e(),
@@ -84578,7 +84608,7 @@ var render = function() {
                 }
               }
             },
-            [_vm._v("\r\n    Cancel\r\n  ")]
+            [_vm._v("\n    Cancel\n  ")]
           )
         : _vm._e(),
       _vm._v(" "),
@@ -84592,7 +84622,7 @@ var render = function() {
               },
               attrs: { type: "submit", disabled: !_vm.submit || _vm.loading }
             },
-            [_vm._v("\r\n    Save\r\n  ")]
+            [_vm._v("\n    Save\n  ")]
           )
         : _vm._e(),
       _vm._v(" "),
@@ -84736,9 +84766,7 @@ var render = function() {
                                 },
                                 [
                                   _c("i", { staticClass: "rounded-circle" }, [
-                                    _vm._v(
-                                      _vm._s(rol.substring(0, 2).toUpperCase())
-                                    )
+                                    _vm._v(_vm._s(_vm._f("rolName")(rol)))
                                   ])
                                 ]
                               )
@@ -85828,7 +85856,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       var _this = this;
 
       this.$store.dispatch('sendGet', { url: '/api/teacher/' + id, auth: true }).then(function (res) {
-        console.log(res.data.teacher);
         _this.$set(_this.teachers, index, res.data.teacher);
       });
     },
@@ -86405,17 +86432,13 @@ var render = function() {
           "div",
           { staticClass: "card-profile-image" },
           [
-            _c(
-              "router-link",
-              { attrs: { to: "/teachers/" + _vm.teacher.id } },
-              [
-                _c("img", {
-                  ref: "img",
-                  staticClass: "card-img-top rounded-circle w-rem-7 h-rem-7",
-                  attrs: { src: "/uploads/avatar/" + _vm.teacher.avatar }
-                })
-              ]
-            )
+            _c("router-link", { attrs: { to: "/teacher/" + _vm.teacher.id } }, [
+              _c("img", {
+                ref: "img",
+                staticClass: "card-img-top rounded-circle w-rem-7 h-rem-7",
+                attrs: { src: "/uploads/avatar/" + _vm.teacher.avatar }
+              })
+            ])
           ],
           1
         )
@@ -86696,18 +86719,26 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'modal',
+  name: "modal",
   props: {
-    'show': {
+    show: {
       type: Boolean,
       default: false
     }
   },
   methods: {
     close: function close() {
-      this.$emit('close');
+      this.$emit("close");
     }
   }
 });
@@ -86736,11 +86767,11 @@ var render = function() {
         "div",
         {
           staticClass:
-            "modal-dialog modal-lg modal-dialog-centered  modal-dialog-scrollable",
+            "mr-0 my-0 min-vh-100 modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable",
           attrs: { role: "document" }
         },
         [
-          _c("div", { staticClass: "modal-content" }, [
+          _c("div", { staticClass: "modal-content  min-vh-100 rounded-0" }, [
             _c(
               "div",
               { staticClass: "modal-header pb-0" },
@@ -86869,7 +86900,7 @@ var render = function() {
               "router-link",
               {
                 staticClass: "btn btn-primary",
-                attrs: { to: "/teachers/" + _vm.options.teacher.id }
+                attrs: { to: "/teacher/" + _vm.options.teacher.id }
               },
               [_vm._v("Profile")]
             )
@@ -87285,9 +87316,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
 
 
 
@@ -87319,7 +87347,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     searchTeacher: function searchTeacher() {
       var _this = this;
 
-      this.$store.dispatch('sendGet', { url: '/api/teacher/' + this.teacher.id, auth: true }).then(function (res) {
+      this.$store.dispatch("sendGet", {
+        url: "/api/teacher/" + this.teacher.id,
+        auth: true
+      }).then(function (res) {
         if (res.data.teacher) _this.teacher = res.data.teacher;
         if (res.data.teacher.timeSchedule) _this.teacher.timeSchedule = Object(__WEBPACK_IMPORTED_MODULE_5__helpers_general__["f" /* formatDateToDataBase */])(res.data.teacher.timeSchedule);
         if (res.data.teacher.bookedDates) _this.teacher.bookedDates = Object(__WEBPACK_IMPORTED_MODULE_5__helpers_general__["f" /* formatDateToDataBase */])(res.data.teacher.bookedDates);
@@ -88585,7 +88616,7 @@ var debugs = {};
 var debugEnviron;
 exports.debuglog = function(set) {
   if (isUndefined(debugEnviron))
-    debugEnviron = Object({"MIX_PUSHER_APP_CLUSTER":"mt1","MIX_PUSHER_APP_KEY":"","NODE_ENV":"development"}).NODE_DEBUG || '';
+    debugEnviron = Object({"MIX_PUSHER_APP_KEY":"","MIX_PUSHER_APP_CLUSTER":"mt1","NODE_ENV":"development"}).NODE_DEBUG || '';
   set = set.toUpperCase();
   if (!debugs[set]) {
     if (new RegExp('\\b' + set + '\\b', 'i').test(debugEnviron)) {
@@ -92075,7 +92106,7 @@ module.exports.makeKey = makeKey
 /* 288 */
 /***/ (function(module, exports) {
 
-module.exports = {"_from":"elliptic@^6.0.0","_id":"elliptic@6.4.1","_inBundle":false,"_integrity":"sha512-BsXLz5sqX8OHcsh7CqBMztyXARmGQ3LWPtGjJi6DiJHq5C/qvi9P3OqgswKSDftbu8+IoI/QDTAm2fFnQ9SZSQ==","_location":"/elliptic","_phantomChildren":{},"_requested":{"type":"range","registry":true,"raw":"elliptic@^6.0.0","name":"elliptic","escapedName":"elliptic","rawSpec":"^6.0.0","saveSpec":null,"fetchSpec":"^6.0.0"},"_requiredBy":["/browserify-sign","/create-ecdh"],"_resolved":"https://registry.npmjs.org/elliptic/-/elliptic-6.4.1.tgz","_shasum":"c2d0b7776911b86722c632c3c06c60f2f819939a","_spec":"elliptic@^6.0.0","_where":"C:\\xampp\\htdocs\\spalear\\node_modules\\browserify-sign","author":{"name":"Fedor Indutny","email":"fedor@indutny.com"},"bugs":{"url":"https://github.com/indutny/elliptic/issues"},"bundleDependencies":false,"dependencies":{"bn.js":"^4.4.0","brorand":"^1.0.1","hash.js":"^1.0.0","hmac-drbg":"^1.0.0","inherits":"^2.0.1","minimalistic-assert":"^1.0.0","minimalistic-crypto-utils":"^1.0.0"},"deprecated":false,"description":"EC cryptography","devDependencies":{"brfs":"^1.4.3","coveralls":"^2.11.3","grunt":"^0.4.5","grunt-browserify":"^5.0.0","grunt-cli":"^1.2.0","grunt-contrib-connect":"^1.0.0","grunt-contrib-copy":"^1.0.0","grunt-contrib-uglify":"^1.0.1","grunt-mocha-istanbul":"^3.0.1","grunt-saucelabs":"^8.6.2","istanbul":"^0.4.2","jscs":"^2.9.0","jshint":"^2.6.0","mocha":"^2.1.0"},"files":["lib"],"homepage":"https://github.com/indutny/elliptic","keywords":["EC","Elliptic","curve","Cryptography"],"license":"MIT","main":"lib/elliptic.js","name":"elliptic","repository":{"type":"git","url":"git+ssh://git@github.com/indutny/elliptic.git"},"scripts":{"jscs":"jscs benchmarks/*.js lib/*.js lib/**/*.js lib/**/**/*.js test/index.js","jshint":"jscs benchmarks/*.js lib/*.js lib/**/*.js lib/**/**/*.js test/index.js","lint":"npm run jscs && npm run jshint","test":"npm run lint && npm run unit","unit":"istanbul test _mocha --reporter=spec test/index.js","version":"grunt dist && git add dist/"},"version":"6.4.1"}
+module.exports = {"_args":[["elliptic@6.4.1","/var/www/html/spalear"]],"_development":true,"_from":"elliptic@6.4.1","_id":"elliptic@6.4.1","_inBundle":false,"_integrity":"sha512-BsXLz5sqX8OHcsh7CqBMztyXARmGQ3LWPtGjJi6DiJHq5C/qvi9P3OqgswKSDftbu8+IoI/QDTAm2fFnQ9SZSQ==","_location":"/elliptic","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"elliptic@6.4.1","name":"elliptic","escapedName":"elliptic","rawSpec":"6.4.1","saveSpec":null,"fetchSpec":"6.4.1"},"_requiredBy":["/browserify-sign","/create-ecdh"],"_resolved":"https://registry.npmjs.org/elliptic/-/elliptic-6.4.1.tgz","_spec":"6.4.1","_where":"/var/www/html/spalear","author":{"name":"Fedor Indutny","email":"fedor@indutny.com"},"bugs":{"url":"https://github.com/indutny/elliptic/issues"},"dependencies":{"bn.js":"^4.4.0","brorand":"^1.0.1","hash.js":"^1.0.0","hmac-drbg":"^1.0.0","inherits":"^2.0.1","minimalistic-assert":"^1.0.0","minimalistic-crypto-utils":"^1.0.0"},"description":"EC cryptography","devDependencies":{"brfs":"^1.4.3","coveralls":"^2.11.3","grunt":"^0.4.5","grunt-browserify":"^5.0.0","grunt-cli":"^1.2.0","grunt-contrib-connect":"^1.0.0","grunt-contrib-copy":"^1.0.0","grunt-contrib-uglify":"^1.0.1","grunt-mocha-istanbul":"^3.0.1","grunt-saucelabs":"^8.6.2","istanbul":"^0.4.2","jscs":"^2.9.0","jshint":"^2.6.0","mocha":"^2.1.0"},"files":["lib"],"homepage":"https://github.com/indutny/elliptic","keywords":["EC","Elliptic","curve","Cryptography"],"license":"MIT","main":"lib/elliptic.js","name":"elliptic","repository":{"type":"git","url":"git+ssh://git@github.com/indutny/elliptic.git"},"scripts":{"jscs":"jscs benchmarks/*.js lib/*.js lib/**/*.js lib/**/**/*.js test/index.js","jshint":"jscs benchmarks/*.js lib/*.js lib/**/*.js lib/**/**/*.js test/index.js","lint":"npm run jscs && npm run jshint","test":"npm run lint && npm run unit","unit":"istanbul test _mocha --reporter=spec test/index.js","version":"grunt dist && git add dist/"},"version":"6.4.1"}
 
 /***/ }),
 /* 289 */
@@ -99127,7 +99158,7 @@ var render = function() {
               staticClass: "spinner-grow spinner-grow-sm",
               attrs: { role: "status", "aria-hidden": "true" }
             }),
-            _vm._v("\r\n    Loading...\r\n  ")
+            _vm._v("\n    Loading...\n  ")
           ]
         )
       : _vm._e(),
@@ -99141,7 +99172,7 @@ var render = function() {
             attrs: { type: "button", disabled: _vm.loading },
             on: { click: _vm.cancelFrom }
           },
-          [_vm._v("\r\n    Cancel\r\n  ")]
+          [_vm._v("\n    Cancel\n  ")]
         )
       : _vm._e(),
     _vm._v(" "),
@@ -99155,7 +99186,7 @@ var render = function() {
         attrs: { type: "button", disabled: !_vm.submit || _vm.loading },
         on: { click: _vm.submitFrom }
       },
-      [_vm._v("\r\n    Save\r\n  ")]
+      [_vm._v("\n    Save\n  ")]
     )
   ])
 }
@@ -99182,7 +99213,7 @@ var render = function() {
     { staticClass: "text-center mb-3" },
     [
       _c("h3", { staticClass: "my-5" }, [
-        _vm._v("\r\n    Follow these steps to schedule your class\r\n  ")
+        _vm._v("\n    Follow these steps to schedule your class\n  ")
       ]),
       _vm._v(" "),
       _c(
@@ -99271,7 +99302,7 @@ var render = function() {
           [
             _c("h3", { staticClass: "text-muted my-5" }, [
               _vm._v(
-                "\r\n          Select the classes you want to schedule\r\n        "
+                "\n          Select the classes you want to schedule\n        "
               )
             ]),
             _vm._v(" "),
@@ -99329,7 +99360,7 @@ var render = function() {
                       }
                     }
                   },
-                  [_vm._v("\r\n          " + _vm._s(name) + "\r\n        ")]
+                  [_vm._v("\n          " + _vm._s(name) + "\n        ")]
                 )
               }),
               0
@@ -99467,7 +99498,10 @@ var render = function() {
                         _vm._v(" "),
                         _c("button-message", {
                           staticClass: "mr-4",
-                          attrs: { teacher: _vm.teacher.id }
+                          attrs: {
+                            to: _vm.teacher.id,
+                            action: "/api/teacher/message"
+                          }
                         })
                       ],
                       1
@@ -99480,7 +99514,7 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "div",
-                { staticClass: "text-center mt-5 pb-4  border-bottom  " },
+                { staticClass: "text-center mt-5 pb-4 border-bottom" },
                 [
                   _c("h2", [_vm._v(_vm._s(_vm.teacher.name))]),
                   _vm._v(" "),
@@ -99496,22 +99530,16 @@ var render = function() {
                   _c("div", { staticClass: "h4 font-weight-300" }, [
                     _c("i", { staticClass: "ni location_pin mr-2" }, [
                       _vm._v(
-                        " \n              " +
-                          _vm._s(_vm.teacher.timeZone) +
+                        _vm._s(_vm.teacher.timeZone) +
                           " - " +
-                          _vm._s(_vm.teacher.country) +
-                          "\n            "
+                          _vm._s(_vm.teacher.country)
                       )
                     ])
                   ]),
                   _vm._v(" "),
                   _c("div", [
                     _c("i", { staticClass: "ni education_hat mr-2" }, [
-                      _vm._v(
-                        "\n              " +
-                          _vm._s(_vm.teacher.description) +
-                          "\n            "
-                      )
+                      _vm._v(_vm._s(_vm.teacher.description))
                     ])
                   ])
                 ],
@@ -99666,7 +99694,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     redirectTeachers: function redirectTeachers() {
       this.$toasted.info('To schedule a class you must first select a teacher.');
-      this.$router.push({ path: '/teachers/all' });
+      this.$router.push({ path: '/teacher/all' });
     }
   },
   watch: {
@@ -99809,9 +99837,7 @@ var render = function() {
                   },
                   [
                     _c("i", { staticClass: "fas fa-chalkboard-teacher" }),
-                    _vm._v(
-                      "\r\n                  Schedule Class\r\n              "
-                    )
+                    _vm._v("\n                  Schedule Class\n              ")
                   ]
                 )
               ])
@@ -100638,9 +100664,9 @@ var render = function() {
                       { staticClass: "card-title text-uppercase mb-0" },
                       [
                         _vm._v(
-                          "\r\n              " +
+                          "\n              " +
                             _vm._s(item.data.subject) +
-                            "\r\n            "
+                            "\n            "
                         )
                       ]
                     )
@@ -100865,7 +100891,7 @@ var render = function() {
                     },
                     [
                       _c("i", { class: child.icon }),
-                      _vm._v(" " + _vm._s(child.title) + "\r\n\t\t\t\t\t")
+                      _vm._v(" " + _vm._s(child.title) + "\n\t\t\t\t\t")
                     ]
                   )
                 ]
@@ -100879,7 +100905,7 @@ var render = function() {
                     },
                     [
                       _c("i", { staticClass: "fas fa-lock" }),
-                      _vm._v(" " + _vm._s(child.title) + "\r\n\t\t\t\t\t")
+                      _vm._v(" " + _vm._s(child.title) + "\n\t\t\t\t\t")
                     ]
                   )
                 ]
@@ -101542,9 +101568,9 @@ var render = function() {
                 [
                   _c("a", { staticClass: "mb-0 d-block font-weight-bold" }, [
                     _vm._v(
-                      "\r\n                        " +
+                      "\n                        " +
                         _vm._s(_vm.currentUser.name) +
-                        "\r\n                    "
+                        "\n                    "
                     )
                   ]),
                   _vm._v(" "),
@@ -101591,9 +101617,9 @@ var render = function() {
                           { staticClass: "nav-link", attrs: { to: link.url } },
                           [
                             _vm._v(
-                              "\r\n                        " +
+                              "\n                        " +
                                 _vm._s(link.title) +
-                                "\r\n                    "
+                                "\n                    "
                             )
                           ]
                         )
@@ -101673,6 +101699,403 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 374 */,
+/* 375 */,
+/* 376 */,
+/* 377 */,
+/* 378 */,
+/* 379 */,
+/* 380 */,
+/* 381 */,
+/* 382 */,
+/* 383 */,
+/* 384 */,
+/* 385 */,
+/* 386 */,
+/* 387 */,
+/* 388 */,
+/* 389 */,
+/* 390 */,
+/* 391 */,
+/* 392 */,
+/* 393 */,
+/* 394 */,
+/* 395 */,
+/* 396 */,
+/* 397 */,
+/* 398 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(399)
+/* template */
+var __vue_template__ = __webpack_require__(402)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/views/messages/list.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-1de2af44", Component.options)
+  } else {
+    hotAPI.reload("data-v-1de2af44", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 399 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__card__ = __webpack_require__(400);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__card___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__card__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "messages-list",
+  props: {
+    list: {
+      type: Array,
+      default: function _default() {
+        return [];
+      }
+    },
+    min: {
+      type: Number,
+      default: 5
+    },
+    title: ""
+  },
+  data: function data() {
+    return {
+      count: this.min
+    };
+  },
+
+  components: {
+    messageCard: __WEBPACK_IMPORTED_MODULE_0__card___default.a
+  },
+  computed: {
+    limitedList: function limitedList() {
+      var _this = this;
+
+      return this.list.filter(function (el, i) {
+        return i < _this.count;
+      });
+    }
+  },
+  methods: {
+    searchUser: function searchUser() {
+      this.$emit("searchUser");
+    },
+    incrementMin: function incrementMin() {
+      this.count += this.min;
+    },
+    resetList: function resetList() {
+      this.count = this.min;
+    }
+  }
+});
+
+/***/ }),
+/* 400 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(403)
+/* template */
+var __vue_template__ = __webpack_require__(401)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/views/messages/card.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-bf482c60", Component.options)
+  } else {
+    hotAPI.reload("data-v-bf482c60", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 401 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("li", { staticClass: "media my-4 " }, [
+    _c("img", {
+      staticClass: "mr-3 rounded-circle align-self-start",
+      staticStyle: { width: "5rem", height: "5rem" },
+      attrs: {
+        src: "/uploads/avatar/" + _vm.item.from.avatar,
+        title: _vm.item.from.name,
+        "data-toggle": "tooltip",
+        "data-placement": "top"
+      }
+    }),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "media-body text-left border p-3 bg-secondary rounded" },
+      [
+        _c(
+          "router-link",
+          {
+            staticClass: "mt-0 mb-1 d-block",
+            attrs: { to: "/teacher/" + _vm.item.from.id }
+          },
+          [_vm._v("\n      " + _vm._s(_vm.item.from.name) + "\n    ")]
+        ),
+        _vm._v(" "),
+        _c("small", { staticClass: "text-muted d-block" }, [
+          _vm._v(
+            "\n      " +
+              _vm._s(
+                _vm.date.year + "/" + (_vm.date.month + 1) + "/" + _vm.date.day
+              ) +
+              "\n      " +
+              _vm._s(
+                _vm._f("timeConvert")(
+                  _vm._f("hourFormat")(_vm.date.hour + ":" + _vm.date.min)
+                )
+              ) +
+              "\n    "
+          )
+        ]),
+        _vm._v(" \n    " + _vm._s(_vm.item.message) + "\n  ")
+      ],
+      1
+    )
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-bf482c60", module.exports)
+  }
+}
+
+/***/ }),
+/* 402 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "mx-6" }, [
+    _vm.list.length > 0
+      ? _c("h3", { staticClass: "text-center mb-3" }, [
+          _vm._v(_vm._s(_vm.title))
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    _c("div", { staticClass: "overflow-auto max-vh-65" }, [
+      _c(
+        "ul",
+        { staticClass: "list-unstyled mx-2" },
+        _vm._l(_vm.limitedList, function(item, i) {
+          return _c("message-card", { key: i, attrs: { item: item } })
+        }),
+        1
+      )
+    ]),
+    _vm._v(" "),
+    _vm.list.length > _vm.min
+      ? _c("div", { staticClass: "float-right mt-3" }, [
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-secondary",
+              attrs: { type: "button" },
+              on: { click: _vm.resetList }
+            },
+            [_vm._v("Reset")]
+          ),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-primary",
+              attrs: { type: "button" },
+              on: { click: _vm.incrementMin }
+            },
+            [_vm._v("Show More")]
+          )
+        ])
+      : _vm._e()
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-1de2af44", module.exports)
+  }
+}
+
+/***/ }),
+/* 403 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__helpers_general__ = __webpack_require__(4);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "message-card",
+  props: {
+    item: {
+      type: Object,
+      default: function _default() {}
+    }
+  },
+  data: function data() {
+    return {
+      now: Date.now(),
+      active: false
+    };
+  },
+
+  computed: {
+    date: function date() {
+      return Object(__WEBPACK_IMPORTED_MODULE_0__helpers_general__["c" /* datesFrontendFormater */])(this.item.created_at.date);
+    }
+  },
+  filters: {
+    hourFormat: function hourFormat(val) {
+      var time = val.toString();
+      if (time.length > 1) {
+        time = time.split(":");
+        for (var i in time) {
+          time[i] = time[i].length > 1 ? time[i] : "0" + time[i];
+        }
+      }
+      return time.join(":");
+    },
+    timeConvert: function timeConvert(val) {
+      var time = val.toString();
+      if (time.length > 1) {
+        time = time.split(":");
+        time[time.length - 1] += time[0] < 12 ? " AM" : " PM";
+        time[0] = +time[0] % 12 || 12;
+      }
+      return time.join(":");
+    }
+  },
+  methods: {
+    toLowerCase: function toLowerCase(val) {
+      return val.toLowerCase();
+    }
+  }
+});
 
 /***/ })
 /******/ ]);

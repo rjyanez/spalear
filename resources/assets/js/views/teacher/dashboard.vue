@@ -65,7 +65,6 @@ export default {
   },
   methods: {
     searchTeacher() {
-      console.log('lleho aqui')
       this.$store
         .dispatch("sendGet", { url: `/api/teacher/${this.teacher.id}/dashboard`, auth: true })
         .then(res => {

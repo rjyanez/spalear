@@ -3,7 +3,7 @@
   <div class="row justify-content-center">
     <div class="col-lg-3 order-lg-2">
       <div class="card-profile-image">
-        <router-link :to="`/teachers/${teacher.id}`">
+        <router-link :to="`/teacher/${teacher.id}`">
           <img 
             class="card-img-top rounded-circle w-rem-7 h-rem-7" 
             :src="`/uploads/avatar/${teacher.avatar}`" 
