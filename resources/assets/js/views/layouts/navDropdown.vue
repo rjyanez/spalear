@@ -1,6 +1,6 @@
 <template>
 <li class="nav-item dropdown ">
-    <a class="nav-link pr-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+    <a class="nav-link" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
 		<i :class="link.icon" ></i>
 		<span class="nav-link-inner--text">{{ link.title }}</span>
     </a>

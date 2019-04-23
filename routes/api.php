@@ -36,21 +36,24 @@ Route::group(['middleware' => 'auth:api'], function () {
     });
 
     Route::group(['prefix' => 'teacher'], function () {
-        Route::get ('list'          , 'TeacherController@list'         );
-        Route::get ('list/favorite' , 'TeacherController@listFavorites');
-        Route::post('message'       , 'TeacherController@message'      );
-        Route::post('favorite'      , 'TeacherController@favorite'     );
-        Route::post('ranking'       , 'TeacherController@ranking'      );
-        Route::get ('{id}/dashboard', 'TeacherController@dashboard'    );
-        Route::get ('{id}'          , 'TeacherController@show'         );
+        Route::get ('list'           , 'TeacherController@list'          );
+        Route::get ('list/favorite'  , 'TeacherController@listFavorites' );
+        Route::post('message'        , 'TeacherController@message'       );
+        Route::post('favorite'       , 'TeacherController@favorite'      );
+        Route::post('ranking'        , 'TeacherController@ranking'       );
+        Route::get ('{id}/dashboard' , 'TeacherController@dashboard'     );
+        Route::get ('{id}'           , 'TeacherController@show'          );
     });
-
+    
     Route::group(['prefix' => 'student'], function () {
         Route::post('message', 'StudentController@message');
+        Route::get ('list'   , 'StudentController@list'   );
         Route::post('sort'   , 'StudentController@sort'   );
         Route::post('level'  , 'StudentController@level'  );
         Route::post('message', 'StudentController@message');
         Route::get ('{id}'   , 'StudentController@show'   );
+        Route::get ('{id}/short'   , 'StudentController@showShort'   );
+
     });
 
     Route::group(['prefix' => 'function'], function () {

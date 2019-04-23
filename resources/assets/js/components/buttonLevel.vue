@@ -2,7 +2,7 @@
   <div class="dropdown">
   <button 
     type="button" 
-    :class="['btn float-right btn-sm', currentLevel.css]"
+    :class="['btn', currentLevel.css, css]"
     data-toggle="dropdown" 
     :title="currentLevel.name" 
   >
@@ -11,7 +11,8 @@
   </button>
     <div class="dropdown-menu pt-2">
       <a 
-        v-for="item in levelList.filter(el => el.key != currentLevel.key)"
+        v-for="(item, key) in levelList.filter(el => el.key != currentLevel.key)"
+        :key="key"
         class="dropdown-item"
         role="button"
         aria-pressed="true" 
@@ -30,6 +31,7 @@ import {addJsonToFormData} from './../helpers/general'
 export default {
   name: 'button-level',
   props: {
+    css: String,
     level: {
       type: String, 
       default: 'BAS'

@@ -39,6 +39,7 @@
                       :sort="student.sort"
                       @toggleSort="searchStudent"
                       class="mr-4 float-right"
+                      css="float-right btn-sm"
                       text
                     />
                     <button-level
@@ -46,6 +47,7 @@
                       :level="student.level"
                       @toggleLevel="searchStudent"
                       class="mr-4 float-right"
+                      css="float-right btn-sm"
                       text
                     />
                     <button-message

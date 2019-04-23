@@ -1,13 +1,10 @@
 <template>
 <div>
-    <header-lesson name="Users List"/>
+    <header-lesson :name="`Level ${route.title}`"/>
     <div class="container mt--7">
       <div class="card shadow">
         <div class="card-header">
           <div class="row align-items-center">
-            <div class="col">
-              <h2> Level {{ route.title }}</h2>
-            </div>
             <div class="col">
               <button class="mr-4 float-right btn btn-sm btn-info" @click="redirectTeachers">
                   <i class="fas fa-chalkboard-teacher"></i>

@@ -2,7 +2,7 @@
   <div class="dropdown">
   <button 
     type="button"
-    :class="['btn float-right btn-sm', currentSort.css]"
+    :class="['btn', currentSort.css, css]"
     data-toggle="dropdown"
     :title="currentSort.name"
   >
@@ -11,7 +11,8 @@
   </button>
     <div class="dropdown-menu pt-2">
       <a 
-        v-for="item in sortList.filter(el => el.key != currentSort.key)"
+        v-for="(item, key) in sortList.filter(el => el.key != currentSort.key)"
+        :key="key"
         class="dropdown-item"
         role="button"
         aria-pressed="true" 
@@ -30,6 +31,7 @@ import {addJsonToFormData} from './../helpers/general'
 export default {
   name: 'button-sort',
   props: {
+    css: String,
     sort: {
       type: String, 
       default: 'NEU'
@@ -47,7 +49,7 @@ export default {
     return {
       sortList:[
         { key: 'POS', name: 'Positive', css: 'btn-success', icon: 'fas fa-plus-square' },        
-        { key: 'NEU', name: 'Neutral', css: 'btn-outline-success', icon: 'fas fa-square' }
+        { key: 'NEU', name: 'Neutral', css: 'btn-secondary border border-success text-success', icon: 'fas fa-square' }
       ]
     }
   },

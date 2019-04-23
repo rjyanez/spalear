@@ -9,6 +9,33 @@ use Carbon\Carbon;
 
 class StudentController extends Controller
 {
+
+	public function list(Request $request)
+	{
+		$id = $request->user()->id;
+		$students = User::whereHas('roles', function ($q) {
+									$q->where('key', 'ST');
+								})
+								->whereHas('studentMeetings', function ($q) use ($id) {
+									$q->where('teacher_id', $id);
+								})
+								->get()
+								->map(function ($item) {
+									return [
+										'id'          => $item->id,
+										'name'        => $item->name,
+										'email'       => $item->email,
+										'avatar'      => $item->avatar,
+										'level'       => $item->level,
+										'sort'        => $item->sort,
+										'country'     => $item->country->name,
+										'timeZone'    => $item->timeZone->name,
+									];
+								});
+
+		return response()->json(Json::response(compact('students')), 200);
+	}
+
 	public function show(Request $request, $id)
 	{
 		$student = User::whereId($id)
@@ -42,6 +69,35 @@ class StudentController extends Controller
 					'progress'    => $this->progress($item->studentMeetings),
 					'meetings'    => $this->meetingsShortList($item->studentMeetings),
 					'messages'		=> $this->receivedMessagesList($item->receivedMessages)
+				];
+			})
+			->first();
+
+		return response()->json(
+			Json::response(compact('student')),
+			200
+		);
+	}
+
+	public function showShort(Request $request, $id)
+	{
+		$student = User::whereId($id)
+			->whereHas('roles', function ($q) {
+				$q->where('key', 'ST');
+			})
+			->get()
+			->map(function ($item) {
+				return [
+					'id'          => $item->id,
+					'name'        => $item->name,
+					'email'       => $item->email,
+					'avatar'      => $item->avatar,
+					'description' => $item->description,
+					'level'       => $item->level,
+					'sort'        => $item->sort,
+					'roles'       => $item->roles,
+					'country'     => $item->country->name,
+					'timeZone'    => $item->timeZone->name
 				];
 			})
 			->first();

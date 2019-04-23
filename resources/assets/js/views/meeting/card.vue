@@ -57,7 +57,7 @@
                 },
                 { confirmation: false, icon: false , text: 'Ok!', class: 'btn-success text-sm'}                           
               ]"
-            css="btn icon icon-shape icon-sm p-o"
+            css="btn icon icon-shape icon-sm p-0"
           />
         </div>
       </div>

@@ -1,20 +1,20 @@
-import Errors         from './views/error'
-import Home           from './views/home'
-import Login          from './views/auth/login'
+import Errors from './views/error'
+import Home from './views/home'
+import Login from './views/auth/login'
 import PasswordForgot from './views/auth/password/forgot'
-import PasswordReset  from './views/auth/password/reset'
-import Signup         from './views/auth/signup'
-import Dashboard      from './views/dashboard'
-import Meeting        from './views/meeting/meeting'
-import UserList       from './views/user/list'
-import User           from './views/user/user'
-import TeacherList    from './views/teacher/list'
+import PasswordReset from './views/auth/password/reset'
+import Signup from './views/auth/signup'
+import Dashboard from './views/dashboard'
+import Meeting from './views/meeting/meeting'
+import UserList from './views/user/list'
+import User from './views/user/user'
+import TeacherList from './views/teacher/list'
 import TeacherProfile from './views/teacher/profile'
-import SudentProfile  from './views/student/profile'
-import Lessons        from './views/lesson/lesson'
+import StudentList from './views/student/list'
+import StudentProfile from './views/student/profile'
+import Lessons from './views/lesson/lesson'
 
-export const routes = [
-    {
+export const routes = [{
         path: '/',
         name: 'home',
         component: Home
@@ -32,11 +32,10 @@ export const routes = [
     {
         path: '/password',
         name: 'password',
-        component:  {
+        component: {
             template: '<router-view/>',
         },
-        children: [
-            {
+        children: [{
                 path: 'forgot',
                 name: 'password.forgot',
                 component: PasswordForgot
@@ -53,11 +52,10 @@ export const routes = [
         meta: {
             requiresAuth: true
         },
-        component:  {
+        component: {
             template: '<router-view/>',
         },
-        children: [
-            {
+        children: [{
                 path: '/',
                 name: 'dashboard',
                 component: Dashboard
@@ -66,7 +64,7 @@ export const routes = [
                 path: ':id',
                 component: Dashboard,
                 meta: {
-                    allowedRoles: ['AD','SC']
+                    allowedRoles: ['AD', 'SC']
                 },
             }
         ]
@@ -79,13 +77,12 @@ export const routes = [
         meta: {
             requiresAuth: true,
         },
-        children: [
-            {
+        children: [{
                 path: '/',
                 name: 'user.list',
                 component: UserList,
                 meta: {
-                    allowedRoles: ['AD','SC']
+                    allowedRoles: ['AD', 'SC']
                 },
             },
             {
@@ -93,7 +90,7 @@ export const routes = [
                 name: 'user.new',
                 component: User,
                 meta: {
-                    allowedRoles: ['AD','SC']
+                    allowedRoles: ['AD', 'SC']
                 },
             },
             {
@@ -103,11 +100,10 @@ export const routes = [
             },
             {
                 path: 'setting',
-                component:  {
+                component: {
                     template: '<router-view/>',
                 },
-                children: [
-                    {
+                children: [{
                         path: '/',
                         name: 'user.setting',
                         component: User
@@ -116,7 +112,7 @@ export const routes = [
                         path: ':id',
                         component: User,
                         meta: {
-                            allowedRoles: ['AD','SC']
+                            allowedRoles: ['AD', 'SC']
                         },
                     }
                 ]
@@ -142,8 +138,7 @@ export const routes = [
             requiresAuth: true,
             allowedRoles: ['ST']
         },
-        children: [
-            {
+        children: [{
                 path: 'all',
                 name: 'teacher.all',
                 component: TeacherList
@@ -156,27 +151,50 @@ export const routes = [
             {
                 path: ':id',
                 name: 'teacher.name',
-                component: TeacherProfile 
+                component: TeacherProfile
             }
         ]
     },
     {
         path: '/student',
         name: 'student',
-        // redirect: '/teacher/all',
+        redirect: '/student/favorite',
         component: {
             template: '<router-view/>',
         },
         meta: {
             requiresAuth: true,
-            allowedRoles: ['TE','SC','AD']
+            allowedRoles: ['TE', 'SC', 'AD']
         },
         children: [
             {
+                path: 'favorite',
+                name: 'student.favorite',
+                meta: {
+                    requiresAuth: true
+                },
+                component: {
+                    template: '<router-view/>',
+                },
+                children: [
+                    {
+                        path: '/',
+                        component: StudentList
+                    },
+                    {
+                        path: ':id',
+                        component: StudentList,
+                        meta: {
+                            allowedRoles: ['AD', 'SC']
+                        },
+                    }
+                ]
+            },
+            {
                 path: ':id',
                 name: 'student.profile',
-                component: SudentProfile 
-            }
+                component: StudentProfile
+            }          
         ]
     },
     {
@@ -185,17 +203,15 @@ export const routes = [
         component: {
             template: '<router-view/>',
         },
-        children: [
-            {
-                path: ':id',
-                name: 'meeting.show',
-                component: Meeting 
-            }
-        ]
+        children: [{
+            path: ':id',
+            name: 'meeting.show',
+            component: Meeting
+        }]
     },
     {
         path: '/lessons',
-        redirect: '/lessons/basic', 
+        redirect: '/lessons/basic',
         component: {
             template: '<router-view/>',
         },
@@ -203,21 +219,19 @@ export const routes = [
             requiresAuth: true,
             allowedRoles: ['ST']
         },
-        children: [
-            {
-                path: ':code',
-                name: 'lessons',
-                component: Lessons 
-            }
-        ]
+        children: [{
+            path: ':code',
+            name: 'lessons',
+            component: Lessons
+        }]
     },
     {
         path: '/error/:code',
         name: 'error',
         component: Errors
     },
-    {   
-        path: '*', 
-        redirect: '/error/404' 
-    }, 
+    {
+        path: '*',
+        redirect: '/error/404'
+    },
 ];

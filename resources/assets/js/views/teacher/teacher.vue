@@ -18,7 +18,7 @@
       class="d-flex justify-content-between align-items-center mt-2 mx-auto w-rem-7" 
     >
       <button 
-        class="rounded-circle btn btn-primary btn-sm float-left status-porfile" 
+        class="btn btn-primary float-left icon icon-shape icon-sm btn-sm p-0 " 
         title="Time Schedule"
         type="button" 
         @click="showTeacherTimeSchedule"
@@ -30,11 +30,11 @@
         :teacher="teacher.id" 
         :favorite="favorite" 
         text="false"
-        class="rounded-circle status-porfile btn-danger mb--5" 
+        class="icon icon-shape icon-sm btn-sm p-0 btn-danger mb--5" 
       />
       <button-online-status 
         :online="online" 
-        class="float-right status-porfile" 
+        class="icon icon-shape icon-sm btn-sm p-0 float-right mr-0 status-porfile" 
       />
     </div>
   </div>

@@ -21,6 +21,7 @@ class FunctionsRolesTableSeeder extends Seeder
             [ 'function_code' => 'user', 'rol_code' => 'SC' ],
             [ 'function_code' => 'teacher', 'rol_code' => 'ST' ],
             [ 'function_code' => 'teacher.favorite', 'rol_code' => 'ST' ],
+            [ 'function_code' => 'student.favorite', 'rol_code' => 'TE' ],
             [ 'function_code' => 'lessons' , 'rol_code' => 'ST' ]
         ]);
     }

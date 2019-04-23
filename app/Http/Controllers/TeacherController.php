@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Transformers\Json;
 use App\User;
 use Illuminate\Support\Carbon;
+use App\Meeting;
 
 
 class TeacherController extends Controller
