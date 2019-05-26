@@ -30,12 +30,14 @@
 	            </div>
 	            <!-- Navbar items -->
 	            <ul :class="{'navbar-nav ml-auto': true, 'align-items-center d-none d-md-flex': isLoggedIn}">
-	                <li class="nav-item" >
-						<router-link class="nav-link nav-link-icon" to="/dashboard">
-							<i class="fas fa-tachometer-alt"></i>
-							<span class="nav-link-inner--text">Dashboard</span>
-						</router-link>
-					</li>
+	                <template v-if="isLoggedIn">
+		                <li class="nav-item" >
+							<router-link class="nav-link nav-link-icon" to="/dashboard">
+								<i class="fas fa-tachometer-alt"></i>
+								<span class="nav-link-inner--text">Dashboard</span>
+							</router-link>
+						</li>
+					</template>
 					<template v-for="link in links[(isLoggedIn)? 'auth' : 'guest' ]">
 		                <nav-dropdown v-if="link.childs.length" :key="link.code" :link="link"/>
 		                <li v-else :key="link.code" class="nav-item" >
